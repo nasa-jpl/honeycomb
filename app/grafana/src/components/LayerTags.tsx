@@ -11,11 +11,10 @@ import {
     Checkbox
 } from '@grafana/ui';
 
-import { SceneObject } from '@gov.nasa.jpl.honeycomb/core';
+import { SceneObject, Viewer } from '@gov.nasa.jpl.honeycomb/core';
 
 import { UiGroup } from '../types';
-import { useHoneycomb } from './Honeycomb/HoneycombContext';
-import { RsvpViewer } from '../../../../pkg/ui/src/viewer';
+import { useHoneycomb } from '@gov.nasa.jpl.honeycomb/ui';
 
 interface LayerItemProps {
     tag: string;
@@ -46,7 +45,7 @@ function LayerItem({
 interface ObjectTagManagerProps {
     enabled: boolean;
     objectId: string;
-    viewer: RsvpViewer;
+    viewer: Viewer;
 }
 
 function ObjectTagManager({

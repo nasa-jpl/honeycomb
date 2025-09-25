@@ -142,6 +142,7 @@ export class InfiniteGrid extends Mesh {
             `,
 
             extensions: {
+                // @ts-ignore
                 derivatives: true,
             },
         });
@@ -152,6 +153,6 @@ export class InfiniteGrid extends Mesh {
     }
 
     set color(color: Color) {
-        (<ShaderMaterial>this.material).uniforms.uColor.value = color;
+        (this.material as ShaderMaterial).uniforms.uColor.value = color;
     }
 }

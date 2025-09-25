@@ -6,9 +6,9 @@ import {
     type DataFrame
 } from "@grafana/data";
 
-import type { RsvpViewer } from "../../../../pkg/ui/src/viewer";
 import { WorldOptions } from "../types";
 import { Vector3 } from "three";
+import { GrafanaHoneycombViewer } from "../components/App";
 
 export function binarySearch(times: number[], time: number) {
     if (time < times[0]) {
@@ -35,7 +35,7 @@ export function binarySearch(times: number[], time: number) {
 }
 
 const tempVec3a = new Vector3();
-export function applyOptionsToViewer(options: Partial<WorldOptions>, viewer: RsvpViewer) {
+export function applyOptionsToViewer(options: Partial<WorldOptions>, viewer: GrafanaHoneycombViewer) {
     viewer.playbackSpeed = options.playbackSpeed ?? 1;
     viewer.gridVisibility = !!options.gridVisibility;
     viewer.world.setUpDirection(options.up ?? "+Z");

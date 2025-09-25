@@ -1,4 +1,10 @@
-import { Annotation, Viewer } from "@gov.nasa.jpl.honeycomb/core";
+import {
+    Annotation,
+    AnnotationSchemaDataModel,
+    ChannelSchemaType,
+    Viewer
+} from "@gov.nasa.jpl.honeycomb/core";
+
 import {
     BoxGeometry,
     BufferGeometry,
@@ -15,9 +21,9 @@ import {
     SphereGeometry
 } from "three";
 
-import { AnnotationRegistryItem, AnnotationSchemaDataModel, ChannelSchemaType } from "../../types";
 import { widgetFromBuilder } from "./util";
 import { PanelOptionsEditorBuilder } from "@grafana/data";
+import { AnnotationRegistryItem } from "@gov.nasa.jpl.honeycomb/ui";
 
 interface MarkerData {
     scaleX: number;
@@ -217,7 +223,9 @@ export const markerRegistration = new AnnotationRegistryItem({
             type: ChannelSchemaType.number
         }))
     }
-}).setAnnotationOptions((builder) => {
+});
+
+export const markerRegistrationOptions = (builder: PanelOptionsEditorBuilder<MarkerOptions>) => {
     builder.addSelect({
         path: 'geometry',
         name: 'Geometry',
@@ -304,4 +312,4 @@ export const markerRegistration = new AnnotationRegistryItem({
                 currentOptions.geometry === MarkerGeometry.rectangle;
         }
     });
-});
+};

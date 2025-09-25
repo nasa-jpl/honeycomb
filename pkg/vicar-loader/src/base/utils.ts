@@ -59,7 +59,7 @@ function consumeArray(s: string, i: number) {
 
 // Parse the list of labels into an object
 export function parseLabels(s: string) {
-    const tokens = [];
+    const tokens: string[] = [];
     let lastToken = '';
     for (let i = 0, l = s.length; i < l; i++) {
         const c = s[i];
@@ -85,7 +85,7 @@ export function parseLabels(s: string) {
         tokens.push(lastToken);
     }
 
-    const labels = [];
+    const labels: { name: string, value: VicarValue }[] = [];
     for (let i = 0, l = tokens.length; i < l; i += 2) {
         const name = tokens[i].trim();
         const val = parseValue(tokens[i + 1].trim());

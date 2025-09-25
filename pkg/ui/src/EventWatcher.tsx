@@ -11,16 +11,20 @@ interface EventWatcherProps {
     events: string[];
 }
 
-export const EventWatcher: React.FC<EventWatcherProps> = ({ onEventFired, target, events }) => {
+export const EventWatcher: React.FC<EventWatcherProps> = ({
+    onEventFired,
+    target,
+    events,
+}) => {
     useEffect(() => {
         const disp = target;
         for (const event of events) {
-            disp.addEventListener(event, onEventFired);
+            disp.addEventListener(event as never, onEventFired);
         }
 
         return () => {
             for (const event of events) {
-                disp.removeEventListener(event, onEventFired);
+                disp.removeEventListener(event as never, onEventFired);
             }
         };
     }, [events, target, onEventFired]);

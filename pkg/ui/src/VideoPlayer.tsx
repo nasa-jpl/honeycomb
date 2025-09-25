@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
-import { Stack } from '@grafana/ui';
 
 import { Viewer } from '@gov.nasa.jpl.honeycomb/core';
 import type { IEventDispatcher } from '@gov.nasa.jpl.honeycomb/event-dispatcher';
@@ -7,7 +6,30 @@ import { Debouncer } from '@gov.nasa.jpl.honeycomb/scheduling-utilities';
 
 import { ViewerContainer } from './ViewerContainer';
 import { EventWatcher } from './EventWatcher';
-import { VideoPlayerBar } from './VideoPlayerBar';
+
+export interface VideoPlayerBarProps {
+    startTime: number;
+    currTime: number;
+    endTime: number;
+
+    left?: React.ReactNode | undefined;
+    right?: React.ReactNode | undefined;
+    top?: React.ReactNode | undefined;
+    bottom?: React.ReactNode | undefined;
+
+    setTime: (time: number) => void;
+
+    isPlaying: boolean;
+    isFullscreen: boolean;
+    isLive: boolean;
+    displayLive: boolean;
+
+    onClickPlay: () => void;
+    onClickStop: () => void;
+    onClickFullScreen: () => void;
+    onClickLive: () => void;
+    disabled: boolean;
+}
 
 export interface VideoPlayerProps {
     viewer: Viewer;
@@ -39,9 +61,12 @@ export interface VideoPlayerProps {
     playbarRight?: React.ReactNode | undefined;
 
     significantAnimators?: string[];
+
+    PlayerBar: React.ComponentType<VideoPlayerBarProps>;
 }
 
 const VIEWER_EVENTS = ['change', 'vrdisplayconnectionchange', 'toggle-tag'];
+const VIEWER_OBJECT_EVENTS = ['add-object', 'remove-object'];
 const ANIMATOR_EVENTS = ['change', 'added-frames', 'keyframe-progress', 'connected', 'disconnected'];
 
 export const VideoPlayer: React.FC<VideoPlayerProps> = ({
@@ -52,6 +77,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     playbarRight,
     playbarTop,
     playbarBottom,
+    PlayerBar,
     children
 }) => {
     const debouncer = useMemo(() => new Debouncer(), []);
@@ -152,6 +178,10 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
         forceUpdate();
     }, [viewer]);
 
+    const onViewerObjectEvent = useCallback(() => {
+        viewer.updateAllDrivers(true);
+    }, [viewer]);
+
     const onKeyDown = useCallback((e: Event) => {
         if (e instanceof KeyboardEvent) {
             const animator = viewer.animator;
@@ -200,11 +230,22 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
                 onEventFired={forceUpdate}
             />
             <EventWatcher
+                target={viewer}
+                onEventFired={onViewerObjectEvent}
+                events={VIEWER_OBJECT_EVENTS}
+            />
+            <EventWatcher
                 target={container as unknown as IEventDispatcher}
                 events={['keydown']}
                 onEventFired={onKeyDown}
             />
-            <Stack direction="column" flex="1" width="100%" height="100%">
+            <div style={{
+                display: "flex",
+                flex: 1,
+                flexDirection: "column",
+                width: "100%",
+                height: "100%",
+            }}>
                 <div style={{
                     flex: 1,
                     position: 'relative'
@@ -221,7 +262,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
                         {children}
                     </ViewerContainer>
                 </div>
-                <VideoPlayerBar
+                <PlayerBar
                     startTime={viewer.animator.startTime}
                     currTime={viewer.animator.time}
                     endTime={viewer.animator.endTime}
@@ -240,7 +281,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
                     top={playbarTop}
                     bottom={playbarBottom}
                 />
-            </Stack>
-        </React.Fragment>
+            </div>
+        </React.Fragment >
     );
 }

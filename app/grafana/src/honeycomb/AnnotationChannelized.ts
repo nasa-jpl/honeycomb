@@ -1,6 +1,4 @@
-import { AnnotationOptions } from "@gov.nasa.jpl.honeycomb/core";
-
-import { ChannelizedAnnotationSchema } from "../types";
+import { AnnotationOptions, ChannelizedAnnotationSchema } from "@gov.nasa.jpl.honeycomb/core";
 import { AnimatedChannel, AnimatedValue, AnimatedValueMerged } from "./AnimatedChannel";
 
 export class AnnotationValueChannelized<T extends object> extends AnimatedValueMerged<T> {

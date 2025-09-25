@@ -1,9 +1,4 @@
-import { xxHash32 } from 'js-xxhash';
-
-function isNode() {
-    // eslint-disable-next-line @typescript-eslint/no-base-to-string
-    return typeof process !== 'undefined' && process.toString() === '[object process]';
-}
+import { xxHash32 } from './xxHash32';
 
 function toF64(arr: number[]) {
     const f64 = new Float64Array(arr.length);
@@ -255,4 +250,4 @@ async function deserialize<T>(data: string, getBinCb: (index: string, type: stri
     return obj;
 }
 
-export { isNode, serialize, deserialize };
+export { serialize, deserialize };

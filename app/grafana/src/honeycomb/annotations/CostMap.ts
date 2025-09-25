@@ -19,13 +19,18 @@ import {
     MagnificationTextureFilter,
 } from "three";
 
-import { Annotation } from "@gov.nasa.jpl.honeycomb/core";
+import {
+    Annotation,
+    AnnotationSchemaDataModel,
+    ChannelSchemaType
+} from "@gov.nasa.jpl.honeycomb/core";
 
 import { ColorMapLUT } from "./colormaps";
 import { ColorMapMaterial } from "./ColorMapMaterial";
-import { AnnotationRegistryItem, AnnotationSchemaDataModel, ChannelSchemaType } from "../../types";
 import { ColorMap, ColorMapEditor, ColorMapType } from "./ColorMapEditor";
 import { base64ToArrayBuffer } from "../../honeycomb/utils";
+import { PanelOptionsEditorBuilder } from "@grafana/data";
+import { AnnotationRegistryItem } from "@gov.nasa.jpl.honeycomb/ui";
 
 interface CostMapOptions {
     /**
@@ -443,7 +448,9 @@ export const costMapRegistration = new AnnotationRegistryItem({
             }
         ]
     }
-}).setAnnotationOptions((builder) => {
+});
+
+export const costMapRegistrationOptions = (builder: PanelOptionsEditorBuilder<CostMapOptions>) => {
     builder.addCustomEditor<undefined, ColorMap>({
         path: 'colorMap',
         editor: ColorMapEditor,
@@ -612,4 +619,4 @@ export const costMapRegistration = new AnnotationRegistryItem({
             return opts.normalizeMethod === NormalizationMethod.CONST;
         }
     });
-});
+};

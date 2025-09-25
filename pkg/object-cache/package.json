@@ -3,7 +3,6 @@
   "description": "Copies and caches Javascript objects for quick read and writes from disk if available.",
   "version": "1.1.15",
   "dependencies": {
-    "js-xxhash": "^3.0.1",
     "tmp": "^0.2.1"
   },
   "devDependencies": {

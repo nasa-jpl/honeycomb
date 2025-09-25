@@ -1,12 +1,24 @@
 {
-    "extends": "@grafana/tsconfig",
     "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "experimentalDecorators": true,
+        "forceConsistentCasingInFileNames": true,
+        "importHelpers": true,
+        "jsx": "react-jsx",
+        "lib": [
+            "dom",
+            "dom.iterable",
+            "es2020"
+        ],
         "target": "es2020",
+        "module": "esnext",
+        "moduleResolution": "Bundler",
         "alwaysStrict": true,
+        "strictNullChecks": true,
         "declaration": false,
         "skipLibCheck": true,
         "isolatedModules": true,
-        "moduleResolution": "Bundler",
         "typeRoots": [
             "node_modules/@types"
         ],
@@ -21,11 +33,15 @@
         },
         "transpileOnly": true
     },
-    "include": [
-        "./pkg/",
-        "./app/",
-    ],
     "exclude": [
-        "node_modules"
+        ".git",
+        ".npm",
+        ".npm-tmp",
+        "dist",
+        "node_modules",
+        "node_modules/**",
+        "**/dist/*",
+        "**/node_modules/*",
+        "**/node_modules/**",
     ]
 }

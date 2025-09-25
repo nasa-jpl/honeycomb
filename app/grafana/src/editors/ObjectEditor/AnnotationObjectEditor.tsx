@@ -1,4 +1,4 @@
-import React, {
+import {
     useCallback,
     useMemo
 } from 'react';
@@ -7,26 +7,22 @@ import {
     Annotation,
     AnnotationOptions,
     AnnotationSceneObject,
-    AnnotationStaleBehavior
+    AnnotationStaleBehavior,
+    AnnotationSchemaDataModel,
+    AnnotationOptionsType
 } from '@gov.nasa.jpl.honeycomb/core';
 
 import {
-    annotationRegistry,
-    AnnotationSchemaDataModel,
-    AnnotationRegistryItem,
-    AnnotationOptionsType
-} from '../../types';
-
-import {
     PanelOptionsEditorBuilder,
-    PanelOptionsEditorProps,
     SelectableValue,
+    StandardEditorProps,
 } from "@grafana/data";
 
 import { InsertNullsEditor } from '../../editors/InsertNullsEditor';
 import { OptionsBuilderEditor } from '../../editors/OptionsBuilderEditor';
 import { ChannelizedAnnotationOptionsEditor } from './ChannelizedAnnotationOptionsEditor';
 import { StructuredAnnotationOptionsEditor } from './StructuredAnnotationOptionsEditor';
+import { annotationRegistry } from '../../module';
 
 const staleBehaviorOptions: Array<SelectableValue<AnnotationStaleBehavior>> = [
     {
@@ -47,13 +43,13 @@ function AnnotationOptionsEditor<TAnnotation extends Annotation<any, any>>({
     context,
     value,
     onChange
-}: PanelOptionsEditorProps<AnnotationOptionsType<TAnnotation>>) {
+}: StandardEditorProps<AnnotationOptionsType<TAnnotation>>) {
     const options: AnnotationSceneObject = context.options;
 
     // Look up the annotation registration
     const item = useMemo(() => annotationRegistry.getIfExists(
         options?.annotation.type
-    ) as AnnotationRegistryItem<TAnnotation> | undefined, [options?.annotation.type]);
+    ), [options?.annotation.type]);
 
     const onBuilderChange = useCallback((update: any) => {
         onChange({

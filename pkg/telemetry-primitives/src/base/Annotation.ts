@@ -8,7 +8,7 @@ import { Object3D, Mesh, InstancedMesh } from 'three';
 type Constructor = new (...args: any[]) => object;
 export function AnnotationMixin<TBase extends Constructor>(baseClass: TBase) {
     return class extends baseClass {
-        isAnnotation: boolean = true;
+        isAnnotation = true;
     };
 }
 

@@ -1,6 +1,10 @@
 import * as pathM from 'path';
-import { Loaders, LoadingManager } from '@gov.nasa.jpl.honeycomb/core';
-import { convertStandardMaterialToPhong } from '@gov.nasa.jpl.honeycomb/core';
+import {
+    Loaders,
+    LoadingManager,
+    convertStandardMaterialToPhong
+} from '@gov.nasa.jpl.honeycomb/core';
+
 import { MaterialReducer } from '@gov.nasa.jpl.honeycomb/three-extensions';
 import { Material, MeshPhongMaterial, Object3D } from 'three';
 import type { URDFRobot } from 'urdf-loader';

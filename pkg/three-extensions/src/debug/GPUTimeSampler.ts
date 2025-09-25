@@ -10,7 +10,7 @@ const QUERY_COMPLETE_EVENT = { type: 'query-complete', averageTime: 0, time: 0 }
  * Fired whenever new GPU timing data is available. Provides the latest time and average
  * time over the max number of sample frames.
  */
-export class GPUTimeSampler extends EventDispatcher {
+export class GPUTimeSampler extends EventDispatcher<any> {
     /**
      * Whether the required extension to use the class is supported.
      * @member {Boolean}
@@ -30,7 +30,7 @@ export class GPUTimeSampler extends EventDispatcher {
      */
     constructor(private readonly context: WebGL2RenderingContext) {
         super();
-        const extension = context.getExtension( 'EXT_disjoint_timer_query_webgl2' );
+        const extension = context.getExtension('EXT_disjoint_timer_query_webgl2');
         this.extension = extension;
 
         this.activeQueries = 0;
@@ -57,39 +57,41 @@ export class GPUTimeSampler extends EventDispatcher {
      * Should be called at the beginning of the rendering work to be measured.
      */
     startQuery() {
-        if (!this.isSupported) return;
+        if (!this.isSupported) {
+            return;
+        }
 
         const gl = this.context;
         const ext = this.extension;
 
         // create the query object
         const query = gl.createQuery()!;
-        gl.beginQuery( ext.TIME_ELAPSED_EXT, query );
+        gl.beginQuery(ext.TIME_ELAPSED_EXT, query);
 
-        this.activeQueries ++;
+        this.activeQueries++;
 
         const checkQuery = () => {
 
             // check if the query is available and valid
-            const available = gl.getQueryParameter( query, gl.QUERY_RESULT_AVAILABLE );
-            const disjoint = gl.getParameter( ext.GPU_DISJOINT_EXT );
-            const ns = gl.getQueryParameter( query, gl.QUERY_RESULT );
+            const available = gl.getQueryParameter(query, gl.QUERY_RESULT_AVAILABLE);
+            const disjoint = gl.getParameter(ext.GPU_DISJOINT_EXT);
+            const ns = gl.getQueryParameter(query, gl.QUERY_RESULT);
 
             const ms = ns * 1e-6;
             if (available) {
                 // update the display if it is valid
-                if ( ! disjoint ) {
+                if (!disjoint) {
                     this._addTime(ms);
                 }
 
-                this.activeQueries --;
+                this.activeQueries--;
             } else {
                 // otherwise try again the next frame
-                requestAnimationFrame( checkQuery );
+                requestAnimationFrame(checkQuery);
             }
         };
 
-        requestAnimationFrame( checkQuery );
+        requestAnimationFrame(checkQuery);
     }
 
     /**
@@ -97,11 +99,13 @@ export class GPUTimeSampler extends EventDispatcher {
      * query finishes the `query-complete` event will fire.
      */
     endQuery() {
-        if (!this.isSupported) return;
+        if (!this.isSupported) {
+            return;
+        }
 
         // finish the query measurement
         const ext = this.extension;
         const gl = this.context;
-        gl.endQuery( ext.TIME_ELAPSED_EXT );
+        gl.endQuery(ext.TIME_ELAPSED_EXT);
     }
 }

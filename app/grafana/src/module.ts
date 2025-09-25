@@ -1,5 +1,11 @@
-import { PanelPlugin } from '@grafana/data';
-import { annotationRegistry, type HoneycombPanelOptions } from './types';
+import { PanelOptionsEditorBuilder, PanelPlugin } from '@grafana/data';
+
+import { type HoneycombPanelOptions } from './types';
+
+import {
+    AnnotationRegistryItem,
+    Registry
+} from '@gov.nasa.jpl.honeycomb/ui';
 
 import { HoneycombPanel } from './components/HoneycombPanel';
 
@@ -10,19 +16,26 @@ import { addFrameTrajectoriesOptions } from './editors/FrameTrajectoriesOptions'
 import { addTagGroupsOptions } from './editors/TagGroupsEditor';
 import { addWidgetGroupsOptions } from './editors/WidgetGroupsEditor';
 
-import { markerRegistration } from './honeycomb/annotations/Marker';
-import { costMapRegistration } from './honeycomb/annotations/CostMap';
-import { debugRegistration } from './honeycomb/annotations/Debug';
-import { heightMapRegistration } from './honeycomb/annotations/HeightMap';
-import { enavRegistration } from './honeycomb/annotations/Enav';
-import { coordinateFrameRegistration } from './honeycomb/annotations/CoordinateFrame';
+import { markerRegistration, markerRegistrationOptions } from './honeycomb/annotations/Marker';
+import { costMapRegistration, costMapRegistrationOptions } from './honeycomb/annotations/CostMap';
+import { debugRegistration, debugRegistrationOptions } from './honeycomb/annotations/Debug';
+import { heightMapRegistration, heightMapRegistrationOptions } from './honeycomb/annotations/HeightMap';
+import { enavRegistration, enavRegistrationOptions } from './honeycomb/annotations/Enav';
+import { coordinateFrameRegistration, coordinateFrameRegistrationOptions } from './honeycomb/annotations/CoordinateFrame';
 
-annotationRegistry.register(markerRegistration);
-annotationRegistry.register(costMapRegistration);
-annotationRegistry.register(heightMapRegistration);
-annotationRegistry.register(debugRegistration);
-annotationRegistry.register(enavRegistration);
-annotationRegistry.register(coordinateFrameRegistration);
+export const annotationRegistry = new Registry<
+    AnnotationRegistryItem<any>,
+    PanelOptionsEditorBuilder<any>
+>(PanelOptionsEditorBuilder, () => {
+    return [
+        [markerRegistration, markerRegistrationOptions],
+        [costMapRegistration, costMapRegistrationOptions],
+        [heightMapRegistration, heightMapRegistrationOptions],
+        [debugRegistration, debugRegistrationOptions],
+        [enavRegistration, enavRegistrationOptions],
+        [coordinateFrameRegistration, coordinateFrameRegistrationOptions]
+    ];
+});
 
 export const plugin = new PanelPlugin<HoneycombPanelOptions>(HoneycombPanel).setPanelOptions((builder) => {
     addWorldOptions(builder);

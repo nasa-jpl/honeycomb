@@ -1,4 +1,3 @@
-/* eslint-disable */
 // from https://raw.githubusercontent.com/gkjohnson/threejs-sandbox/master/pixel-outline-pass/src/PixelOutlinePass.js
 
 import {
@@ -214,7 +213,7 @@ export class PixelOutlinePass extends Pass {
         const renderTarget = this.renderTarget;
         const quad = this.quad;
 
-        let scene = null;
+        let scene: Scene | null;
         if (this.renderDepth) {
             scene = this.scene;
         } else {

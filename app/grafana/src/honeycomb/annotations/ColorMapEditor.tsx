@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { EditorProps } from "../../editors/common";
 import { ThresholdsEditor } from '../../editors/ThresholdsEditor';

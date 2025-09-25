@@ -1,97 +1,105 @@
-import React, { Component, Fragment } from 'react';
-import { Debouncer } from '@gov.nasa.jpl.honeycomb/scheduling-utilities';
-import { LoadingManager, Viewer } from '@gov.nasa.jpl.honeycomb/core';
+import React, {
+    useCallback,
+    useEffect,
+    useReducer,
+    useRef,
+    useState
+} from 'react';
 
-import HoneycombLoadWrapper from './LoadWrapper';
+import { Debouncer } from '@gov.nasa.jpl.honeycomb/scheduling-utilities';
+
 import { EventWatcher } from './EventWatcher';
 
-interface HoneycombAppProps {
-    viewer: Viewer;
-    manager: LoadingManager;
-    title?: string;
-}
+import {
+    AppContext,
+    AppError,
+    HoneycombContext,
+    HoneycombContextState
+} from './Context';
 
-interface HoneycombAppState {
-    errors: Error[];
+import { HoneycombEvent } from '@gov.nasa.jpl.honeycomb/event-dispatcher';
+
+interface HoneycombAppProps extends HoneycombContextState {
+    title?: string;
 }
 
 const MANAGER_EVENTS = ['start', 'progress', 'complete', 'error'];
 const ERROR_EVENTS = ['error'];
-export class App extends Component<React.PropsWithChildren<HoneycombAppProps>, HoneycombAppState> {
-    debouncer: Debouncer;
-    displayName = 'HoneycombApp';
 
-    constructor(props: HoneycombAppProps) {
-        super(props);
+export function App({
+    title,
+    children,
+    ...honeycombContext
+}: React.PropsWithChildren<HoneycombAppProps>) {
+    const [, forceUpdate] = useReducer(x => x + 1, 0);
+    const [errors, setErrors] = useState<AppError[]>([]);
+    const debouncer = useRef(new Debouncer());
 
-        this.state = { errors: [] };
+    const forceUpdateDebounced = useCallback(() => {
+        debouncer.current.run('rerender', () => forceUpdate(), Infinity);
+    }, []);
 
-        const debouncer = new Debouncer();
-        this.debouncer = debouncer;
-    }
+    useEffect(() => {
+        return () => {
+            // ensure we don't call force update after the component has been unmounted
+            debouncer.current.cancelAll();
+        }
+    }, []);
 
-    private _forceUpdate() {
-        this.debouncer.run('rerender', () => this.forceUpdate(), Infinity);
-    }
+    const { manager, viewer } = honeycombContext;
+    const loadPercent = manager.total === 0 ? 1.0 : Math.min(
+        manager.loaded / manager.total, 1.0
+    );
 
-    onAddError = (e: any) => {
-        const errors = this.state.errors;
+    const onRemoveError = useCallback((e: AppError) => {
+        setErrors(errors.filter(v => e !== v));
+    }, [errors]);
+
+    const onAddErrorFromContext = useCallback((e: AppError) => {
+        errors.push(e);
+        setErrors([...errors]);
+
+        return {
+            dispose: () => onRemoveError(e),
+        };
+    }, [errors]);
+
+    const onAddErrorEvent = useCallback((title: string, e: HoneycombEvent) => {
         let err = e.error;
         if (!(err instanceof Error)) {
-            err = new Error(err);
+            err = new Error(err as any);
         }
 
-        errors.push(err);
         console.error(err);
-        this.setState({ errors });
-    };
+        onAddErrorFromContext({ title, message: (err as Error).message })
+    }, [onAddErrorFromContext]);
 
-    onClearErrors = () => {
-        this.setState({ errors: [] });
-    };
-
-    render() {
-        const state = this.state;
-        const { errors } = state;
-
-        const props = this.props;
-        const { viewer, manager, title, children } = props;
-
-        const loadPercent = manager.total === 0 ? 1.0 : Math.min(
-            manager.loaded / manager.total, 1.0
-        );
-
-        return (
-            <Fragment>
+    return (
+        <HoneycombContext.Provider value={honeycombContext}>
+            <AppContext.Provider value={{
+                title,
+                loadPercent,
+                errors,
+                addError: onAddErrorFromContext,
+                removeError: onRemoveError,
+            }}>
                 <EventWatcher
                     target={manager}
                     events={MANAGER_EVENTS}
-                    onEventFired={this._forceUpdate.bind(this)}
+                    onEventFired={forceUpdateDebounced}
                 />
                 <EventWatcher
                     target={manager}
                     events={ERROR_EVENTS}
-                    onEventFired={this.onAddError.bind(this)}
+                    onEventFired={(e) => onAddErrorEvent("Loading manager error", e)}
                 />
                 <EventWatcher
                     target={viewer}
                     events={ERROR_EVENTS}
-                    onEventFired={this.onAddError.bind(this)}
+                    onEventFired={(e) => onAddErrorEvent("Viewer error", e)}
                 />
-                <HoneycombLoadWrapper
-                    title={title}
-                    errors={errors}
-                    loadPercent={loadPercent}
-                    onClearErrors={this.onClearErrors.bind(this)}
-                >
-                    {children}
-                </HoneycombLoadWrapper>
-            </Fragment>
-        );
-    }
-
-    componentWillUnmount() {
-        // ensure we don't call force update after the component has been unmounted
-        this.debouncer.cancelAll();
-    }
+                {children}
+            </AppContext.Provider>
+        </HoneycombContext.Provider>
+    );
 }

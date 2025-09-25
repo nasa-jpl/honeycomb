@@ -35,7 +35,7 @@ export function ViewerMixin<T extends StateBase, TBase extends Constructor>(base
          */
         objects: Record<string, Object3D>;
 
-        tags: TagTracker<any>;
+        tags: TagTracker<Object3D>;
         disabledTags: Set<string>;
         interactionManager: InteractionManager;
         ambientLight: AmbientLight;
@@ -82,7 +82,6 @@ export function ViewerMixin<T extends StateBase, TBase extends Constructor>(base
                 }
             });
 
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-expect-error
             controls.addEventListener('fly-start', () => {
                 this.fixedCamera = false;
@@ -343,7 +342,7 @@ export function ViewerMixin<T extends StateBase, TBase extends Constructor>(base
             });
         }
 
-        removeObject(name: string, emit: boolean = true) {
+        removeObject(name: string, emit = true) {
             const obj = this.objects[name];
             if (!obj) {
                 return;
@@ -368,7 +367,7 @@ export function ViewerMixin<T extends StateBase, TBase extends Constructor>(base
             }
         }
 
-        renameObject(obj: Object3D, name: string, emit: boolean = true) {
+        renameObject(obj: Object3D, name: string, emit = true) {
             delete this.objects[obj.name];
             obj.name = name;
             this.objects[obj.name] = obj;
@@ -392,7 +391,7 @@ export function ViewerMixin<T extends StateBase, TBase extends Constructor>(base
         }
 
         // TODO: _emit isn't being used right now -- either remove it or use it...
-        moveObject(obj: Object3D, placement?: SceneObjectPlacement, _emit: boolean = true) {
+        moveObject(obj: Object3D, placement?: SceneObjectPlacement, _emit = true) {
             this.objects[obj.name] = obj;
 
             if (placement?.pose?.position) {
@@ -531,13 +530,9 @@ export function ViewerMixin<T extends StateBase, TBase extends Constructor>(base
             const allObjects = tags.getObjects();
             if (allObjects) {
                 allObjects.forEach(obj => {
-                    if (obj instanceof Object3D) {
-                        obj.traverse(c => {
-                            c.layers.enable(TAG_TOGGLE_LAYER);
-                        });
-                    } else if (obj instanceof Function) {
-                        obj(true);
-                    }
+                    obj.traverse(c => {
+                        c.layers.enable(TAG_TOGGLE_LAYER);
+                    });
                 });
             }
 
@@ -545,13 +540,9 @@ export function ViewerMixin<T extends StateBase, TBase extends Constructor>(base
             const objects = tags.getObjects(expr);
             if (objects) {
                 objects.forEach(obj => {
-                    if (obj instanceof Object3D) {
-                        obj.traverse(c => {
-                            c.layers.disable(TAG_TOGGLE_LAYER);
-                        });
-                    } else if (obj instanceof Function) {
-                        obj(false);
-                    }
+                    obj.traverse(c => {
+                        c.layers.disable(TAG_TOGGLE_LAYER);
+                    });
                 });
             }
 

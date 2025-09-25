@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import {
     ToolbarButton,
@@ -15,9 +15,11 @@ import {
     SceneObject
 } from '@gov.nasa.jpl.honeycomb/core';
 
-import { annotationRegistry, UiGroup } from '../types';
-import { useHoneycomb } from './Honeycomb/HoneycombContext';
 import { useUpdateArrayElement } from '../editors/ArrayField';
+import { useHoneycomb } from '@gov.nasa.jpl.honeycomb/ui';
+import { annotationRegistry } from '../module';
+import { UiGroup } from '../types';
+import React from 'react';
 
 interface AnnotationWidgetProps {
     obj: AnnotationSceneObject;

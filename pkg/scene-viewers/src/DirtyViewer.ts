@@ -12,7 +12,6 @@ export function DirtyViewerMixin<TBase extends Constructor>(base: TBase) {
 
         set orthographic(v) {
             if (v !== this.orthographic) {
-                console.log("SET ORTHO", v)
                 super.orthographic = v;
                 this.dirty = true;
             }
@@ -46,8 +45,8 @@ export function DirtyViewerMixin<TBase extends Constructor>(base: TBase) {
                             _this.updateRenderSchedule();
                         }
                     }
-                })
-            })
+                });
+            });
         }
 
         /* Interface */

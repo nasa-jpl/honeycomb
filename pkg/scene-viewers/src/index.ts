@@ -3,6 +3,8 @@ export * from './DirtyViewer';
 export * from './FocusCamViewer';
 export * from './CSS2DViewer';
 export * from './OptimizedViewer';
+export * from './LightingViewer';
+export * from './TransformControlsViewer';
 export * from './utils';
 
 // TODO(tumbar) Port this to WebXR

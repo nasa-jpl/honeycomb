@@ -2,12 +2,10 @@ import { useEffect } from 'react';
 import { Color } from 'three';
 
 import { useTheme2 } from '@grafana/ui';
-
-import { useHoneycomb } from './Honeycomb/HoneycombContext';
+import { useHoneycomb } from '@gov.nasa.jpl.honeycomb/ui';
 
 export function GridColorListener() {
     const { isDark } = useTheme2();
-
     const { viewer } = useHoneycomb();
 
     useEffect(() => {

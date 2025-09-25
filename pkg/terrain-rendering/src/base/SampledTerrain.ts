@@ -17,7 +17,7 @@ export class SampledTerrain extends HeightMapTerrain {
      * Z component of the vertices.
      * @member {Sampler2D}
      */
-    sampler?: Sampler2D;
+    sampler?: SpatialSampler2D | BandSampler2D | Sampler2D;
 
     mipChain?: any;
 
@@ -74,7 +74,7 @@ export class SampledTerrain extends HeightMapTerrain {
      */
     sampleMatrix = new Matrix3().identity();
 
-    constructor(sampler?: Sampler2D, geometry?: BufferGeometry, baseShader?: ShaderLibShader) {
+    constructor(sampler?: SpatialSampler2D | BandSampler2D, geometry?: BufferGeometry, baseShader?: ShaderLibShader) {
         super(geometry, baseShader);
         this.sampler = sampler;
     }
@@ -246,8 +246,7 @@ export class SampledTerrain extends HeightMapTerrain {
 
         let value;
         if (this.sampleInWorldFrame) {
-            value = (sampler as SpatialSampler2D | BandSampler2D | undefined)
-                ?.spatialSampleChannel(u, v, channel);
+            value = (sampler as BandSampler2D)?.spatialSampleChannel(u, v, channel);
         } else {
             value = sampler?.sampleChannel(u, v, channel);
         }

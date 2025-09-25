@@ -27,10 +27,10 @@ class RingWithDirectionGeometry extends BufferGeometry {
 
 		// buffers
 
-		const indices = [];
-		const vertices = [];
-		const normals = [];
-		const uvs = [];
+		const indices: number[] = [];
+		const vertices: number[] = [];
+		const normals: number[] = [];
+		const uvs: number[] = [];
 
 		// some helper variables
 

@@ -17,10 +17,9 @@ function isExpression(expression: string) {
  * @param {String} expression
  * @returns {Function}
  */
-function compileExpression<T extends (...args: any[]) => void>(expression: string): T {
+function compileExpression<T extends (...args: any[]) => boolean>(expression: string): T {
     const exp = expression.replace(/[^&|()!=<>~\s]+/g, tag => `set.has('${tag}')`);
     const body = `return ${exp};`;
-    // eslint-disable-next-line @typescript-eslint/no-implied-eval
     return new Function('set', body) as T;
 }
 
@@ -53,7 +52,7 @@ class TagTracker<T = any> extends EventDispatcher {
      */
     addTag(obj: T, tag: string | string[]): boolean {
         if (Array.isArray(tag)) {
-            const res = [];
+            const res: boolean[] = [];
             for (let i = 0, l = tag.length; i < l; i++) {
                 res.push(this.addTag(obj, tag[i]));
             }
@@ -93,7 +92,7 @@ class TagTracker<T = any> extends EventDispatcher {
      */
     removeTag(obj: T, tag: string | string[]): boolean {
         if (Array.isArray(tag)) {
-            const res = [];
+            const res: boolean[] = [];
             for (let i = 0, l = tag.length; i < l; i++) {
                 res.push(this.removeTag(obj, tag[i]));
             }

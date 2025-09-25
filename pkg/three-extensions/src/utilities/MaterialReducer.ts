@@ -15,10 +15,10 @@ export class MaterialReducer {
     ignoreKeys: Set<string>;
 
     /**
-    * Whether to share texture instances between the final materials.
-    * @member {Boolean}
-    * @default true
-    */
+     * Whether to share texture instances between the final materials.
+     * @member {Boolean}
+     * @default true
+     */
     shareTextures: boolean;
 
     textures: Texture[];
@@ -67,7 +67,9 @@ export class MaterialReducer {
                     }
 
                     for (let i = 0, l = a.length; i < l; i++) {
-                        if (a[i] !== b[i]) return false;
+                        if (a[i] !== b[i]) {
+                            return false;
+                        }
                     }
                     return true;
                 }
@@ -126,7 +128,7 @@ export class MaterialReducer {
 
         const processMaterial = (material: Material) => {
             // Check if another material matches this one
-            let foundMaterial = null;
+            let foundMaterial: Material | null = null;
             for (const otherMaterial of materials) {
                 if (this.areEqual(material, otherMaterial)) {
                     foundMaterial = otherMaterial;
@@ -142,11 +144,13 @@ export class MaterialReducer {
                 if (this.shareTextures) {
                     // See if there's another texture that matches the ones on this material
                     for (const key in material) {
-                        if (!Object.prototype.hasOwnProperty.call(material, key)) continue;
+                        if (!Object.prototype.hasOwnProperty.call(material, key)) {
+                            continue;
+                        }
 
                         const value = (material as any)[key];
                         if (value && value.isTexture && value.image instanceof Image) {
-                            let foundTexture = null;
+                            let foundTexture: Texture | null = null;
                             for (const texture of textures) {
                                 if (this.areEqual(texture, value)) {
                                     foundTexture = texture;

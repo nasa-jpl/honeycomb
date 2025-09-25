@@ -1,4 +1,4 @@
-import { type DataFrame } from "@grafana/data";
+import type { DataFrame } from "@grafana/data";
 import { Euler, Quaternion, QuaternionLike } from 'three';
 
 import {
@@ -13,9 +13,7 @@ import {
 
 import { AnimatedKinematicChannel } from "./AnimatedKinematicChannel";
 
-import {
-    HoneycombPanelOptions,
-} from "../types";
+import { HoneycombPanelOptions } from "../types";
 import { aggregateTimes, AnimatedValue, TimeAggregation } from "./AnimatedChannel";
 import { GrafanaAnimator } from "./GrafanaAnimator";
 

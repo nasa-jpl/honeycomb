@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { Select } from "@grafana/ui";
 
 import { EditorProps, iconFromObjectType, useEditorContext } from "./common";

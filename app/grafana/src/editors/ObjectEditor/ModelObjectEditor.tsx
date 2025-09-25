@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Validator from '@rjsf/validator-ajv8/lib/validator';
 import { URDFRobot } from "urdf-loader";
 
@@ -15,12 +15,18 @@ import {
     MultiSelect,
 } from "@grafana/ui";
 
-import { ChannelType, KinematicChannel, LoadingManager, ModelSceneObject } from "@gov.nasa.jpl.honeycomb/core";
+import { EventWatcher } from "@gov.nasa.jpl.honeycomb/ui";
+
+import {
+    ChannelSchemaType,
+    ChannelType, KinematicChannel,
+    LoadingManager,
+    ModelSceneObject
+} from "@gov.nasa.jpl.honeycomb/core";
+
 import { ModelLoader, modelLoaderRegistry } from "@gov.nasa.jpl.honeycomb/core/src/Loaders";
 
-import { EventWatcher } from "../../components/EventWatcher";
 import GrafanaForm from '../GrafanaForm';
-import { ChannelSchemaType } from "../../types";
 
 import type { EditorProps } from "../common";
 import { ChannelEditor } from "../ChannelEditor";

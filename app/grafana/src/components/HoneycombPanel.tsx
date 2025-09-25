@@ -3,25 +3,34 @@ import { css, cx } from '@emotion/css';
 import _ from 'lodash';
 
 import { DataHoverEvent, type PanelProps } from '@grafana/data';
-import { PanelDataErrorView } from '@grafana/runtime';
+import { usePanelContext } from '@grafana/ui';
 
-import { App as HoneycombApp, VideoPlayer } from '@gov.nasa.jpl.honeycomb/ui';
+import {
+    VideoPlayer,
+    useHoneycomb,
+    EventWatcher,
+    TimelineDataVolumeFrame,
+    TimelineProps,
+    Timeline
+} from '@gov.nasa.jpl.honeycomb/ui';
+
 import { SceneObject } from '@gov.nasa.jpl.honeycomb/core';
 
 import { WorldOptions, type HoneycombPanelOptions } from '../types';
 import { applyOptionsToViewer, getValueAndTimeFields } from '../honeycomb/utils';
-import { useHoneycomb } from '../components/Honeycomb/HoneycombContext';
 
-import { SceneLoader } from './SceneLoader/SceneLoader';
+import { SceneLoader } from '@gov.nasa.jpl.honeycomb/ui/src/SceneLoader';
+
+import { App, GrafanaHoneycombViewer } from './App';
 import { VideoSpeedPicker } from './VideoSpeedPicker';
-import { HoneycombViewer } from './Honeycomb/Viewer';
-import { EventWatcher } from './EventWatcher';
-import { usePanelContext } from '@grafana/ui';
-import { TimelineDataVolumeFrame, TimelineProps, Timeline } from './Timeline';
 import { GridColorListener } from './GridColor';
 import { LayerTags } from './LayerTags';
 import { AnnotationWidgets } from './AnnotationWidgets';
 import { LightDirection } from './LightDirection';
+import { useGrafanaHoneycomb } from './Context';
+import { LoadWrapper } from './LoadWrapper';
+import { VideoPlayerBar } from './VideoPlayerBar';
+import { ViewerErrors } from './ViewerErrors';
 
 export interface TimeRange2 {
     from: number;
@@ -32,7 +41,6 @@ interface HoneycombInnerProps extends Props {
     containerRef: Element;
 }
 
-const VIEWER_OBJECT_EVENTS = ['add-object', 'remove-object'];
 const ANIMATOR_EVENTS = ['change'];
 const HoneycombInner: React.FC<HoneycombInnerProps> = ({
     options,
@@ -42,7 +50,8 @@ const HoneycombInner: React.FC<HoneycombInnerProps> = ({
     containerRef,
     onOptionsChange
 }) => {
-    const { viewer, manager, drivers, animators } = useHoneycomb();
+    const { viewer } = useHoneycomb<GrafanaHoneycombViewer>();
+    const { drivers, animators } = useGrafanaHoneycomb();
     const panelContext = usePanelContext();
 
     useEffect(() => {
@@ -91,10 +100,6 @@ const HoneycombInner: React.FC<HoneycombInnerProps> = ({
         }
     }, [animators, timeRange, viewer.animator, viewer.isLive]);
 
-    const onViewerObjectEvent = useCallback(() => {
-        viewer.updateAllDrivers(true);
-    }, [viewer]);
-
     const onPlaybackSpeedChange = useCallback((playbackSpeed: number) => {
         onOptionsChange({
             ...options,
@@ -132,7 +137,7 @@ const HoneycombInner: React.FC<HoneycombInnerProps> = ({
         )
     }, [panelContext, viewer]);
 
-    const timelineProps = useMemo(() => {
+    const timelineProps = useMemo<TimelineProps>(() => {
         const frames: TimelineDataVolumeFrame[] = [];
         for (const volumeField of options.dataVolumes) {
             if (volumeField.field) {
@@ -156,16 +161,11 @@ const HoneycombInner: React.FC<HoneycombInnerProps> = ({
             start: timeRange.from.valueOf(),
             end: timeRange.to.valueOf(),
             volumes: frames
-        } satisfies TimelineProps;
+        };
     }, [data, options.dataVolumes, timeRange]);
 
     return (
         <>
-            <EventWatcher
-                target={viewer}
-                onEventFired={onViewerObjectEvent}
-                events={VIEWER_OBJECT_EVENTS}
-            />
             <EventWatcher
                 target={viewer.animator}
                 onEventFired={onAnimatorChange}
@@ -175,7 +175,7 @@ const HoneycombInner: React.FC<HoneycombInnerProps> = ({
                 viewer={viewer}
                 onWorldOptionsChange={onWorldOptionsChange}
             />
-            <HoneycombApp manager={manager} viewer={viewer}>
+            <LoadWrapper>
                 <VideoPlayer
                     viewer={viewer}
                     container={containerRef}
@@ -196,64 +196,42 @@ const HoneycombInner: React.FC<HoneycombInnerProps> = ({
                                 value={options.worldOptions.playbackSpeed}
                                 onChange={onPlaybackSpeedChange}
                             />
+                            <ViewerErrors height={height} />
                         </React.Fragment>
                     }
                     playbarBottom={<Timeline {...timelineProps} />}
+                    PlayerBar={VideoPlayerBar}
                 />
-            </HoneycombApp>
+            </LoadWrapper>
         </>
     );
 }
 
 export type Props = PanelProps<HoneycombPanelOptions>;
 export const HoneycombPanel: React.FC<Props> = (props) => {
-    const {
-        data,
-        width,
-        height,
-        fieldConfig,
-        id
-    } = props;
-
+    const { width, height, options: { scene } } = props;
     const [containerRef, setContainerRef] = useState<Element | null>(null);
-
-    if (props.data.series.length === 0) {
-        return (
-            <PanelDataErrorView
-                fieldConfig={fieldConfig}
-                panelId={id}
-                data={data}
-                needsStringField
-                message='No Data'
-            />
-        );
-    }
 
     return (
         <div
-            ref={(r) => setContainerRef(r)}
+            ref={setContainerRef}
             className={cx(
                 css`
           width: ${width}px;
           height: ${height}px;
           display: flex;
-        `) + ' honeycombRoot'}
+        `)}
         >
-            <HoneycombViewer>
-                <div style={{ width: "100%", position: 'absolute' }}>
-                    <SceneLoader options={props.options} />
-                </div>
-                {
-                    containerRef && (
-                        <HoneycombInner
-                            {...props}
-                            containerRef={containerRef}
-                        />
-                    )
-                }
-
+            <App>
+                <SceneLoader scene={scene} />
                 <GridColorListener />
-            </HoneycombViewer>
+                {containerRef && (
+                    <HoneycombInner
+                        {...props}
+                        containerRef={containerRef}
+                    />
+                )}
+            </App>
         </div>
     );
 };

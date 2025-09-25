@@ -1,5 +1,5 @@
 import { css } from '@emotion/css';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { components, type MultiValueRemoveProps } from 'react-select';
 
 import { escapeStringForRegex, type GrafanaTheme2, type SelectableValue } from '@grafana/data';

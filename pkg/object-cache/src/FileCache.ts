@@ -1,7 +1,6 @@
 import { serialize, deserialize } from './utils';
 import path from 'path';
-import fsSync from 'fs';
-import { promises as fs } from 'fs';
+import fsSync, { promises as fs } from 'fs';
 import tmp from 'tmp';
 
 // https://stackoverflow.com/questions/12627586/is-node-js-rmdir-recursive-will-it-work-on-non-empty-directories

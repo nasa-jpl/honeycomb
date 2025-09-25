@@ -2,14 +2,14 @@ import React, { useMemo } from "react";
 
 import { PanelOptionsEditorProps } from "@grafana/data";
 
-import { AnnotationSceneObject, Channel } from "@gov.nasa.jpl.honeycomb/core";
-
 import {
-    annotationRegistry,
+    AnnotationSceneObject,
     AnnotationSchemaDataModel,
-} from "../../types";
+    Channel
+} from "@gov.nasa.jpl.honeycomb/core";
 
 import { ChannelEditor } from "../ChannelEditor";
+import { annotationRegistry } from "../../module";
 
 export const ChannelizedAnnotationOptionsEditor: React.FC<PanelOptionsEditorProps<Record<string, Channel<any>>>> = ({
     context,

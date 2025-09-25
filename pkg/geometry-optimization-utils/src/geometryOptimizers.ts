@@ -9,21 +9,21 @@ function optimizeFloatBuffer(
     signed?: boolean
 ) {
     if ("isInterleavedBufferAttribute" in bufferAttribute && bufferAttribute.isInterleavedBufferAttribute) {
-        return null;
+        return;
     }
 
     if (!("array" in bufferAttribute) || !isFloatArray(bufferAttribute.array as TypedArray)) {
-        return null;
+        return;
     }
 
     if ((bufferAttribute.array as TypedArray).BYTES_PER_ELEMENT === bytes) {
-        return null;
+        return;
     }
 
     if (checkBounds) {
         const { min, max } = getArrayMinMax(bufferAttribute.array as TypedArray);
         if (min < -1 || max > 1) {
-            return null;
+            return;
         }
 
         if (signed === undefined) {

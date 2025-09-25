@@ -50,7 +50,7 @@ interface ViewerOptions {
 
 // Base 3D viewer that sets up a a basic scene and corrects for "up"
 export class Viewer extends EventDispatcher<any> {
-    private _enabled: boolean = true;
+    private _enabled = true;
     renderer: WebGLRenderer;
     renderTarget: WebGLRenderTarget;
     scene: Scene;
@@ -195,8 +195,6 @@ export class Viewer extends EventDispatcher<any> {
         };
 
         addChildCb({ child: scene });
-
-        (window as any).viewer = this;
     }
 
     get domElement(): HTMLElement {
@@ -286,10 +284,8 @@ export class Viewer extends EventDispatcher<any> {
         stats.addPanel(gpuStats);
         stats.showPanel(3);
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error
         gpuTimeSampler.addEventListener('query-complete', e => {
-            gpuStats.update((<any>e).time, gpuStats.maxTime);
+            gpuStats.update((e as any).time, gpuStats.maxTime);
         });
 
         document.body.appendChild(stats.dom);

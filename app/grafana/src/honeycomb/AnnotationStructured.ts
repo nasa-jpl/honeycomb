@@ -1,10 +1,22 @@
-import { DataFrame, Field, FieldType, getFrameDisplayName } from "@grafana/data";
+import {
+    DataFrame,
+    Field,
+    FieldType,
+    getFrameDisplayName
+} from "@grafana/data";
+
 import { JSONSchema7, JSONSchema7TypeName } from "json-schema";
-import { AnnotationOptions, Table } from "@gov.nasa.jpl.honeycomb/core";
+import {
+    AnnotationOptions,
+    Table,
+    StructuredAnnotationSchema
+} from "@gov.nasa.jpl.honeycomb/core";
 
 import { base64ToArrayBuffer, getFirstTimeField } from "./utils";
-import { StructuredAnnotationSchema } from "../types";
-import { AnimatedChannelBase, AnimatedValueMerged } from "./AnimatedChannel";
+import {
+    AnimatedChannelBase,
+    AnimatedValueMerged
+} from "./AnimatedChannel";
 
 enum ValuePathSegmentKind {
     struct,

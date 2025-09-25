@@ -11,12 +11,7 @@ import {
     Stack
 } from "@grafana/ui";
 
-import { Channel, ChannelType } from "@gov.nasa.jpl.honeycomb/core";
-
-import {
-    ChannelSchema,
-    ChannelSchemaType,
-} from '../types';
+import { Channel, ChannelSchema, ChannelSchemaType, ChannelType } from "@gov.nasa.jpl.honeycomb/core";
 
 import {
     FieldSelector,

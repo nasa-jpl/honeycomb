@@ -211,7 +211,6 @@ export default class ViewCubeHelper {
     private viewCubeWireframeRoot!: THREE.Object3D;
 
     private viewCubeNeedToCastRay: boolean;
-    private moved?: boolean;
     private viewCubeIntersects: THREE.Intersection[] = [];
     private lastFaceIntersect?: THREE.Face | null;
 
@@ -231,8 +230,6 @@ export default class ViewCubeHelper {
     private lerpingToTopOrBottomFace: boolean = false;
     private finishedLerpOnThisFrame: boolean = false;
     private cameraStartLerpTime?: number;
-
-    private _animationFrameId?: number;
 
     private rollButtonRect!: SVGRectElement;
     private svg!: SVGSVGElement;
@@ -366,7 +363,6 @@ export default class ViewCubeHelper {
         this._viewCubeRenderer.domElement.addEventListener('mousemove', e => {
             this.viewCubeMouse.set(e.offsetX, e.offsetY);
             this.viewCubeNeedToCastRay = true;
-            this.moved = true;
         });
 
         this._viewCubeRenderer.domElement.addEventListener('mouseover', e => {
@@ -662,7 +658,7 @@ export default class ViewCubeHelper {
             }
 
             // TODO: do we need to call cancelAnimationFrame at some point?
-            this._animationFrameId = requestAnimationFrame(renderLoop);
+            requestAnimationFrame(renderLoop);
         };
         renderLoop();
     }

@@ -4,7 +4,8 @@
 export type StateBase = Record<string, any>;
 
 /**
- * Describes a single time-point in the data
+ * Describes a single knot in RKSML or time-point in
+ * other data formats
  *
  * ```js
  * {

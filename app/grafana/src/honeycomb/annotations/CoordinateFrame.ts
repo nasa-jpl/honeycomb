@@ -1,10 +1,8 @@
-import { Annotation, Viewer } from "@gov.nasa.jpl.honeycomb/core";
 import { Group } from "three";
+import { PanelOptionsEditorBuilder } from "@grafana/data";
 
-import {
-    AnnotationRegistryItem,
-    AnnotationSchemaDataModel
-} from "../../types";
+import { Annotation, AnnotationSchemaDataModel, Viewer } from "@gov.nasa.jpl.honeycomb/core";
+import { AnnotationRegistryItem } from "@gov.nasa.jpl.honeycomb/ui";
 
 import { AxesHelper } from "./geometry/AxesHelper";
 
@@ -54,7 +52,9 @@ export const coordinateFrameRegistration = new AnnotationRegistryItem({
         dataModel: AnnotationSchemaDataModel.channelized,
         fields: []
     }
-}).setAnnotationOptions((builder) => {
+});
+
+export const coordinateFrameRegistrationOptions = (builder: PanelOptionsEditorBuilder<CoordinateFrameOptions>) => {
     builder.addSliderInput({
         path: "opacity",
         name: "Opacity",
@@ -73,4 +73,4 @@ export const coordinateFrameRegistration = new AnnotationRegistryItem({
             min: 0
         }
     });
-});
+};

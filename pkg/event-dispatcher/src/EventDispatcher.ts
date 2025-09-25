@@ -11,10 +11,13 @@ export interface HoneycombEvent {
     [name: string]: unknown;
 }
 
-export interface IEventDispatcher {
+export interface IEventSource {
     addEventListener(type: string, listener: EventCallback): void;
-    hasEventListener(type: string, listener: EventCallback): boolean;
     removeEventListener(type: string, listener: EventCallback): void;
+    hasEventListener(type: string, listener: EventCallback): boolean;
+}
+
+export interface IEventDispatcher extends IEventSource {
     dispatchEvent(event: HoneycombEvent): void;
 }
 

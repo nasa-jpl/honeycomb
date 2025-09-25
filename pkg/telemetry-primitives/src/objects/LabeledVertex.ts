@@ -1,7 +1,7 @@
 import { FrameTransformer } from '@gov.nasa.jpl.honeycomb/frame-transformer';
 import { LabeledMixin } from '../mixins/LabeledMixin';
 import { SphereAnnotation } from '../shapes/SphereAnnotation';
-import { Camera, Renderer, Scene } from 'three';
+import { Camera, Renderer, Scene, WebGLRenderer } from 'three';
 
 /**
  * Spherical vertex rendered with a label above it.
@@ -66,7 +66,7 @@ class LabeledVertex extends LabeledMixin(SphereAnnotation) {
         offset.copy(camera.up);
         FrameTransformer.transformDirection(camera.matrixWorld, this.matrixWorld, offset, offset);
         offset.multiplyScalar(this.radius * 1.5);
-        super.updateLabelPosition(renderer, scene, camera);
+        super.updateLabelPosition(renderer as WebGLRenderer, scene, camera);
     }
 
     copy(source: this) {

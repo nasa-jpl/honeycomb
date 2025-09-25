@@ -1,4 +1,4 @@
-import { Group } from 'three';
+import { Group, Object3DEventMap } from 'three';
 
 export type UpOrientation = (
     "+X" | "-X" |
@@ -11,7 +11,9 @@ export type UpOrientation = (
  * @fires orientation-changed
  * Fired whenever the up direction is changed.
  */
-export class World extends Group {
+export class World extends Group<{
+    "orientation-changed": { up: UpOrientation }
+} & Object3DEventMap> {
     isWorld: boolean;
     private _upDirection: UpOrientation;
 

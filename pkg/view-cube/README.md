@@ -1,8 +1,6 @@
 # View Cube
 
-View cube to convey the cameras current orientation relative to world coordinates.
-
-See also https://github.com/nasa-jpl/ViewCubeHelper
+View cube to convey the cameras current orientation relative to world cooridnates.
 
 # Use
 

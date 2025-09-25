@@ -1,11 +1,13 @@
-import React, { type CSSProperties, Component } from 'react';
+import { type CSSProperties, Component } from 'react';
 import { Debouncer } from '@gov.nasa.jpl.honeycomb/scheduling-utilities';
-import { Viewer } from '@gov.nasa.jpl.honeycomb/core';
+import { Viewer, OptimizedViewerMixin, DirtyViewerMixin } from '@gov.nasa.jpl.honeycomb/scene-viewers';
 
 interface ViewerContainerProps {
     viewer: Viewer;
     style?: CSSProperties;
 }
+
+class OptimizedViewer extends OptimizedViewerMixin(DirtyViewerMixin(Viewer)) { }
 
 export class ViewerContainer extends Component<React.PropsWithChildren<ViewerContainerProps>> {
     debouncer: Debouncer;
@@ -53,8 +55,8 @@ export class ViewerContainer extends Component<React.PropsWithChildren<ViewerCon
                 viewer.setSize(contentRect.width, contentRect.height);
             }
 
-            if (viewer.isOptimizedViewer) {
-                viewer.optimizer.restart();
+            if ((viewer as OptimizedViewer).isOptimizedViewer) {
+                (viewer as OptimizedViewer).optimizer.restart();
             }
         });
     }
@@ -94,8 +96,8 @@ export class ViewerContainer extends Component<React.PropsWithChildren<ViewerCon
             if (contentRect) {
                 viewer.setSize(contentRect.width, contentRect.height);
 
-                if (viewer.isOptimizedViewer) {
-                    viewer.optimizer.restart();
+                if ((viewer as OptimizedViewer).isOptimizedViewer) {
+                    (viewer as OptimizedViewer).optimizer.restart();
                 }
             }
         }

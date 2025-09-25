@@ -15,11 +15,13 @@ import {
     Vector4
 } from "three";
 
-import { SampledTerrain } from '@gov.nasa.jpl.honeycomb/terrain-rendering';
-import { Sampler2D } from '@gov.nasa.jpl.honeycomb/sampler-2d';
-import { Mixins } from '@gov.nasa.jpl.honeycomb/mixin-shaders';
+import { PanelOptionsEditorBuilder } from "@grafana/data";
 
-import { AnnotationRegistryItem, AnnotationSchemaDataModel } from "../../types";
+import { SampledTerrain } from '@gov.nasa.jpl.honeycomb/terrain-rendering';
+import { Sampler2D, SpatialSampler2D } from '@gov.nasa.jpl.honeycomb/sampler-2d';
+import { Mixins } from '@gov.nasa.jpl.honeycomb/mixin-shaders';
+import { Annotation, AnnotationSchemaDataModel } from "@gov.nasa.jpl.honeycomb/core";
+import { AnnotationRegistryItem } from "@gov.nasa.jpl.honeycomb/ui";
 
 import {
     mipFlood,
@@ -28,10 +30,8 @@ import {
     tempQuat,
     tempMat4
 } from './enav_utils';
-import { PanelOptionsEditorBuilder } from "@grafana/data";
 import { parseColor } from "./ColorMapMaterial";
 import { widgetFromBuilder } from "./util";
-import { Annotation } from "@gov.nasa.jpl.honeycomb/core";
 
 interface EnavOptions {
     /**
@@ -456,7 +456,7 @@ export class Enav extends Group implements Annotation<EnavData, EnavOptions> {
             sampler.interpolate = false;
             heightmap.sampler = sampler;
         } else {
-            heightmap.sampler.data = cellZ;
+            (heightmap.sampler as SpatialSampler2D).data = cellZ;
         }
         heightmap.samples.set(n_cells, n_cells);
         heightmap.visible = true;
@@ -601,7 +601,7 @@ export class Enav extends Group implements Annotation<EnavData, EnavOptions> {
             sampler.interpolate = false;
             extendedHeightmap.sampler = sampler;
         } else {
-            extendedHeightmap.sampler.data = extendedData.cellZ;
+            (extendedHeightmap.sampler as SpatialSampler2D).data = extendedData.cellZ;
         }
         extendedHeightmap.samples.set(extendedNumCells, extendedNumCells);
         extendedHeightmap.update();
@@ -720,7 +720,9 @@ export const enavRegistration = new AnnotationRegistryItem({
             }
         ]
     }
-}).setAnnotationOptions((builder) => {
+});
+
+export const enavRegistrationOptions = (builder: PanelOptionsEditorBuilder<EnavOptions>) => {
     builder.addBooleanSwitch({
         path: 'costGrid',
         name: 'Cost Grid',
@@ -755,4 +757,4 @@ export const enavRegistration = new AnnotationRegistryItem({
         description: 'Objects with higher numbers will be rendered over lower numbers',
         defaultValue: 0
     });
-});
+};

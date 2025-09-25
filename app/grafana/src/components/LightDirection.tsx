@@ -1,12 +1,12 @@
 import { usePanelContext } from "@grafana/ui";
-import React, { useCallback, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 
-import { RsvpViewer } from "../../../../pkg/ui/src/viewer";
 import { LightingEditEvent } from "../editors/WorldOptions";
 import { WorldOptions } from "../types";
+import { GrafanaHoneycombViewer } from "./App";
 
 interface LightDirectionProps {
-    viewer: RsvpViewer;
+    viewer: GrafanaHoneycombViewer;
     onWorldOptionsChange: (diff: Partial<WorldOptions>) => void;
 }
 

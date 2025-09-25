@@ -81,6 +81,7 @@ export class SubLoadingManager extends LoadingManager implements IEventDispatche
 
             _itemError.call(this, url);
 
+            this.loaded++;
             this._eventDispatcher.dispatchEvent({ type: 'error', url, error });
             if (manager) {
                 (manager.itemError as any)(url, error);

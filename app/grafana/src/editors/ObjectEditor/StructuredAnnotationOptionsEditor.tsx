@@ -9,17 +9,12 @@ import {
 
 import { Checkbox, CodeEditor, Field, InlineLabel, Select, Stack } from "@grafana/ui";
 
-import { AnnotationSceneObject, Table } from "@gov.nasa.jpl.honeycomb/core";
-
-import {
-    annotationRegistry,
-    AnnotationSchemaDataModel,
-    TableSchema
-} from "../../types";
+import { AnnotationSceneObject, AnnotationSchemaDataModel, Table, TableSchema } from "@gov.nasa.jpl.honeycomb/core";
 
 import { getFirstTimeField } from "../../honeycomb/utils";
 import { EditorProps } from "../common";
 import { StructuredValue } from "../../honeycomb/AnnotationStructured";
+import { annotationRegistry } from "../../module";
 
 function schemaToTypescriptHelper(schema: JSONSchema7, indent = 0): string {
     switch (schema.type as JSONSchema7TypeName) {

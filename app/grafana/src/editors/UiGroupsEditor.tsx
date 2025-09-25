@@ -67,7 +67,7 @@ export const UiGroupsEditor: React.FC<UiGroupsEditorProps> = ({
         <ArrayFieldWrapper
             onChange={onChange}
             value={value}
-            createNew={() => ({ items: [] })}
+            createNew={() => ({ items: [] } as UiGroup)}
             move
             addName={addLabel}
         >

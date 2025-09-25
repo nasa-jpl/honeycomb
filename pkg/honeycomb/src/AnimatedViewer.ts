@@ -28,7 +28,6 @@ export function AnimatedMixin<T extends StateBase, TBase extends Constructor>(ba
         playbackSpeed: number;
 
         private _animation?: CancellablePromiseTask<void>;
-        dirty!: boolean;
 
         get animators() {
             return this.animator.animators;

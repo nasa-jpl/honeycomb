@@ -1,8 +1,7 @@
 import { Driver, LoadingManager } from '@gov.nasa.jpl.honeycomb/core';
 import { ExtendedShaderMaterial } from '@gov.nasa.jpl.honeycomb/mixin-shaders';
 import { TilesRenderer } from '3d-tiles-renderer';
-import { Group, UniformsLib, UniformsUtils, MathUtils, MeshPhongMaterial } from 'three';
-import { Terrain } from '@gov.nasa.jpl.honeycomb/terrain-rendering';
+import { Group, UniformsLib, UniformsUtils, MathUtils, MeshPhongMaterial, Object3D } from 'three';
 
 import * as pathM from 'path';
 
@@ -169,7 +168,7 @@ class TilesRendererDriver extends Driver<object> {
     private _sceneFrames?: Record<string, Group>;
     private _sceneRoot?: Group;
     private _tilesRenderers: TilesRenderer[];
-    private _sceneImages: { uri: string }[];
+    _sceneImages: { uri: string }[];
 
     constructor(readonly options: Record<string, any>, readonly manager: LoadingManager) {
         options = {
@@ -317,11 +316,11 @@ class TilesRendererDriver extends Driver<object> {
             tilesRenderer.maxDepth = maxDepth;
             tilesRenderer.errorTarget = errorTarget;
             tilesRenderer.errorThreshold = errorThreshold;
-            tilesRenderer.loadSiblings = loadSiblings;
+            (tilesRenderer as any).loadSiblings = loadSiblings;
             Object.assign(tilesRenderer.fetchOptions, fetchOptions);
 
             tilesRenderer.group.name = options.terrainName;
-            tilesRenderer.onLoadModel = model => {
+            (tilesRenderer as any).onLoadModel = (model: Object3D) => {
                 if (receiveShadow || castShadow) {
                     model.traverse(c => {
                         const cm = c as any;
@@ -345,7 +344,7 @@ class TilesRendererDriver extends Driver<object> {
                 }
                 viewer.dirty = true;
             };
-            tilesRenderer.onDisposeModel = model => {
+            (tilesRenderer as any).onDisposeModel = (model: Object3D) => {
                 if (receiveShadow) {
                     model.traverse(c => {
                         if ((c as any).material) {
@@ -354,7 +353,7 @@ class TilesRendererDriver extends Driver<object> {
                     });
                 }
             };
-            tilesRenderer.onLoadTileSet = () => {
+            (tilesRenderer as any).onLoadTileSet = () => {
                 viewer.dirty = true;
             };
 
@@ -365,7 +364,10 @@ class TilesRendererDriver extends Driver<object> {
                 }
             }
 
-            merge(tilesRenderer.fetchOptions, options.fetchOptions);
+            tilesRenderer.fetchOptions = {
+                ...tilesRenderer.fetchOptions,
+                ...options.fetchOptions
+            };
 
             return tilesRenderer;
         });
@@ -399,7 +401,9 @@ class TilesRendererDriver extends Driver<object> {
         if (translate && Array.isArray(translate) && translate.length === 3) {
             group.position.set(translate[0], translate[1], translate[2]);
         }
-        viewer.addTerrain(group as Terrain, options.terrainId);
+
+        group.name = options.terrainId;
+        viewer.addObject(group, {});
 
         // Update the tiles tree before every render
         this._tilesRenderers = renderers;
@@ -410,7 +414,7 @@ class TilesRendererDriver extends Driver<object> {
 
     dispose() {
         const { viewer, options, _tilesRenderers, _beforeRenderCallback } = this;
-        viewer?.removeTerrain(options.terrainId);
+        viewer?.removeObject(options.terrainId);
         viewer?.removeEventListener('before-render', _beforeRenderCallback);
         _tilesRenderers.forEach(renderer => renderer.dispose());
     }

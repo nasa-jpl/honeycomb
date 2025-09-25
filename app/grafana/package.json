@@ -17,7 +17,6 @@
     "author": "JPL",
     "license": "Apache-2.0",
     "devDependencies": {
-        "@babel/core": "^7.21.4",
         "@emotion/styled": "^11.13.0",
         "@gov.nasa.jpl.honeycomb/common": "^1.1.15",
         "@gov.nasa.jpl.honeycomb/core": "^1.1.15",
@@ -65,13 +64,13 @@
     },
     "dependencies": {
         "@emotion/css": "11.10.6",
-        "@grafana/data": "^11.2.0",
-        "@grafana/runtime": "^11.2.0",
-        "@grafana/schema": "^10.4.0",
-        "@grafana/ui": "^11.2.0",
+        "@grafana/data": "^12.1.0",
+        "@grafana/i18n": "^12.1.0",
+        "@grafana/runtime": "^12.1.0",
+        "@grafana/ui": "^12.1.0",
+        "@grafana/schema": "^12.1.0",
         "react": "18.2.0",
-        "react-dom": "18.2.0",
-        "tslib": "2.5.3"
+        "react-dom": "18.2.0"
     },
     "packageManager": "yarn@1.22.19"
 }

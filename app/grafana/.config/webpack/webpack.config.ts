@@ -36,7 +36,7 @@ __webpack_public_path__ =
 });
 
 const config = async (env): Promise<Configuration> => {
-    const c = await baseConfig(env);
+    const c = baseConfig(env);
 
     return {
         ...c,

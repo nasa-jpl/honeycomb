@@ -57,12 +57,6 @@ const tempArray: Intersection[] = [];
  *
  * @extends EventDispatcher
  *
- * @fires mouse-enter
- * Fired whenever the pointer moves over an object.
- *
- * @fires mouse-move
- * Fired whenever the pointer moves on an object.
- *
  * @fires mouse-exit
  * Fired whenever the points leaves an object.
  *
@@ -120,10 +114,6 @@ class InteractionManager extends EventDispatcher {
 
     private _lock: any | null;
     private _hoveredObject: Object3D | null;
-
-    private _drag: boolean;
-    private _dragStartFired: boolean;
-    private _mousedown: boolean;
     private _eventHandled: boolean;
 
     /**
@@ -147,10 +137,6 @@ class InteractionManager extends EventDispatcher {
 
         this._lock = null;
         this._hoveredObject = null;
-
-        this._drag = false;
-        this._dragStartFired = false;
-        this._mousedown = false;
         this._eventHandled = false;
 
         // mouse events can get fired multiple times per frame render so make sure
@@ -306,7 +292,7 @@ class InteractionManager extends EventDispatcher {
         return this._getHits(objects, true, recursive);
     }
 
-    private _dispatchBubblingEvent(target: any, event: HoneycombEvent) {
+    private _dispatchBubblingEvent(target: Object3D | null, event: HoneycombEvent) {
         event.originalTarget = target;
         event.bubbling = true;
         event.interactionManager = this;
@@ -314,12 +300,10 @@ class InteractionManager extends EventDispatcher {
 
         this._eventHandled = false;
 
-        if (target) {
-            let curr = target;
-            while (curr && !this._eventHandled && !this.getLock()) {
-                curr.dispatchEvent(event);
-                curr = curr.parent;
-            }
+        let curr = target;
+        while (curr && !this._eventHandled && !this.getLock()) {
+            curr.dispatchEvent(event as any);
+            curr = curr.parent;
         }
 
         if (!this._eventHandled) {

@@ -21,7 +21,7 @@ export function convertStandardMaterialToPhong(obj: Object3D) {
         if (c.material) {
             const geom = c.geometry;
             const mat = Array.isArray(c.material) ? c.material : [c.material];
-            const newMat = mat.map((ogMat: MeshStandardMaterial | (Material & { isMeshStandardMaterial?: undefined })) => {
+            const newMat = mat.map((ogMat: MeshStandardMaterial | (Material & { isMeshStandardMaterial?: undefined }) | any) => {
                 if (ogMat.isMeshStandardMaterial) {
                     if (materialMap.has(ogMat)) {
                         return materialMap.get(ogMat);

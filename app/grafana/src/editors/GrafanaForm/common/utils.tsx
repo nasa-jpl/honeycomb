@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
 import * as rjsf from "@rjsf/utils";
 import { Label } from '@grafana/ui';

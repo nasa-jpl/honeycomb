@@ -1,4 +1,4 @@
-import React, { type ChangeEvent, type FocusEvent, useCallback } from 'react';
+import { type ChangeEvent, type FocusEvent, useCallback } from 'react';
 import {
     ariaDescribedByIds,
     type BaseInputTemplateProps,

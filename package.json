@@ -8,13 +8,14 @@
         "ui/*"
     ],
     "devDependencies": {
-        "@babel/core": "^7.21.4",
         "@grafana/tsconfig": "^2.0.0",
         "@stylistic/eslint-plugin-ts": "^4.2.0",
         "@swc/core": "^1.11.7",
-        "@typescript-eslint/eslint-plugin": "^8.26.0",
+        "@typescript-eslint/eslint-plugin": "^8.44.1",
+        "@typescript-eslint/parser": "^8.44.1",
+        "@types/minimatch": "^3.0.0",
         "copy-webpack-plugin": "^11.0.0",
-        "eslint": "^9.21.0",
+        "eslint": "^9.36.0",
         "eslint-config-prettier": "^10.0.2",
         "eslint-plugin-deprecation": "^2.0.0",
         "eslint-plugin-jsdoc": "^50.6.3",

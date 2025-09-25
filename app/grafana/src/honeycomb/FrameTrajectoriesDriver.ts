@@ -2,13 +2,12 @@ import { Color, Group, Matrix4, Quaternion, Vector2, Vector3 } from "three";
 import { LineMaterial } from "three/examples/jsm/lines/LineMaterial.js";
 import { lerp } from 'three/src/math/MathUtils.js';
 
-import { Driver, Scene, type StateDiff } from "@gov.nasa.jpl.honeycomb/core";
+import { Driver, Scene, Viewer } from "@gov.nasa.jpl.honeycomb/core";
 import { KinematicState } from "@gov.nasa.jpl.honeycomb/telemetry-animator";
 import { LineAnnotation } from '@gov.nasa.jpl.honeycomb/telemetry-primitives';
-import { RsvpViewer } from "@gov.nasa.jpl.honeycomb/ui";
 
 import { FrameTrajectoriesOptions, FrameTrajectoryField } from "../types";
-import { GrafanaKinematicsAnimator } from "./KinematicsAnimator";
+import { AnimatedRobot, GrafanaKinematicsAnimator } from "./KinematicsAnimator";
 
 const tempVec3a = new Vector3();
 const tempVec3b = new Vector3();
@@ -25,7 +24,7 @@ export class FrameTrajectoriesDriver extends Driver<{ kinematics: KinematicState
     renderOrder: number;
     scene: Scene;
 
-    constructor(readonly viewer: RsvpViewer, readonly kinematicsAnimator: GrafanaKinematicsAnimator) {
+    constructor(readonly viewer: Viewer, readonly kinematicsAnimator: GrafanaKinematicsAnimator) {
         super();
         this.container = new Group();
         this.container.name = 'Drive Paths';
@@ -37,9 +36,7 @@ export class FrameTrajectoriesDriver extends Driver<{ kinematics: KinematicState
         this.viewer.world.add(this.container);
     }
 
-    update(state: { kinematics: KinematicState; }, diff: StateDiff<{ kinematics: KinematicState; }>): void {
-
-    }
+    update(): void { }
 
     set(frameTrajectoriesOptions: FrameTrajectoriesOptions) {
         this.frameTrajectories = frameTrajectoriesOptions.frameTrajectories;
@@ -85,7 +82,7 @@ export class FrameTrajectoriesDriver extends Driver<{ kinematics: KinematicState
             let endTime = obj.getEndTime();
 
             const sceneObject = this.scene.find(so => so.id === key);
-            const parentAnimatedFrames = [];
+            const parentAnimatedFrames: AnimatedRobot[] = [];
             let currentSceneObject = sceneObject;
 
             // gather the parent frames (animated robots) and also update the start and end times

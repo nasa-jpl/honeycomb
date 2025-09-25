@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { BusEvent, PanelOptionsEditorBuilder, StandardEditorProps } from "@grafana/data";
 import type { HoneycombPanelOptions, Vec3 } from '../types';

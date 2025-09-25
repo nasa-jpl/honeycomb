@@ -1,11 +1,8 @@
 import { Object3D } from "three";
 
-import { Annotation, Viewer } from "@gov.nasa.jpl.honeycomb/core";
-
-import {
-    AnnotationRegistryItem,
-    AnnotationSchemaDataModel
-} from "../../types";
+import { Annotation, AnnotationSchemaDataModel, Viewer } from "@gov.nasa.jpl.honeycomb/core";
+import { AnnotationRegistryItem } from "@gov.nasa.jpl.honeycomb/ui";
+import { PanelOptionsEditorBuilder } from "@grafana/data";
 
 interface DebugOptions {
     log: boolean;
@@ -48,10 +45,12 @@ export const debugRegistration = new AnnotationRegistryItem({
             }
         ]
     }
-}).setAnnotationOptions((builder) => {
+});
+
+export const debugRegistrationOptions = (builder: PanelOptionsEditorBuilder<DebugOptions>) => {
     builder.addBooleanSwitch({
         name: 'Log',
         description: 'Print out values into `console.log`',
         path: 'log'
     });
-});
+};

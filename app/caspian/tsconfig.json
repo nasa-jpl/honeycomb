@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "noEmit": true,
+        "lib": [
+            "dom",
+            "dom.iterable",
+            "esnext"
+        ],
+        "allowJs": true,
+        "target": "esnext",
+        "moduleResolution": "bundler",
+        "jsx": "react-jsx",
+        "outDir": "dist"
+    }
+}

@@ -16,7 +16,7 @@ function loadVicarHeightMap(path: string, options: Partial<VicarOptions>, manage
             .then(res => {
                 const { data, width, height, depth, labels } = res;
 
-                const bands = [];
+                const bands: SpatialSampler2D[] = [];
                 for (let i = 0; i < depth; i++) {
                     const layer = i;
                     const offset = data.byteOffset + width * height * layer * data.BYTES_PER_ELEMENT;

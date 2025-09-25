@@ -1,4 +1,4 @@
-import React, { createContext, useCallback } from 'react';
+import { createContext, useCallback } from 'react';
 import * as rjsf from "@rjsf/utils";
 import { Field, Stack } from '@grafana/ui';
 

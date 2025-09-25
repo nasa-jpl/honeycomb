@@ -1,4 +1,4 @@
-import { DataFrame, TimeRange } from "@grafana/data";
+import type { DataFrame, TimeRange } from "@grafana/data";
 
 import { StateBase } from "@gov.nasa.jpl.honeycomb/common";
 import { TelemetryAnimator } from "@gov.nasa.jpl.honeycomb/telemetry-animator";

@@ -1,4 +1,4 @@
-import { DataFrame, Field } from "@grafana/data";
+import type { DataFrame, Field } from "@grafana/data";
 import {
     AnnotationOptions,
     AnnotationStaleBehavior,

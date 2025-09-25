@@ -25,7 +25,7 @@ function isWSL() {
     }
 }
 
-const config = async (env): Promise<Configuration> => {
+const config = (env: any): Configuration => {
     const baseConfig: Configuration = {
         cache: {
             type: 'filesystem',
@@ -55,21 +55,21 @@ const config = async (env): Promise<Configuration> => {
             'react-redux',
             'redux',
             'rxjs',
+            'i18next',
             'react-router',
-            'react-router-dom',
             'd3',
             'angular',
-            '@grafana/ui',
-            '@grafana/runtime',
-            '@grafana/data',
+            /^@grafana\/ui/i,
+            /^@grafana\/runtime/i,
+            /^@grafana\/data/i,
 
             // Mark legacy SDK imports as external if their name starts with the "grafana/" prefix
             ({ request }, callback) => {
                 const prefix = 'grafana/';
-                const hasPrefix = (request) => request.indexOf(prefix) === 0;
-                const stripPrefix = (request) => request.substr(prefix.length);
+                const hasPrefix = (request: string) => request.indexOf(prefix) === 0;
+                const stripPrefix = (request: string) => request.substr(prefix.length);
 
-                if (hasPrefix(request)) {
+                if (request && hasPrefix(request)) {
                     return callback(undefined, stripPrefix(request));
                 }
 
@@ -125,6 +125,11 @@ const config = async (env): Promise<Configuration> => {
                                     decorators: false,
                                     dynamicImport: true,
                                 },
+                                transform: {
+                                    "react": {
+                                        "runtime": "automatic"
+                                    }
+                                }
                             },
                         },
                     },

@@ -1,20 +1,20 @@
-import {
-    DataFrame,
-    Registry
-} from "@grafana/data";
+import type { DataFrame } from "@grafana/data";
 
-import { SceneObjectType } from "@gov.nasa.jpl.honeycomb/core";
+import {
+    SceneObjectType,
+    AnnotationSchemaDataModel
+} from "@gov.nasa.jpl.honeycomb/core";
 
 import { GrafanaAnimator } from "./GrafanaAnimator";
 import { AnnotationValueChannelized } from "./AnnotationChannelized";
 import { AnnotationValueStructured } from "./AnnotationStructured";
 import {
-    AnnotationRegistryItem,
-    AnnotationSchemaDataModel,
     HoneycombPanelOptions
 } from "../types";
 import { AnimatedValue } from "./AnimatedChannel";
 import { AnnotationsAnimator, AnnotationState } from "@gov.nasa.jpl.honeycomb/telemetry-animator";
+import { AnnotationRegistryItem } from "@gov.nasa.jpl.honeycomb/ui/src/Annotation";
+import { Registry } from "@gov.nasa.jpl.honeycomb/ui";
 
 class PlaceholderAnimatedValue implements AnimatedValue<null> {
     at(): null {
@@ -32,7 +32,7 @@ export class GrafanaAnnotationsAnimator extends GrafanaAnimator<AnnotationState>
     private annotations?: Record<string, AnimatedValue<object | null>>;
     private lastData?: DataFrame[];
 
-    constructor(readonly registry: Registry<AnnotationRegistryItem<any>>) {
+    constructor(readonly registry: Registry<AnnotationRegistryItem<any>, any>) {
         super();
     }
 

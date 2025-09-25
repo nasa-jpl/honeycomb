@@ -2,11 +2,10 @@ import React from "react";
 import { Collapse, Field, RadioButtonGroup } from "@grafana/ui";
 import type { SelectableValue } from "@grafana/data";
 
-import { KinematicChannel, Orientation, OrientationConvention, Position } from "@gov.nasa.jpl.honeycomb/core";
+import { ChannelSchemaType, KinematicChannel, Orientation, OrientationConvention, Position } from "@gov.nasa.jpl.honeycomb/core";
 
 import type { EditorProps } from "../common";
 import { ChannelEditor } from "../ChannelEditor";
-import { ChannelSchemaType } from "../../types";
 
 function mergeChannelDiff(current: Partial<KinematicChannel | undefined>, diff: Partial<KinematicChannel>): KinematicChannel {
     return {

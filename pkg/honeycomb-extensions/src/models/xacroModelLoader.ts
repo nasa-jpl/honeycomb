@@ -13,9 +13,11 @@ function loadXacro(path: string, options: Partial<URDFOptions>, manager: Loading
                 loader,
                 {
                     rospackCommands: {
-                        find: function (pkg: any) {
-                            if (pkg in packages) {
-                                return packages[pkg];
+                        find: function (pkg: string) {
+                            if (typeof packages === "function") {
+                                return packages(pkg);
+                            } else if (pkg in packages) {
+                                return packages[pkg] as any;
                             } else {
                                 return null;
                             }

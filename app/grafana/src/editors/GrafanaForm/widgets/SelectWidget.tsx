@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import * as rjsf from "@rjsf/utils";
 
 import { Select, MultiSelect } from '@grafana/ui';

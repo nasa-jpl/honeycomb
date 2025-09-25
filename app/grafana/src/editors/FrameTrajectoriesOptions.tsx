@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 
 import { PanelOptionsEditorBuilder, StandardEditorProps } from "@grafana/data";
 import type { FrameTrajectoriesOptions, FrameTrajectoryField, HoneycombPanelOptions } from '../types';
@@ -39,7 +39,7 @@ const FrameTrajectoriesOptionsEditor: React.FC<StandardEditorProps<FrameTrajecto
                 onChange={onChange}
                 value={value}
                 getName={getName}
-                createNew={() => ({ id: undefined, color: 'white', field: null })}
+                createNew={() => ({ id: undefined, color: 'white' })}
             >
                 {value.map((o, i: number) => (
                     <FrameTrajectoryFieldEditor

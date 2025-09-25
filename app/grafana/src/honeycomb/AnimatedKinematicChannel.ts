@@ -1,5 +1,5 @@
+import type { DataFrame } from "@grafana/data";
 import { lerp } from "three/src/math/MathUtils.js";
-import { DataFrame } from "@grafana/data";
 import { KinematicChannel } from "@gov.nasa.jpl.honeycomb/core";
 
 import { AnimatedChannel } from "./AnimatedChannel";

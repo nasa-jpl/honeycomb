@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { annotationRegistry, type HoneycombPanelOptions, type UiGroup } from '../types';
+import { useMemo } from 'react';
+import { type HoneycombPanelOptions, type UiGroup } from '../types';
 
 import {
     PanelOptionsEditorBuilder,
@@ -9,6 +9,7 @@ import {
 
 import { UiGroupsEditor } from './UiGroupsEditor';
 import { SceneObjectType } from '@gov.nasa.jpl.honeycomb/core';
+import { annotationRegistry } from '../module';
 
 const WidgetGroupsEditor: React.FC<StandardEditorProps<UiGroup[], undefined, HoneycombPanelOptions>> = ({
     value,

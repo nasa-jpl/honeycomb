@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { GrafanaTheme2 } from "@grafana/data";
 
 import { DndProvider } from "react-dnd";
@@ -203,7 +203,7 @@ export function SceneHierarchy({
                             </WithContextMenu>
                         )}
                         dragPreviewRender={(monitor) => (
-                            <SceneItem depth={0} node={monitor.item as SceneObjectNode} />
+                            <SceneItem depth={0} node={monitor.item as unknown as SceneObjectNode} />
                         )}
                     />
                 </DndProvider>

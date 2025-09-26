@@ -126,6 +126,11 @@ const createConfig = (config, currentDirectory) => env => {
                                     decorators: false,
                                     dynamicImport: true,
                                 },
+                                transform: {
+                                    "react": {
+                                        "runtime": "automatic"
+                                    }
+                                }
                             },
                         },
                     },
@@ -188,10 +193,6 @@ const browserConfig = createConfig({
             'express': false,
         },
         extensions: [".ts", ".tsx", ".js", ".jsx", ".css", ".scss"]
-    },
-    externals: {
-        'react': 'React',
-        'react-dom': 'ReactDOM'
     },
 }, currentDirectory);
 

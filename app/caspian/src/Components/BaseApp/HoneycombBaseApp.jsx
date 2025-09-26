@@ -5,6 +5,7 @@ import { LoadingManager } from '@gov.nasa.jpl.honeycomb/core';
 import { DisposableEventListeners } from '@gov.nasa.jpl.honeycomb/three-extensions';
 import { Typography } from '@material-ui/core';
 import * as Config from '../../config';
+import { getViewerClass } from '../../getViewerClass';
 
 import * as viewerStyles from './styles/root.css';
 import {

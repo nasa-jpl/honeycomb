@@ -3,7 +3,7 @@ import { ViewCubeViewerMixin, FocusCamViewerMixin, TightShadowViewerMixin } from
 
 // Separated from config.js because it imports three.js example modules which cause jest to break
 // and for some reason it will not convert it... Defering to figure this out another time.
-export function getViewerClass(config: { options: any }) {
+export function getViewerClass(config) {
     const rendererOptions = config.options;
 
     let ViewerClass = FocusCamViewerMixin(TightShadowViewerMixin(Viewer));

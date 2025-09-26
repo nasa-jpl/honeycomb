@@ -10,7 +10,7 @@ export class EnavImgsLoader {
         const sclk = parseFloat(sclkStr);
 
         frames.push({
-            time: parseFloat(sclk),
+            time: sclk,
             state: {
                 annotations: [{
                     permalink: url,

@@ -1,5 +1,5 @@
 import { MarsSky } from '@gov.nasa.jpl.honeycomb/mars-sky';
-import { SpiceDriver } from './SpiceDriver.js';
+import { SpiceDriver } from './SpiceDriver';
 
 export class MarsSkyDriver extends SpiceDriver {
     constructor(options, manager) {

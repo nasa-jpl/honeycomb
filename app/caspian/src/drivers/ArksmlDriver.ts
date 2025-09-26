@@ -1,5 +1,5 @@
 import { Driver } from '@gov.nasa.jpl.honeycomb/core';
-import { Group, EdgesGeometry, Vector2, MeshBasicMaterial, Color } from 'three';
+import { Group, EdgesGeometry, Vector2, MeshBasicMaterial, Color, Object3D } from 'three';
 import {
     FrustumAnnotation,
     BoxAnnotation,
@@ -20,9 +20,15 @@ import merge from 'lodash.merge';
 const redLine = new LineMaterial({ color: 0xff6b50, linewidth: 1 });
 const blueLine = new LineMaterial({ color: 0x56a7ff, linewidth: 1 });
 
-export class ArksmlDriver extends Driver {
+export class ArksmlDriver extends Driver<any> {
+    options: any;
+    cameraFrustums: any;
+    kioz: any;
+    kiozContainer: Group;
+    disposed: boolean;
+
     constructor(options, manager) {
-        super(manager, options);
+        super(manager);
 
         this.options = Object.assign(
             {
@@ -91,122 +97,125 @@ export class ArksmlDriver extends Driver {
         world.add(kiozContainer);
         viewer.toggle('keepzone&&line', options.keepzone.line);
 
-        let pool;
         // rectangle kiz
-        pool = new ObjectPool(kiozContainer);
-        pool.createObject = () => {
-            const group = new Group();
-            const kz = new StampShape(
-                new BoxAnnotation(new MeshBasicMaterial({ opacity: options.keepzone.opacity })));
-            const line = new SquareLineAnnotation();
-            line.lineWidth = options.keepzone.lineWidth;
-            line.material.opacity = options.keepzone.lineOpacity;
-            line.material.transparent = options.keepzone.lineOpacity < 1.0;
-            group.add(kz, line);
+        kioz.rectangle = new class extends ObjectPool {
+            createObject() {
+                const group = new Group();
+                const kz = new StampShape(
+                    new BoxAnnotation(new MeshBasicMaterial({ opacity: options.keepzone.opacity })));
+                const line = new SquareLineAnnotation();
+                line.lineWidth = options.keepzone.lineWidth;
+                line.material.opacity = options.keepzone.lineOpacity;
+                line.material.transparent = options.keepzone.lineOpacity < 1.0;
+                group.add(kz, line);
 
-            viewer.tags.addTag(line, ['line', 'keepzone', 'rectangle']);
-            viewer.tags.addTag(kz, ['stamp', 'keepzone', 'rectangle']);
-            return group;
-        };
-        pool.updateObject = (group, info) => {
-            const { shape } = info;
-            const keepInZone = info.keepZoneType === 'in';
-            const fillColor = keepInZone ? keepInFillColor : keepOutFillColor;
-            const lineColor = keepInZone ? keepInLineColor : keepOutLineColor;
-            const renderOrder = keepInZone ? options.renderOrderKiz : options.renderOrderKoz;
-
-            const [kz, line] = group.children;
-            kz.shape.size.set(shape.halfWidth * 2, shape.halfHeight * 2, 10000);
-            kz.stamp.material.color.copy(fillColor);
-            kz.setRenderOrder(renderOrder);
-
-            line.setSize(shape.halfWidth * 2, shape.halfHeight * 2);
-            line.material.color.copy(lineColor);
-
-            const robot = options.robot ? viewer.getRobot(options.robot) : undefined;
-            const robotZOffset = robot ? robot.position.z : 0;
-            const z = (shape.position.z ?? 0) - robotZOffset;
-            group.position.set(shape.position.x, shape.position.y, z - 0.5);
-            group.rotation.set(0, 0, shape.angle);
-
-            if (info.userData) {
-                group.userData = info.userData;
+                viewer.tags.addTag(line, ['line', 'keepzone', 'rectangle']);
+                viewer.tags.addTag(kz, ['stamp', 'keepzone', 'rectangle']);
+                return group;
             }
 
-            viewer.tags.removeTag(line, ['in', 'out']);
-            viewer.tags.removeTag(kz, ['in', 'out']);
-            viewer.tags.addTag(line, info.keepZoneType);
-            viewer.tags.addTag(kz, info.keepZoneType);
-        };
-        pool.disposeObject = group => {
-            const [kz, line] = group.children;
-            kz.stamp.material.dispose();
-            line.geometry.dispose();
-            line.material.dispose();
-            viewer.tags.removeObject(kz);
-            viewer.tags.removeObject(line);
-        };
-        kioz.rectangle = pool;
+            updateObject(group, info) {
+                const { shape } = info;
+                const keepInZone = info.keepZoneType === 'in';
+                const fillColor = keepInZone ? keepInFillColor : keepOutFillColor;
+                const lineColor = keepInZone ? keepInLineColor : keepOutLineColor;
+                const renderOrder = keepInZone ? options.renderOrderKiz : options.renderOrderKoz;
+
+                const [kz, line] = group.children;
+                kz.shape.size.set(shape.halfWidth * 2, shape.halfHeight * 2, 10000);
+                kz.stamp.material.color.copy(fillColor);
+                kz.setRenderOrder(renderOrder);
+
+                line.setSize(shape.halfWidth * 2, shape.halfHeight * 2);
+                line.material.color.copy(lineColor);
+
+                const robot = options.robot ? viewer.getRobot(options.robot) : undefined;
+                const robotZOffset = robot ? robot.position.z : 0;
+                const z = (shape.position.z ?? 0) - robotZOffset;
+                group.position.set(shape.position.x, shape.position.y, z - 0.5);
+                group.rotation.set(0, 0, shape.angle);
+
+                if (info.userData) {
+                    group.userData = info.userData;
+                }
+
+                viewer.tags.removeTag(line, ['in', 'out']);
+                viewer.tags.removeTag(kz, ['in', 'out']);
+                viewer.tags.addTag(line, info.keepZoneType);
+                viewer.tags.addTag(kz, info.keepZoneType);
+            }
+
+            disposeObject(group) {
+                const [kz, line] = group.children;
+                kz.stamp.material.dispose();
+                line.geometry.dispose();
+                line.material.dispose();
+                viewer.tags.removeObject(kz);
+                viewer.tags.removeObject(line);
+            }
+        }(kiozContainer);
 
         // circle
         kioz.circle = {};
 
         // circle kiz
-        pool = new ObjectPool(kiozContainer);
-        pool.createObject = () => {
-            const group = new Group();
-            const kz = new StampShape(new CylinderAnnotation(
-                new MeshBasicMaterial({ opacity: options.keepzone.opacity })),
-            );
-            const line = new CircleLineAnnotation();
-            line.lineWidth = options.keepzone.lineWidth;
-            line.material.opacity = options.keepzone.lineOpacity;
-            line.material.transparent = options.keepzone.lineOpacity < 1.0;
-            group.add(kz, line);
+        kioz.circle = new class extends ObjectPool {
+            createObject() {
+                const group = new Group();
+                const kz = new StampShape(new CylinderAnnotation(
+                    new MeshBasicMaterial({ opacity: options.keepzone.opacity })),
+                );
+                const line = new CircleLineAnnotation();
+                line.lineWidth = options.keepzone.lineWidth;
+                line.material.opacity = options.keepzone.lineOpacity;
+                line.material.transparent = options.keepzone.lineOpacity < 1.0;
+                group.add(kz, line);
 
-            viewer.tags.addTag(line, ['line', 'keepzone', 'circle']);
-            viewer.tags.addTag(kz, ['stamp', 'keepzone', 'circle']);
-            return group;
-        };
-        pool.updateObject = (group, info) => {
-            const { shape } = info;
-            const keepInZone = info.keepZoneType === 'in';
-            const fillColor = keepInZone ? keepInFillColor : keepOutFillColor;
-            const lineColor = keepInZone ? keepInLineColor : keepOutLineColor;
-            const renderOrder = keepInZone ? options.renderOrderKiz : options.renderOrderKoz;
-
-            const [kz, line] = group.children;
-            kz.shape.radius = shape.radius;
-            kz.shape.length = 10000;
-            kz.stamp.material.color.copy(fillColor);
-            kz.setRenderOrder(renderOrder);
-
-            line.radius = shape.radius;
-            line.material.color.copy(lineColor);
-
-            const robot = options.robot ? viewer.getRobot(options.robot) : undefined;
-            const robotZOffset = robot ? robot.position.z : 0;
-            const z = (shape.position.z ?? 0) - robotZOffset;
-            group.position.set(shape.position.x, shape.position.y, z - 0.5);
-
-            if (info.userData) {
-                group.userData = info.userData;
+                viewer.tags.addTag(line, ['line', 'keepzone', 'circle']);
+                viewer.tags.addTag(kz, ['stamp', 'keepzone', 'circle']);
+                return group;
             }
 
-            viewer.tags.removeTag(line, ['in', 'out']);
-            viewer.tags.removeTag(kz, ['in', 'out']);
-            viewer.tags.addTag(line, info.keepZoneType);
-            viewer.tags.addTag(kz, info.keepZoneType);
-        };
-        pool.disposeObject = group => {
-            const [kz, line] = group.children;
-            kz.stamp.material.dispose();
-            line.geometry.dispose();
-            line.material.dispose();
-            viewer.tags.removeObject(kz);
-            viewer.tags.removeObject(line);
-        };
-        kioz.circle = pool;
+            updateObject(group, info) {
+                const { shape } = info;
+                const keepInZone = info.keepZoneType === 'in';
+                const fillColor = keepInZone ? keepInFillColor : keepOutFillColor;
+                const lineColor = keepInZone ? keepInLineColor : keepOutLineColor;
+                const renderOrder = keepInZone ? options.renderOrderKiz : options.renderOrderKoz;
+
+                const [kz, line] = group.children;
+                kz.shape.radius = shape.radius;
+                kz.shape.length = 10000;
+                kz.stamp.material.color.copy(fillColor);
+                kz.setRenderOrder(renderOrder);
+
+                line.radius = shape.radius;
+                line.material.color.copy(lineColor);
+
+                const robot = options.robot ? viewer.getRobot(options.robot) : undefined;
+                const robotZOffset = robot ? robot.position.z : 0;
+                const z = (shape.position.z ?? 0) - robotZOffset;
+                group.position.set(shape.position.x, shape.position.y, z - 0.5);
+
+                if (info.userData) {
+                    group.userData = info.userData;
+                }
+
+                viewer.tags.removeTag(line, ['in', 'out']);
+                viewer.tags.removeTag(kz, ['in', 'out']);
+                viewer.tags.addTag(line, info.keepZoneType);
+                viewer.tags.addTag(kz, info.keepZoneType);
+            }
+
+            disposeObject(group) {
+                const [kz, line] = group.children;
+                kz.stamp.material.dispose();
+                line.geometry.dispose();
+                line.material.dispose();
+                viewer.tags.removeObject(kz);
+                viewer.tags.removeObject(line);
+            }
+        }(kiozContainer);
 
         // triangle
         kioz.triangle = {};
@@ -215,59 +224,59 @@ export class ArksmlDriver extends Driver {
         const p3 = new Vector2();
 
         // triangle kiz
-        pool = new ObjectPool(kiozContainer);
-        pool.createObject = () => {
-            const group = new Group();
-            const kz = new StampShape(new TriangleAnnotation(
-                new MeshBasicMaterial({ opacity: options.keepzone.opacity })),
-            );
-            const line = new TriangleLineAnnotation();
-            line.lineWidth = options.keepzone.lineWidth;
-            line.material.opacity = options.keepzone.lineOpacity;
-            line.material.transparent = options.keepzone.lineOpacity < 1.0;
-            group.add(kz, line);
+        kioz.triangle = new class extends ObjectPool {
+            createObject(): Object3D {
+                const group = new Group();
+                const kz = new StampShape(new TriangleAnnotation(
+                    new MeshBasicMaterial({ opacity: options.keepzone.opacity })),
+                );
+                const line = new TriangleLineAnnotation();
+                line.lineWidth = options.keepzone.lineWidth;
+                line.material.opacity = options.keepzone.lineOpacity;
+                line.material.transparent = options.keepzone.lineOpacity < 1.0;
+                group.add(kz, line);
 
-            viewer.tags.addTag(line, ['line', 'keepzone', 'triangle']);
-            viewer.tags.addTag(kz, ['stamp', 'keepzone', 'triangle']);
-            return group;
-        };
-        pool.updateObject = (group, info) => {
-            const { shape } = info;
-            const keepInZone = info.keepZoneType === 'in';
-            const fillColor = keepInZone ? keepInFillColor : keepOutFillColor;
-            const lineColor = keepInZone ? keepInLineColor : keepOutLineColor;
-            const renderOrder = keepInZone ? options.renderOrderKiz : options.renderOrderKoz;
-
-            const [kz, line] = group.children;
-            p1.copy(shape.points[0]);
-            p2.copy(shape.points[1]);
-            p3.copy(shape.points[2]);
-            kz.shape.setVertices(p1, p2, p3);
-            kz.shape.length = 10000;
-            kz.stamp.material.color.copy(fillColor);
-            kz.setRenderOrder(renderOrder);
-
-            line.setVertices(p1, p2, p3);
-            line.material.color.copy(lineColor);
-
-            if (info.userData) {
-                group.userData = info.userData;
+                viewer.tags.addTag(line, ['line', 'keepzone', 'triangle']);
+                viewer.tags.addTag(kz, ['stamp', 'keepzone', 'triangle']);
+                return group;
             }
+            updateObject(group, info): void {
+                const { shape } = info;
+                const keepInZone = info.keepZoneType === 'in';
+                const fillColor = keepInZone ? keepInFillColor : keepOutFillColor;
+                const lineColor = keepInZone ? keepInLineColor : keepOutLineColor;
+                const renderOrder = keepInZone ? options.renderOrderKiz : options.renderOrderKoz;
 
-            viewer.tags.removeTag(line, ['in', 'out']);
-            viewer.tags.removeTag(kz, ['in', 'out']);
-            viewer.tags.addTag(line, info.keepZoneType);
-            viewer.tags.addTag(kz, info.keepZoneType);
-        };
-        pool.disposeObject = group => {
-            const [kz, line] = group.children;
-            kz.stamp.material.dispose();
-            line.geometry.dispose();
-            line.material.dispose();
-            viewer.tags.removeObject(kz);
-            viewer.tags.removeObject(line);
-        };
-        kioz.triangle = pool;
+                const [kz, line] = group.children;
+                p1.copy(shape.points[0]);
+                p2.copy(shape.points[1]);
+                p3.copy(shape.points[2]);
+                kz.shape.setVertices(p1, p2, p3);
+                kz.shape.length = 10000;
+                kz.stamp.material.color.copy(fillColor);
+                kz.setRenderOrder(renderOrder);
+
+                line.setVertices(p1, p2, p3);
+                line.material.color.copy(lineColor);
+
+                if (info.userData) {
+                    group.userData = info.userData;
+                }
+
+                viewer.tags.removeTag(line, ['in', 'out']);
+                viewer.tags.removeTag(kz, ['in', 'out']);
+                viewer.tags.addTag(line, info.keepZoneType);
+                viewer.tags.addTag(kz, info.keepZoneType);
+            }
+            disposeObject(group): void {
+                const [kz, line] = group.children;
+                kz.stamp.material.dispose();
+                line.geometry.dispose();
+                line.material.dispose();
+                viewer.tags.removeObject(kz);
+                viewer.tags.removeObject(line);
+            }
+        }(kiozContainer);
     }
 
     /**
@@ -390,7 +399,9 @@ export class ArksmlDriver extends Driver {
                 .filter(ann => ann.type === 'ImageAcquire')
                 .forEach(ann => {
                     const group = cameraFrustums[ann.camera];
-                    if (!group) return;
+                    if (!group) {
+                        return;
+                    }
 
                     group.position.copy(ann.position);
                     group.quaternion.copy(ann.quaternion);

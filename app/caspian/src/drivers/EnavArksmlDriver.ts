@@ -12,9 +12,9 @@ import {
 } from 'three';
 import { LabeledVertex } from '@gov.nasa.jpl.honeycomb/telemetry-primitives';
 import { FrameTransformer } from '@gov.nasa.jpl.honeycomb/frame-transformer';
-import { EnavHeightmap } from './EnavHeightmap.js';
-import { EnavCostmap } from './EnavCostmap.js';
-import { costIndexToColor } from './constants.js';
+import { EnavHeightmap } from './EnavHeightmap';
+import { EnavCostmap } from './EnavCostmap';
+import { costIndexToColor } from './constants';
 
 const tempVec3 = new Vector3();
 const tempMat4 = new Matrix4();

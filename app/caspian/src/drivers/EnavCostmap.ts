@@ -1,6 +1,6 @@
 import { DataTexture, RGBAFormat, UnsignedByteType, Group } from 'three';
-import { tempVec3, tempScale, tempQuat, tempMat4 } from './utils.js';
-import { costIndexToColor } from './constants.js';
+import { tempVec3, tempScale, tempQuat, tempMat4 } from './utils';
+import { costIndexToColor } from './constants';
 
 export class EnavCostmap extends DataTexture {
     constructor() {

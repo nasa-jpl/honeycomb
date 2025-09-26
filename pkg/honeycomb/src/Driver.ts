@@ -13,7 +13,7 @@ const CHANGED_STATE_DIFF = new StateDiff(true);
 export abstract class Driver<T> {
     private _lastState: T;
 
-    readonly type: string = "Driver";
+    type: string = "Driver";
     readonly isDriver = true;
 
     /**

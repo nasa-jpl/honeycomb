@@ -2,7 +2,7 @@ import { Group, DoubleSide, Vector2, Matrix4, DataTexture, RGBAFormat, UnsignedB
 import { SampledTerrain } from '@gov.nasa.jpl.honeycomb/terrain-rendering';
 import { Sampler2D } from '@gov.nasa.jpl.honeycomb/sampler-2d';
 import { Mixins } from '@gov.nasa.jpl.honeycomb/mixin-shaders';
-import { mipFlood, tempVec3, tempScale, tempQuat, tempMat4 } from './utils.js';
+import { mipFlood, tempVec3, tempScale, tempQuat, tempMat4 } from './utils';
 
 const { TextureStampMixin, GridStampMixin } = Mixins;
 

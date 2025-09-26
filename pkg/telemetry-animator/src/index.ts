@@ -1,4 +1,5 @@
 export { TelemetryAnimator } from './TelemetryAnimator';
+export { CustomTelemetryAnimator } from './CustomTelemetryAnimator';
 export { JoinedTelemetryAnimator } from './JoinedTelemetryAnimator';
 export { NestedTelemetryAnimator } from './NestedTelemetryAnimator';
 export { BufferedAnimatorMixin } from './BufferedAnimatorMixin';

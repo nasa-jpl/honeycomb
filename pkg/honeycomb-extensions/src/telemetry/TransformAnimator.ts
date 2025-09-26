@@ -17,7 +17,7 @@ export class TransformAnimator extends TelemetryAnimator<KinematicState> {
         this.rotationMaps = options.rotationMaps;
         this.usedKeys = {};
         this.rotationMaps.forEach(map => {
-            for (const name in map) this.usedKeys[map[name]] = true;
+            for (const name in map) { this.usedKeys[map[name]] = true; }
         });
 
         this.isTransformAnimator = true;

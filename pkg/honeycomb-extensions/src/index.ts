@@ -12,6 +12,8 @@ import { loadGeoTiff } from './models/geoTiffModelLoader';
 
 export * from './drivers/KinematicsDriver';
 export * from './drivers/AnnotationDriver';
+import { loadRos } from './telemetry/loadRos';
+import { loadCSV } from './telemetry/loadCSV';
 
 import {
     loadSGITextureFunction,
@@ -28,6 +30,15 @@ export function registerCommonLoaders() {
     Loaders.registerDriver('TilesRendererDriver', async (options, manager) => {
         const { TilesRendererDriver } = await import('./drivers/TilesRendererDriver');
         return new TilesRendererDriver(options, manager);
+    });
+
+    Loaders.registerTelemetryAnimatorLoader(['ros', 'rosbag'], loadRos);
+
+    Loaders.registerTelemetryAnimatorLoader('csv', loadCSV);
+
+    Loaders.registerDriver('KinematicsDriver', async (_, manager) => {
+        const { KinematicsDriver } = await import('./drivers/KinematicsDriver');
+        return new KinematicsDriver(manager);
     });
 
     // register model loaders

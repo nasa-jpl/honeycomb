@@ -74,7 +74,7 @@ export default [{
             format: ["camelCase", "PascalCase"],
         }],
         "@typescript-eslint/consistent-type-assertions": "error",
-        "@typescript-eslint/no-inferrable-types": "error",
+        "@typescript-eslint/no-inferrable-types": "off",
         "@typescript-eslint/no-namespace": ["error", { allowDeclarations: false }],
         "@typescript-eslint/no-unused-vars": "off",
         "@typescript-eslint/no-use-before-define": "off",

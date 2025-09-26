@@ -2,8 +2,8 @@
     "compilerOptions": {
         "module": "ESNext",
         "moduleResolution": "Bundler",
-        "target": "ES2022",
-        "jsx": "react",
+        "target": "ES2020",
+        "jsx": "react-jsx",
         "allowImportingTsExtensions": true,
         "strictNullChecks": true,
         "strictFunctionTypes": true

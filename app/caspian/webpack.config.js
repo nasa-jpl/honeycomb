@@ -172,7 +172,7 @@ const browserConfig = createConfig({
     target: 'web',
     name: 'browser',
     entry: {
-        index: path.resolve(currentDirectory, 'src/index.jsx'),
+        index: path.resolve(currentDirectory, 'src/index.tsx'),
     },
     output: {
         path: path.resolve(currentDirectory, 'dist', 'browser'),
@@ -199,7 +199,7 @@ const browserConfig = createConfig({
 const electronConfig = createConfig({
     target: 'electron-renderer',
     entry: {
-        index: path.resolve(currentDirectory, 'src/electron/index.jsx'),
+        index: path.resolve(currentDirectory, 'src/electron/index.tsx'),
     },
     output: {
         path: path.resolve(currentDirectory, 'dist', 'electron'),

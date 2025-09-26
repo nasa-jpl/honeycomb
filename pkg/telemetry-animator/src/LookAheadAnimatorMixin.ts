@@ -24,7 +24,7 @@ export function LookAheadAnimatorMixin<T extends StateBase, TBase extends GConst
      * @class LookAheadAnimator
      */
     return class extends Base {
-        isLookAheadAnimator: boolean = true;
+        isLookAheadAnimator = true;
 
         /**
          * The amount of time in milliseconds to look ahead to prep loaded data.
@@ -32,7 +32,7 @@ export function LookAheadAnimatorMixin<T extends StateBase, TBase extends GConst
          * @member {Number}
          * @default 1000
          */
-        lookAhead: number = 1000;
+        lookAhead = 1000;
 
         /**
          * The amount of time in milliseconds to look back to prep loaded data.
@@ -40,7 +40,7 @@ export function LookAheadAnimatorMixin<T extends StateBase, TBase extends GConst
          * @member {Number}
          * @default 100
          */
-        lookBack: number = 100;
+        lookBack = 100;
 
         private _loadedFrames: Record<string, { frame: Frame<T>, completed: boolean }>;
 
@@ -132,7 +132,9 @@ export function LookAheadAnimatorMixin<T extends StateBase, TBase extends GConst
 
         _preloadFrom(time: number) {
             const frames = this.frames;
-            if (frames.length == 0) return;
+            if (frames.length === 0) {
+                return;
+            }
 
             const targetStartTime = time - this.lookBack;
             const targetEndTime = time + this.lookAhead;
@@ -154,7 +156,7 @@ export function LookAheadAnimatorMixin<T extends StateBase, TBase extends GConst
                         const obj = { frame, completed: false };
                         this._loadedFrames[i] = obj;
                         let promiseSuccessCount = 0;
-                        let promiseArray;
+                        let promiseArray: Promise<any>[];
                         if (!Array.isArray(promises)) {
                             promiseArray = [promises];
                         } else {
@@ -191,7 +193,7 @@ export function LookAheadAnimatorMixin<T extends StateBase, TBase extends GConst
             const currFrame = this._currFrame;
             const loadedFrames = this._loadedFrames;
             for (const key in loadedFrames) {
-                const index = parseInt(key);
+                const index = parseInt(key, 10);
                 if (index <= currFrame && !loadedFrames[key].completed) {
                     this.stale = true;
                     break;
@@ -200,7 +202,9 @@ export function LookAheadAnimatorMixin<T extends StateBase, TBase extends GConst
         }
 
         _unload(force?: boolean) {
-            if (!this._loadedFrames) return;
+            if (!this._loadedFrames) {
+                return;
+            }
 
             const loadedFrames = this._loadedFrames;
             for (const key in loadedFrames) {
@@ -225,8 +229,8 @@ export function LookAheadAnimatorMixin<T extends StateBase, TBase extends GConst
          * @param {Object} state
          * @returns {Promise}
          */
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        async preloadData(state: T): Promise<void> {
+        preloadData(state: T): Promise<void> | Promise<void>[] | null {
+            return null;
         }
 
         /**
@@ -235,7 +239,6 @@ export function LookAheadAnimatorMixin<T extends StateBase, TBase extends GConst
          * @param {Object} state
          * @returns {void}
          */
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         unloadData(state: T): void { }
 
         /**
@@ -246,7 +249,6 @@ export function LookAheadAnimatorMixin<T extends StateBase, TBase extends GConst
          *
          * @returns {Boolean}
          */
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         processState(state: T): boolean {
             return false;
         }

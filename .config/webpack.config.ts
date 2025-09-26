@@ -200,7 +200,7 @@ const config = (env: any): Configuration => {
 
         resolve: {
             mainFields: ['browser', 'module', 'main'],
-            extensions: ['.js', '.jsx', '.ts', '.tsx'],
+            extensions: ['.js', '', '.ts', '.tsx'],
             extensionAlias: {
                 '.js': ['.js', '.ts'],
             },

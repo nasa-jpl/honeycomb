@@ -1,6 +1,6 @@
 
 
-function getDefaultConfig() {
+function getDefaultConfig(): any {
     return {
         title: 'Caspian',
         robots: [],

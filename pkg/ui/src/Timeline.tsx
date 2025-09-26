@@ -37,9 +37,7 @@ export const Timeline: React.FC<TimelineProps> = ({
     end,
     volumes
 }) => {
-    // const playerBarHovering = usePlayerBarHover();
-
-    if (volumes) {
+    if (volumes.length > 0) {
         return (
             <TimelineVolumes
                 start={start}

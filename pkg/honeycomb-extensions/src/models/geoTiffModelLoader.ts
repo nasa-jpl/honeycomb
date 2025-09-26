@@ -1,5 +1,5 @@
 import { LoadingManager, Viewer } from '@gov.nasa.jpl.honeycomb/core';
-import { SampledTerrain } from '@gov.nasa.jpl.honeycomb/terrain-rendering';
+import { RenderMode, SampledTerrain } from '@gov.nasa.jpl.honeycomb/terrain-rendering';
 import { SpatialSampler2D } from '@gov.nasa.jpl.honeycomb/sampler-2d';
 import {
     DataTexture, DoubleSide, Matrix4, Object3D, Quaternion, RGBAFormat,

@@ -58,7 +58,6 @@ export default [{
         "no-unused-expressions": "off",
         "no-unused-labels": "error",
         "no-var": "error",
-        radix: "error",
         "semi": "error",
         "sort-keys": "off",
         "spaced-comment": ["off", "always"],

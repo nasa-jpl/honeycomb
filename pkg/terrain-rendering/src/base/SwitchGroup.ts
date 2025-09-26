@@ -12,7 +12,7 @@ export class SwitchGroup extends Group {
     /**
      * The flag indicating which child is visible.
      */
-    set active(val) {
+    set active(val: number) {
         const curr = this._activeIndex;
         if (curr < this.children.length) {
             this.children[curr].visible = false;
@@ -24,7 +24,7 @@ export class SwitchGroup extends Group {
         this._activeIndex = val;
     }
 
-    get active() {
+    get active(): number {
         return this._activeIndex;
     }
 

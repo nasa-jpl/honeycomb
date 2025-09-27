@@ -20,9 +20,9 @@ export function registerCaspianLoaders() {
         return new RksmlDriver(options, manager);
     });
 
-    Loaders.registerDriver('RobotKinematicsDriver', async (_, manager) => {
+    Loaders.registerDriver('RobotKinematicsDriver', async (options, manager) => {
         const { RobotKinematicsDriver } = await import('./drivers/RobotKinematicsDriver');
-        return new RobotKinematicsDriver(manager);
+        return new RobotKinematicsDriver(manager, options);
     });
 
     Loaders.registerDriver('ArksmlDriver', async (options, manager) => {

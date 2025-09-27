@@ -35,7 +35,7 @@ export function ViewerMixin<T extends StateBase, TBase extends Constructor>(base
          */
         objects: Record<string, Object3D>;
 
-        tags: TagTracker<Object3D>;
+        tags: TagTracker<any>;
         disabledTags: Set<string>;
         interactionManager: InteractionManager;
         ambientLight: AmbientLight;
@@ -530,9 +530,13 @@ export function ViewerMixin<T extends StateBase, TBase extends Constructor>(base
             const allObjects = tags.getObjects();
             if (allObjects) {
                 allObjects.forEach(obj => {
-                    obj.traverse(c => {
-                        c.layers.enable(TAG_TOGGLE_LAYER);
-                    });
+                    if (obj instanceof Object3D) {
+                        obj.traverse(c => {
+                            c.layers.enable(TAG_TOGGLE_LAYER);
+                        });
+                    } else if (obj instanceof Function) {
+                        obj(true);
+                    }
                 });
             }
 
@@ -540,9 +544,13 @@ export function ViewerMixin<T extends StateBase, TBase extends Constructor>(base
             const objects = tags.getObjects(expr);
             if (objects) {
                 objects.forEach(obj => {
-                    obj.traverse(c => {
-                        c.layers.disable(TAG_TOGGLE_LAYER);
-                    });
+                    if (obj instanceof Object3D) {
+                        obj.traverse(c => {
+                            c.layers.disable(TAG_TOGGLE_LAYER);
+                        });
+                    } else if (obj instanceof Function) {
+                        obj(false);
+                    }
                 });
             }
 

@@ -36,12 +36,19 @@ export abstract class Driver<T> {
     updateOrder: number;
 
     /**
+     * The set of options passed into the constructor used for updating the driver.
+     * @member {any}
+     */
+    options: any;
+
+    /**
      * @param {LoadingManager} manager
      */
-    constructor(manager: LoadingManager = new SubLoadingManager()) {
+    constructor(manager: LoadingManager = new SubLoadingManager(), options: any = {}) {
         this._lastState = {} as T;
         this.manager = manager;
         this.updateOrder = 0;
+        this.options = options;
     }
 
     /**

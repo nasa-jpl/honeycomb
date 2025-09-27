@@ -75,7 +75,7 @@ export class CaspianLandingPage extends Component<any, any> {
                             </div>
                             <div>
                                 <Typography variant="subtitle1" color="textSecondary">
-                                    {window.env?.version || appVersion}
+                                    {(window as any).env?.version || appVersion}
                                 </Typography>
                             </div>
                         </div>

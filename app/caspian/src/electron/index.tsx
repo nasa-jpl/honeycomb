@@ -54,8 +54,10 @@ function applyConfig(config) {
 
     // create new viewer and cull models that haven't been used for 3 scene loads
     Honeycomb.Loaders.setCacheEnabled(true);
+    Honeycomb.Loaders.textureCache.markUnused();
     Honeycomb.Loaders.objectCache.markUnused();
     render(<App config={config} viewer={currViewer}/>, appContainer);
+    Honeycomb.Loaders.textureCache.cullUnused(3);
     Honeycomb.Loaders.objectCache.cullUnused(3);
 }
 

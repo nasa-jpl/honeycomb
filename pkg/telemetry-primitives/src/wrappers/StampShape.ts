@@ -6,7 +6,7 @@ import { emptyRaycast } from './common';
  * Renders a color where the given shape intersects any data in the depth buffer.
  * @extends StencilShape
  */
-export class StampShape<T extends Mesh> extends StencilShape<T> {
+export class StampShape<T extends Mesh> extends StencilShape {
     readonly isPsuedoObject = true; // useful for not allowing it to be selectable in the PixelOutlinePass
     name = 'StampShape';
     
@@ -14,8 +14,12 @@ export class StampShape<T extends Mesh> extends StencilShape<T> {
      * Getter for the mesh with material that will be rendered.
      * @member {Mesh}
      */
-    get stamp(): T {
-        return this.children[4] as T;
+    get stamp() {
+        return this.children[4];
+    }
+
+    get shape(): T {
+        return this.shape as T;
     }
 
     /**
@@ -60,7 +64,7 @@ export class StampShape<T extends Mesh> extends StencilShape<T> {
         const stamp = this.stamp.clone();
         (stamp as any).material = (stamp as any).material.clone();
 
-        const clone = new StampShape(stamp as any);
+        const clone = this.constructor(stamp as any);
         clone.copy(this, false);
 
         this.setRenderOrder(this.children[0].renderOrder);

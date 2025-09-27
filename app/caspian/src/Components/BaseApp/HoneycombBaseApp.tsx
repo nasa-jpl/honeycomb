@@ -446,7 +446,7 @@ export class HoneycombBaseApp extends Component<any, any> {
             return setting;
         });
 
-        this.listeners.addEventListener(window, 'beforeunload', e => {
+        this.listeners.addEventListener(window as any, 'beforeunload', e => {
             cacheSettings();
         });
 

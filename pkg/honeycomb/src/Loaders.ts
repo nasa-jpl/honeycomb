@@ -307,7 +307,7 @@ function loadSingleModel(type: string | undefined, _path: string, options: Optio
 
             subManager.itemStart(_path);
             loader.load(_path, options, subManager)
-                .then(model => {
+                .then(async (model) => {
                     result = model;
 
                     if (options.receiveShadow) {
@@ -317,13 +317,32 @@ function loadSingleModel(type: string | undefined, _path: string, options: Optio
                     }
 
                     if (options.useOptimizedRaycast === undefined || options.useOptimizedRaycast) {
-                        // const timeStart = performance.now();
-                        model.traverse((c: any) => {
+                        const filename = _path.split('/').pop();
+                        const timeStart = performance.now();
+                        let lastUpdate = performance.now();
+                        // await subManager.itemProgress(`Computing bounds tree for ${filename}...`);
+                        await model.traverse(async (c: any) => {
                             if (c.isMesh && !c.boundsTree) {
-                                c.geometry.computeBoundsTree();
+
+                                c.geometry.computeBoundsTree({
+                                    onProgress : (v: number) => {
+                                        const now = performance.now();
+                                        if (now - lastUpdate > 5000) {
+                                            lastUpdate = now;
+                                            const perc = ( v * 100 ).toFixed( 0 );
+                                            console.log(`${filename}: Computing bounds tree for fast raycasts: ${perc}%`);
+                                        }
                             }
                         });
-                        // console.log('Took ' + (performance.now() - timeStart) +  'ms to compute bounds tree for ' + _path);
+                            }
+                        });
+
+                        // await subManager.itemProgress(`${filename}: Loading2...`);
+
+                        // only display stats if it takes over a second
+                        if (performance.now() - timeStart > 1000) {
+                            console.log(`${filename}: Took ${(performance.now() - timeStart)}ms to compute bounds tree`);
+                        }
                     }
 
                     if (options.renderOrder) {

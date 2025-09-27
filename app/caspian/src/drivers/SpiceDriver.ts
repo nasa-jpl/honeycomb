@@ -1,6 +1,6 @@
 import { Driver } from '@gov.nasa.jpl.honeycomb/core';
 
-export class SpiceDriver extends Driver {
+export class SpiceDriver extends Driver<any> {
     constructor(options, manager) {
         super(manager, options);
 

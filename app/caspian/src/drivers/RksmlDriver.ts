@@ -44,7 +44,7 @@ function applyJointVisibility(robot, state, jointVisMap) {
     }
 }
 
-export class RksmlDriver extends Driver {
+export class RksmlDriver extends Driver<any> {
     constructor(options, manager) {
         super(manager, options);
 

@@ -143,11 +143,9 @@ export class HeightMapAnnotation extends Group
 
         const material = (this.terrain.mesh.material as any);
         material.side = DoubleSide;
-        // expose to the UI the ability to turn on slope or topographic line shading;
-        // see in the rsvp-lite repo:
-        // - honeycomb/modules/mixin-shaders/README.md
-        // - honeycomb/modules/mixin-shaders/src/shaderMixins.ts 
-        // - src/modules/honeycomb/src/app/builtin/panes/TerrainPropertiesPane.tsx
+        // expose to the UI the ability to turn on slope or topographic line shading; see:
+        // - pkg/mixin-shaders/README.md
+        // - pkg/mixin-shaders/src/shaderMixins.ts 
         material.flatShading = true; // needed for slope map to look ok
         material.topoLineColor.set(0xff0000);
         material.defines.ENABLE_TOPO_LINES = 1;
@@ -336,8 +334,8 @@ export class HeightMapAnnotation extends Group
                 const g = 255 * color.g;
                 const b = 255 * color.b;
 
-                // The loop structure here was copied from the rsvp-lite repo inside:
-                // honeycomb/modules/terrain-rendering/src/base/SampledTerrain.ts
+                // The loop structure here was copied from:
+                // pkg/terrain-rendering/src/base/SampledTerrain.ts
                 for (let x = 0; x < countX; x++) {
                     for (let y = 0; y < countY; y++) {
                         const ratioX = x / (countX - 1);

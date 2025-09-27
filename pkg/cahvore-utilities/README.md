@@ -1,8 +1,10 @@
 # CAHVORE Transformation Utilities
 
-Set of functions for converting a 2D camera coordinate to a camera ray ported from the [original C++ implementation in RSVP](https://github.jpl.nasa.gov/rsvp/m20fsw-mirror/blob/5730b2323814c377cb7ce31a819589bbd419629e/src/cmod/cmod_cahv.c).
+Set of functions for converting a 2D camera coordinate to a camera ray ported from the [original C implementation](https://github.jpl.nasa.gov/telitwin/cmod/blob/master/model/cmod_cahv.c) (JPL internal only).
 
-Original implementation by Todd Litwen.
+Original implementation by Todd Litwin.
+
+See also https://github.com/NASA-AMMOS/CameraModelUtilsJS/tree/main/src/cahvore-utilities
 
 # API
 
@@ -117,7 +119,7 @@ and sets the "target" matrix to an off axis projection matrix with the apex at t
 ### left<a name="FrameBounds#left"></a>
 
 ```js
-left : Numeber
+left : Number
 ```
 
 
@@ -125,7 +127,7 @@ left : Numeber
 ### right<a name="FrameBounds#right"></a>
 
 ```js
-right : Numeber
+right : Number
 ```
 
 
@@ -133,7 +135,7 @@ right : Numeber
 ### top<a name="FrameBounds#top"></a>
 
 ```js
-top : Numeber
+top : Number
 ```
 
 
@@ -141,7 +143,7 @@ top : Numeber
 ### bottom<a name="FrameBounds#bottom"></a>
 
 ```js
-bottom : Numeber
+bottom : Number
 ```
 
 

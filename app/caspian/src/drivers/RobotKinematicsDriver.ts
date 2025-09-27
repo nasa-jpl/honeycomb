@@ -23,7 +23,7 @@ function quat2rpyt(q) {
     return rpy;
 }
 
-export class RobotKinematicsDriver extends Driver {
+export class RobotKinematicsDriver extends Driver<any> {
     initialize() {
         const { viewer } = this;
 

@@ -72,7 +72,7 @@ export function getRay(model: CameraDefinition, sample: Vector2, outRay: Ray) {
 // origin of the camera model.
 const _plane = new Plane();
 const _ray = new Ray();
-const _vec = new Vector2();
+const _vec = new Vector3();
 function getBoundsAtZDistance(model: CameraDefinition, invFrame: Matrix4, distance: number) {
 
     // In the CAHVORE frame "up" is negative
@@ -90,13 +90,13 @@ function getBoundsAtZDistance(model: CameraDefinition, invFrame: Matrix4, distan
 
         for (let y = 0; y <= 1.0; y += 0.5) {
 
-            _vec.set(width * x, height * y);
-            getRay(model, _vec, _ray);
+            _vec.set(width * x, height * y, 0.0);
+            getRay(model, new Vector2(_vec.x, _vec.y), _ray);
             _ray.applyMatrix4(invFrame);
 
             _plane.normal.set(0, 0, - 1);
             _plane.constant = distance;
-            _ray.intersectPlane(_plane, new Vector3(..._vec.toArray(), 0));
+            _ray.intersectPlane(_plane, _vec);
 
             if (x < 0.5) {
 

@@ -1,3 +1,5 @@
+// copied from https://github.com/Jason3S/xxhash/blob/main/src/xxHash32.ts
+
 const PRIME32_1 = 2654435761;
 const PRIME32_2 = 2246822519;
 const PRIME32_3 = 3266489917;

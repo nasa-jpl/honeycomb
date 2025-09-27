@@ -2,6 +2,8 @@
 
 View cube to convey the cameras current orientation relative to world cooridnates.
 
+See also https://github.com/nasa-jpl/ViewCubeHelper
+
 # Use
 
 ```js

@@ -21,8 +21,8 @@ export function TightShadowViewerMixin<TBase extends Constructor>(base: TBase) {
 
             light.castShadow = true;
             light.shadow.mapSize.setScalar(2048);
-            light.shadow.bias = -1e-6;
-            light.shadow.normalBias = 1e-4;
+            light.shadow.bias = -0.001;//-1e-6;
+            light.shadow.normalBias = 0.01;// 1e-4;
             light.shadow.camera.near = 0;
             
             const frustumSize = 5;

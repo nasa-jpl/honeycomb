@@ -312,7 +312,7 @@ export const WhiteToBlackColorMap = new Array(256*3).fill(0).map((v, index) => {
     return 1 - Math.floor(index / 3) / 255;
 });
 
-// Because honeycomb/modules/scene-viewers/src/Viewer.ts uses an extra
+// Because pkg/scene-viewers/src/Viewer.ts uses an extra
 // render pass with a GammaCorrectionShader, we need to supply the linear
 // color space version of these color maps to GLSL shaders.
 export const ParulaColormapLinear = ParulaColormap.map(SRGBToLinear);

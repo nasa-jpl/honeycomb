@@ -22,9 +22,15 @@ interface CameraAbstract<VT> {
     name: string;
 
     /**
-     * The frame name that a the camera model is dfined relative to.
+     * The frame name that the camera model is defined relative to.
      */
     frameName: string;
+
+    /**
+     * The frame name for which we should reparent the visualization
+     * for usability reasons in the UI.
+     */
+    reparentFrameName: string;
 
     /**
      * The width in pixels.
@@ -46,7 +52,7 @@ interface CameraAbstract<VT> {
     /**
      * Same as the {@link #CameraDefinition#C C} vector but relative to the frame named {@link #CameraDefinition#frame_name frame_name}.
      */
-    C_LOCAL: VT;
+    C_LOCAL?: VT;
 
     /**
      * x, y, z direction representing the camera axis.
@@ -84,7 +90,7 @@ interface CameraAbstract<VT> {
 
 interface CameraCahv<VT> extends CameraAbstract<VT> {
     C: VT;
-    C_LOCAL: VT;
+    C_LOCAL?: VT;
     A: VT;
     H: VT;
     V: VT;
@@ -117,6 +123,11 @@ export interface CameraDefinitions {
  * use THREE.Vector3 instances rather than arrays.
  */
 export class CameraLoader extends FetchTextLoader<CameraDefinitions> {
+    /* Private Functions */
+    // parse a string to a number, or return the string.
+    _parseValue(value: any) {
+        return isNaN(value) ? value : parseFloat(value);
+    }
 
     // Parse the inner html from a node within a camera definition, either returning an array of floats, a float, an int, or the string.
     private _parseInnerHTML(node: Element) {
@@ -133,6 +144,7 @@ export class CameraLoader extends FetchTextLoader<CameraDefinitions> {
      * the models.
      */
     protected parseXml(str: string): { [name: string]: CameraDefinitionGeneric<Vec3> } {
+        console.time('CameraLoader: Parse');
         const doc = new DOMParser().parseFromString(str, 'application/xml');
         const topNode = doc.querySelector('CAMERA_MODELS');
 
@@ -168,7 +180,7 @@ export class CameraLoader extends FetchTextLoader<CameraDefinitions> {
             const attributes = cameraNode.attributes;
             for (let a = 0; a < attributes.length; a++) {
                 const attribute = attributes[a];
-                cameraObject[attribute.name] = parseFloat(attribute.value);
+                cameraObject[attribute.name] = this._parseValue(attribute.value);
                 // each camera MUST have a name
                 if (attribute.name.toLowerCase() === 'name') {
                     cameraName = attribute.value;
@@ -188,13 +200,15 @@ export class CameraLoader extends FetchTextLoader<CameraDefinitions> {
                 cameraObject[child.nodeName] = value;
             }
 
-            if ('PUPILTYPE' in cameraObject) { cameraObject.pupilType = cameraObject.PUPILTYPE; }
-            if ('LINEARITY' in cameraObject) { cameraObject.linearity = cameraObject.LINEARITY; }
-            if ('min_range' in cameraObject) { cameraObject.minRange = cameraObject.min_range; }
-            if ('frame_name' in cameraObject) { cameraObject.frameName = cameraObject.frame_name; }
+            if ('PUPILTYPE' in cameraObject) cameraObject.pupilType = cameraObject.PUPILTYPE;
+            if ('LINEARITY' in cameraObject) cameraObject.linearity = cameraObject.LINEARITY;
+            if ('min_range' in cameraObject) cameraObject.minRange = cameraObject.min_range;
+            if ('frame_name' in cameraObject) cameraObject.frameName = cameraObject.frame_name;
+            if ('reparent_frame' in cameraObject) cameraObject.reparentFrameName = cameraObject.reparent_frame;
 
             cameras[cameraName] = cameraObject as CameraDefinitionGeneric<Vec3>;
         }
+        console.timeEnd('CameraLoader: Parse');
 
         return cameras;
     }
@@ -207,7 +221,7 @@ export class CameraLoader extends FetchTextLoader<CameraDefinitions> {
             result[name] = {
                 ...cameraModelIn,
                 C: new Vector3(...cameraModelIn.C),
-                C_LOCAL: new Vector3(...cameraModelIn.C_LOCAL),
+                C_LOCAL: cameraModelIn.C_LOCAL ? new Vector3(...cameraModelIn.C_LOCAL) : undefined,
                 A: new Vector3(...cameraModelIn.A),
                 H: new Vector3(...cameraModelIn.H),
                 V: new Vector3(...cameraModelIn.V),

@@ -4,7 +4,7 @@ import { Error, Close } from '@material-ui/icons';
 
 import * as snackbarStyles from './styles/snackbar.css';
 
-export default class extends PureComponent {
+export default class extends PureComponent<{ numErrors: number; clearErrors: any }> {
     render() {
         const { numErrors, clearErrors } = this.props;
 

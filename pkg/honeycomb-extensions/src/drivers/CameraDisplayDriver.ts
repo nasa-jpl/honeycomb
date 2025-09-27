@@ -85,7 +85,7 @@ export class CameraDisplayDriver extends Driver<object> {
 
     constructor(readonly options: Partial<CameraDisplayOptions>, manager: LoadingManager) {
 
-        super(manager);
+        super(manager, options);
         this.type = 'CameraDisplayDriver';
         this.frustumGroup = new Group();
         this.frustumInfo = {};
@@ -144,6 +144,7 @@ export class CameraDisplayDriver extends Driver<object> {
                 lines.setFromGeometry(frustum.geometry, 1);
                 lines.lineWidth = 1;
                 viewer.tags.addTag(lines, ['linear', 'frustum', 'min', name, this.id!]);
+                lines.visible = false;
                 group.add(lines);
 
                 // max frustum
@@ -155,6 +156,7 @@ export class CameraDisplayDriver extends Driver<object> {
                 lines.setFromGeometry(frustum.geometry, 1);
                 lines.lineWidth = 1;
                 viewer.tags.addTag(lines, ['linear', 'frustum', 'max', name, this.id!]);
+                lines.visible = false;
                 group.add(lines);
 
                 // distorted frame
@@ -395,6 +397,12 @@ export class CameraDisplayDriver extends Driver<object> {
                         group.quaternion,
                     );
                     info.validFrame = true;
+
+                    const reparentFrame = model.reparentFrameName ? robot.frames[model.reparentFrameName] : undefined;
+                    if (reparentFrame) {
+                        console.log('Attaching camera frustum ' + name + ' to ' + reparentFrame.name);
+                        reparentFrame.attach(group);
+                    }
                 } else {
                     group.visible = false;
                     info.validFrame = false;

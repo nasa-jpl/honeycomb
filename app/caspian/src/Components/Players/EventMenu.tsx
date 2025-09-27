@@ -9,7 +9,9 @@ import {
     IconButton,
 } from '@material-ui/core';
 
-// import { IconMenu, DisplayTime, useEventMarkerSet } from '@gov.nasa.jpl.honeycomb/react-ui-components';
+import { IconMenu } from '../IconMenu';
+import { DisplayTime } from '../Common';
+import { useEventMarkerSet } from '../EventMarker';
 import * as styles from './styles/index.css';
 
 export default function EventMenu(props) {

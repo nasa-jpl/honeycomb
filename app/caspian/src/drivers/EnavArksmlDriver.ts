@@ -19,7 +19,7 @@ import { costIndexToColor } from './constants';
 const tempVec3 = new Vector3();
 const tempMat4 = new Matrix4();
 
-export class EnavArksmlDriver extends Driver {
+export class EnavArksmlDriver extends Driver<any> {
     constructor(options, manager) {
         super(manager, options);
         this.options = Object.assign(

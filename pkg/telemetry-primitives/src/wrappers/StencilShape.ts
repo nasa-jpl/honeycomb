@@ -61,7 +61,7 @@ frontSideIncr.stencilZPass = IncrementWrapStencilOp;
  * Raycasting is disabled on the stencil geometry.
  * @extends Group
  */
-export class StencilShape<T extends Mesh> extends Group {
+export class StencilShape extends Group {
     readonly isStencilShape: boolean = true;
     readonly isPsuedoObject = true; // useful for not allowing it to be selectable in the PixelOutlinePass
     name = 'StencilShape';
@@ -70,14 +70,14 @@ export class StencilShape<T extends Mesh> extends Group {
      * @member {Mesh}
      */
     get shape() {
-        return this.children[0] as T;
+        return this.children[0];
     }
 
     /**
      * Constructor that take the shape to render.
      * @param {T} shape
      */
-    constructor(shape: T) {
+    constructor(shape: Mesh) {
         super();
         this.add(shape.clone(), shape.clone(), shape.clone(), shape.clone());
         this.children.forEach(c => {

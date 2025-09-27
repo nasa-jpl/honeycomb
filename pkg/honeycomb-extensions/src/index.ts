@@ -34,6 +34,16 @@ export function registerCommonLoaders() {
 
     Loaders.registerTelemetryAnimatorLoader(['ros', 'rosbag'], loadRos);
 
+    Loaders.registerDriver('RosDriver', async ( options, manager ) => {
+        const { RosDriver } = await import('./drivers/RosDriver');
+        return new RosDriver(options);
+    });
+
+    Loaders.registerDriver('KinematicsDriver', async ( options, manager ) => {
+        const { KinematicsDriver } = await import('./drivers/KinematicsDriver');
+        return new KinematicsDriver(manager, options);
+    });
+
     Loaders.registerTelemetryAnimatorLoader('csv', loadCSV);
 
     Loaders.registerDriver('KinematicsDriver', async (_, manager) => {

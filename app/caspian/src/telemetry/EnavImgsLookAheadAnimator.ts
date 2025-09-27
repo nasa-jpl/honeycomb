@@ -1,7 +1,7 @@
 import { TelemetryAnimator, LookAheadAnimatorMixin } from '@gov.nasa.jpl.honeycomb/telemetry-animator';
 import { JobRunner } from '@gov.nasa.jpl.honeycomb/scheduling-utilities';
 
-export class EnavImgsLookAheadAnimator extends LookAheadAnimatorMixin(TelemetryAnimator) {
+export class EnavImgsLookAheadAnimator extends LookAheadAnimatorMixin(TelemetryAnimator<any>) {
     constructor(frames) {
         super(frames);
 

@@ -33,11 +33,11 @@ Then visit http://localhost:3001/
 
 ### Changing the data
 
-1. Login to InfluxDB at http://localhost:8086/ with `admin` and `admin123`
+1. Login to InfluxDB at http://localhost:8087/ with `admin` and `admin123`
 2. Delete the `honeycomb` bucket
 3. Create a new `honeycomb` bucket
 4. Add new data (e.g., via csv upload, such as using `app/grafana/.config/data/drive.csv`)
-5. When reloading the dashboard in the Granafa view (http://localhost:3001/), update the start and end times appropriately. Alternatively, you could manually update the dashboard JSON files (e.g., `app/grafana/provisioning/dashboards/dashboard-log.json`).
+5. When reloading the dashboard in the Grafana view (http://localhost:3001/), update the start and end times appropriately. Alternatively, you could manually update the dashboard JSON files (e.g., `app/grafana/provisioning/dashboards/dashboard-log.json`).
 
 ## Caspian App
 

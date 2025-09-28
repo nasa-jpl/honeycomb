@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useReducer, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 
 export const TimelineDataVolumesRoot = styled.div`
@@ -63,21 +63,23 @@ const TimelineVolumes: React.FC<TimelineProps> = ({
     volumes
 }) => {
     const ref = useRef<HTMLDivElement>(null);
-    const [, forceUpdate] = useReducer(x => x + 1, 0);
-    const width = ref.current?.offsetWidth ?? 0;
+    const [width, setWidth] = useState(0);
+
+    const updateWidth = useCallback(() => {
+        setWidth(ref.current?.offsetWidth ?? 0);
+    }, []);
 
     useEffect(() => {
         const target = ref.current!;
+        updateWidth();
 
-        forceUpdate();
-
-        target.addEventListener('resize', forceUpdate);
-        window.addEventListener('resize', forceUpdate);
+        target.addEventListener('resize', updateWidth);
+        window.addEventListener('resize', updateWidth);
         return () => {
-            target.addEventListener('resize', forceUpdate);
-            window.addEventListener('resize', forceUpdate);
+            target.removeEventListener('resize', updateWidth);
+            window.removeEventListener('resize', updateWidth);
         }
-    }, []);
+    }, [updateWidth]);
 
     // whole number of total data volume bars
     const numDataVolumeBars = useMemo(() => Math.round(width / volumePixelWidth), [width]);
@@ -101,7 +103,7 @@ const TimelineVolumes: React.FC<TimelineProps> = ({
 
             for (const time of frame.times) {
                 // Compute the bucket this time falls into
-                let bucket;
+                let bucket: number;
                 if (time >= end) {
                     bucket = numDataVolumeBars - 1;
                 } else if (time < start) {
@@ -131,7 +133,7 @@ const TimelineVolumes: React.FC<TimelineProps> = ({
         }
 
         return max;
-    }, [volumesBucketFrame])
+    }, [volumesBucketFrame]);
 
     return (
         <TimelineDataVolumesRoot ref={ref}>

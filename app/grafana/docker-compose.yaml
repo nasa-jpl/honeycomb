@@ -1,6 +1,5 @@
 services:
   grafana:
-    user: root
     container_name: 'jpl-honeycomb-panel-grafana'
 
     build:
@@ -23,6 +22,7 @@ services:
     environment:
       NODE_ENV: development
       GF_LOG_FILTERS: plugin.jpl-honeycomb-panel:debug
+      GF_LOG_LEVEL: error
       # GF_LOG_LEVEL: debug
       GF_DATAPROXY_LOGGING: 1
       GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: jpl-honeycomb-panel
@@ -30,7 +30,6 @@ services:
 
   influxdb:
     image: influxdb:2
-    privileged: true
     container_name: jpl-honeycomb-panel-influxdb
     environment:
       DOCKER_INFLUXDB_INIT_MODE: setup
@@ -43,7 +42,6 @@ services:
       - 8087:8086/tcp
 
   influxdb-setup:
-    privileged: true
     depends_on:
       - influxdb
     restart: "no"

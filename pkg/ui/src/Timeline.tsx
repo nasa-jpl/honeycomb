@@ -65,12 +65,12 @@ const TimelineVolumes: React.FC<TimelineProps> = ({
     const ref = useRef<HTMLDivElement>(null);
     const [width, setWidth] = useState(0);
 
-    const updateWidth = useCallback(() => {
-        setWidth(ref.current?.offsetWidth ?? 0);
-    }, []);
-
     useEffect(() => {
         const target = ref.current!;
+        const updateWidth = () => {
+            setWidth(ref.current?.offsetWidth ?? 0);
+        };
+
         updateWidth();
 
         target.addEventListener('resize', updateWidth);
@@ -79,7 +79,7 @@ const TimelineVolumes: React.FC<TimelineProps> = ({
             target.removeEventListener('resize', updateWidth);
             window.removeEventListener('resize', updateWidth);
         }
-    }, [updateWidth]);
+    }, []);
 
     // whole number of total data volume bars
     const numDataVolumeBars = useMemo(() => Math.round(width / volumePixelWidth), [width]);

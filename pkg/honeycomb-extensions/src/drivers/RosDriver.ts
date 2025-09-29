@@ -31,7 +31,7 @@ const RosTypeHandlers = {
         }
 
         const path = data.path;
-        const positions = [];
+        const positions: number[] = [];
         const poses = msg.poses;
         for (let i = 0, l = poses.length; i < l; i++) {
             const pose = poses[i].pose.position;
@@ -305,7 +305,7 @@ class RosDriver extends Driver<any> {
     }
 
     update(state, diff) {
-        const viewer = this.viewer;
+        const viewer = this.viewer!;
         const telemetry = this.options.telemetry;
         const animator = viewer.animators[telemetry];
         if (!animator) return;

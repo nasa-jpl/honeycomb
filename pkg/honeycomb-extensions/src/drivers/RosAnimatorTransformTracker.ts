@@ -3,6 +3,13 @@ import { RosTransformTrackerBase } from '@gov.nasa.jpl.honeycomb/ros-transform-t
 const instances = new WeakMap();
 
 export class RosAnimatorTransformTracker extends RosTransformTrackerBase {
+    _lastUpdateTime: number;
+    _animator: any;
+    _frames: any;
+    _needsUpdate: boolean;
+
+    applyMessage: (o, n) => void;
+
     // Return the transform manager associated with the given
     // telemetry animator.
     static getInstance(animator) {

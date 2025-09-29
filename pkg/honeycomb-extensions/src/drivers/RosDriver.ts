@@ -16,12 +16,13 @@ import {
     DoubleSide,
     ShaderLib,
     Color,
+    PointsMaterial,
 } from 'three';
 import { LoadingManager } from '@gov.nasa.jpl.honeycomb/core';
 
 const tempVec = new Vector3();
 const RosTypeHandlers = {
-    'nav_msgs/Path': function(topic, msg, options, data) {
+    'nav_msgs/Path': function (topic, msg, options, data) {
         // TODO: Figure out how to support draw through here.
         if (!data.path) {
             const path = new Annotations.LineAnnotation();
@@ -54,7 +55,7 @@ const RosTypeHandlers = {
         }
     },
 
-    'move_base_msgs/MoveBaseActionGoal': function(topic, msg, options, data) {
+    'move_base_msgs/MoveBaseActionGoal': function (topic, msg, options, data) {
         if (!data.goal) {
             const goal = new Annotations.SphereAnnotation(0.1);
             this.viewer.world.add(goal);
@@ -74,7 +75,7 @@ const RosTypeHandlers = {
         }
     },
 
-    'sensor_msgs/PointCloud2': function(topic, msg, options, data) {
+    'sensor_msgs/PointCloud2': function (topic, msg, options, data) {
         if (!data.pc) {
             options = {
                 pointSize: 0.1,
@@ -84,27 +85,28 @@ const RosTypeHandlers = {
                 ...options,
             };
 
-            const terrain = new RosPointCloudTerrain(undefined, 
-                ShaderLib.phong, options.useWorldPointsShader, options.colorChannelName);
+            const terrain = new RosPointCloudTerrain(msg);
             terrain.name = topic;
             terrain.renderMode = RenderMode.POINTS;
 
-            const color = options.color || [0, 255, 0, 255];
-            terrain.setColor(new Color(color[0] / 255, color[1] / 255, color[2] / 255));
+            // TODO(tumbar) Fix color
+            // const color = options.color || [0, 255, 0, 255];
+            // terrain.setColor(new Color(color[0] / 255, color[1] / 255, color[2] / 255));
 
-            terrain.points.material.size = options.pointSize;
-            terrain.points.material.transparent = true;
-            terrain.points.material.alphaTest = 0;
-            terrain.points.material.opacity = options.opacity;
+            const mat = terrain.points.material as PointsMaterial;
+            mat.size = options.pointSize;
+            mat.transparent = true;
+            mat.alphaTest = 0;
+            mat.opacity = options.opacity;
 
-            terrain.setColorChannelName(options.colorChannelName);
-            terrain.useRainbowColor = options.useRainbowColor;
-            
+            // terrain.setColorChannelName(options.colorChannelName);
+            // terrain.useRainbowColor = options.useRainbowColor;
+
             if (options.useWorldPointsShader) {
                 // TODO: size attenuation doesn't seem to do anything for the world points shader
-                terrain.points.material.defines.USE_SIZEATTENUATION = Number(options.attenuate);
+                mat.defines!.USE_SIZEATTENUATION = Number(options.attenuate);
             } else {
-                terrain.points.material.sizeAttenuation = options.attenuate;
+                mat.sizeAttenuation = options.attenuate;
             }
 
             if (options.renderOrder) {
@@ -134,7 +136,7 @@ const RosTypeHandlers = {
         terrain.visible = msg.header.valid;
     },
 
-    'visualization_msgs/Marker': function(topic, msg, options, data) {
+    'visualization_msgs/Marker': function (topic, msg, options, data) {
         for (const id in msg) {
             // http://docs.ros.org/api/visualization_msgs/html/msg/Marker.html
             const marker = msg[id];
@@ -164,7 +166,7 @@ const RosTypeHandlers = {
         }
     },
 
-    'nav_msgs/OccupancyGrid': function(topic, msg, options, data) {
+    'nav_msgs/OccupancyGrid': function (topic, msg, options, data) {
         function toDataTexture(width, height, data, target) {
             target.image.width = width;
             target.image.height = height;
@@ -261,7 +263,7 @@ const RosTypeHandlers = {
         plane.visible = true;
     },
 
-    'blob/Blob': function(topic, msg, options, data) {
+    'blob/Blob': function (topic, msg, options, data) {
         const { decompressedData, decompressedType } = msg;
         if (decompressedData && decompressedType) {
             const handler = this.telemetryHandlers[decompressedType];
@@ -273,7 +275,15 @@ const RosTypeHandlers = {
 };
 
 class RosDriver extends Driver<any> {
-    constructor(options = {}) {
+    isRosTransformDriver: boolean;
+    rosFrames: any;
+    tfTracker: RosAnimatorTransformTracker | undefined;
+    inverseTransformMap: any;
+    robots: any;
+    annotations: never[];
+    telemetryHandlers: { 'nav_msgs/Path': (topic: any, msg: any, options: any, data: any) => void; 'move_base_msgs/MoveBaseActionGoal': (topic: any, msg: any, options: any, data: any) => void; 'sensor_msgs/PointCloud2': (topic: any, msg: any, options: any, data: any) => void; 'visualization_msgs/Marker': (topic: any, msg: any, options: any, data: any) => void; 'nav_msgs/OccupancyGrid': (topic: any, msg: any, options: any, data: any) => void; 'blob/Blob': (topic: any, msg: any, options: any, data: any) => void; };
+    handlerData: {};
+    constructor(options: any = {}) {
         options = Object.assign(
             {
                 telemetry: null,
@@ -317,14 +327,14 @@ class RosDriver extends Driver<any> {
         const world = viewer.world;
 
         const robots = this.robots;
-        for (let i = 0, l = robots.length; i < l; i ++) {
+        for (let i = 0, l = robots.length; i < l; i++) {
             const { id, prefix = '' } = robots[i];
             const robot = viewer.getRobot(id);
             if (!robot) {
                 continue;
             }
 
-            const frames = robot.frames;
+            const frames = (robot as any).frames;
             const prependPrefix = prefix ? `${prefix}/` : '';
             for (const key in frames) {
                 // get remapped, prefixed name to look for in the tf channels
@@ -336,7 +346,7 @@ class RosDriver extends Driver<any> {
                 }
 
                 // get the original frame name in the robot model
-                const trackerParentName = tfTracker.getParentName(remappedChildName);
+                const trackerParentName = tfTracker?.getParentName(remappedChildName);
                 let mappedParentName = trackerParentName;
                 if (mappedParentName in inverseTransformMap) {
                     mappedParentName = inverseTransformMap[mappedParentName];
@@ -356,12 +366,12 @@ class RosDriver extends Driver<any> {
                 childFrame.matrix.identity();
                 if (!parentFrame) {
                     parentFrame = world;
-                    tfTracker.getTransformInRootFrame(remappedChildName, childFrame.matrix);
+                    tfTracker?.getTransformInRootFrame(remappedChildName, childFrame.matrix);
                 } else {
-                    tfTracker.getTransformInFrame(remappedChildName, trackerParentName, childFrame.matrix);
+                    tfTracker?.getTransformInFrame(remappedChildName, trackerParentName, childFrame.matrix);
                 }
 
-                if (parentFrame !== childName.parent) {
+                if (parentFrame !== frames[childName].parent) {
                     // transform the retrieved tf into the immediate child parent frame assuming there isn't a
                     // moving transform between them.
                     FrameTransformer.transformFrame(
@@ -380,7 +390,7 @@ class RosDriver extends Driver<any> {
             }
         }
 
-        const messageTypes = animator.messageTypes;
+        const messageTypes = (animator as any).messageTypes;
         const messages = state[telemetry];
         const topics = this.options.topics;
         const telemetryHandlers = this.telemetryHandlers;
@@ -523,11 +533,11 @@ class RosDriver extends Driver<any> {
         // }
     }
 
-    dispose() {
-        const viewer = this.viewer;
-        viewer.removeEventListener('add-robot', this._addRobotCallback);
-        viewer.removeEventListener('remove-robot', this._removeRobotCallback);
-    }
+    // dispose() {
+    //     const viewer = this.viewer;
+    //     viewer?.removeEventListener('add-robot', this._addRobotCallback);
+    //     viewer?.removeEventListener('remove-robot', this._removeRobotCallback);
+    // }
 }
 
 export { RosDriver };

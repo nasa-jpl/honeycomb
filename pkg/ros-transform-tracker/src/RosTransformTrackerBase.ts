@@ -21,6 +21,10 @@ const tempSca3 = new Vector3(1, 1, 1);
  * An abstract base class for tracking and extracting ros transforms over time.
  */
 export class RosTransformTrackerBase {
+    _rootFrame: Group;
+    _frames: any | null;
+    _frameMatricesNeedUpdate: boolean;
+
     constructor() {
         this._rootFrame = new Group();
         this._frames = null;
@@ -36,7 +40,7 @@ export class RosTransformTrackerBase {
      * @param {Boolean} [resetStatic=true]
      * @returns {void}
      */
-    reset(resetStatic = true) {
+    reset(resetStatic: boolean = true): void {
         if (resetStatic) {
             this._rootFrame = new Group();
             this._frames = {};
@@ -60,7 +64,7 @@ export class RosTransformTrackerBase {
      * @param {('/tf'|'/tf_static')} topic
      * @returns {void}
      */
-    applyMessage(msg, topic) {
+    applyMessage(msg: any, topic: ('/tf' | '/tf_static')): void {
         const transforms = msg.transforms;
         const markStatic = topic === '/tf_static';
 
@@ -80,7 +84,7 @@ export class RosTransformTrackerBase {
      * @param {(RosTimeStamp|null)} [time=null]
      * @returns {Boolean}
      */
-    getTransformInRootFrame(name, matrix, time = null) {
+    getTransformInRootFrame(name: string, matrix: Matrix4, time: (any | null) = null): boolean {
         this._updateMatrices();
 
         const frames = this._frames;
@@ -252,7 +256,7 @@ export class RosTransformTrackerBase {
         const frames = this._frames;
 
         // track the stack of found parent transforms
-        const stack = [];
+        const stack: any[] = [];
         let lookingFor = name;
 
         // walk backwards from the current time
@@ -344,7 +348,7 @@ export class RosTransformTrackerBase {
 
         // Create the objects if they haven't been created yet
         if (!(parentName in frames)) {
-            const group = new Group();
+            const group = new Group() as any;
             group.name = parentName;
             group.static = false;
             group.awaitingCreationMessage = true;
@@ -354,7 +358,7 @@ export class RosTransformTrackerBase {
         }
 
         if (!(childName in frames)) {
-            const group = new Group();
+            const group = new Group() as any;
             group.name = childName;
             group.static = false;
             group.stamp = { sec: -1, nsec: -1 };

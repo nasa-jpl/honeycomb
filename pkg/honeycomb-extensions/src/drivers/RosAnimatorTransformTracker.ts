@@ -1,6 +1,6 @@
 import { RosTransformTrackerBase } from '@gov.nasa.jpl.honeycomb/ros-transform-tracker';
 
-const instances = new WeakMap();
+const instances = new WeakMap<any, RosAnimatorTransformTracker>();
 
 export class RosAnimatorTransformTracker extends RosTransformTrackerBase {
     _lastUpdateTime: number;
@@ -23,7 +23,7 @@ export class RosAnimatorTransformTracker extends RosTransformTrackerBase {
     // Animator: the animator to look for `/tf` and `/tf_static` frames
     // in to keep track of.
     constructor(animator, fixedFrame = 'world') {
-        super(fixedFrame);
+        super();
 
         this._lastUpdateTime = -1;
         this._animator = animator;

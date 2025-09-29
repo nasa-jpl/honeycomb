@@ -6,6 +6,9 @@ import { compareTimeStamps } from './utils.js';
  * they can be used to derive the latest position of a ros frame.
  */
 export class RosTransformTracker extends RosTransformTrackerBase {
+    bufferMs: number;
+    messages: any[];
+
     /**
      * As well as the name of the root fixed frame to provide transforms relative to a buffer in
      * milliseconds is provided so we know how long to keep data around.

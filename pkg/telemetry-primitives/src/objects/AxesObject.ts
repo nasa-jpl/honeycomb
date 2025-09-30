@@ -48,7 +48,7 @@ class ClickableSphere extends Mesh {
     }
 }
 
-export class AxesHelper extends Group {
+export class AxesObject extends Group {
     readonly isPsuedoObject = true;
     readonly type = "AxisHelper";
 

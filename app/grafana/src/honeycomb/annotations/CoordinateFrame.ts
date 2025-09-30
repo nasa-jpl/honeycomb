@@ -4,7 +4,7 @@ import { PanelOptionsEditorBuilder } from "@grafana/data";
 import { Annotation, AnnotationSchemaDataModel, Viewer } from "@gov.nasa.jpl.honeycomb/core";
 import { AnnotationRegistryItem } from "@gov.nasa.jpl.honeycomb/ui";
 
-import { AxesHelper } from "./geometry/AxesHelper";
+import { AxesObject } from "@gov.nasa.jpl.honeycomb/telemetry-primitives";
 
 interface CoordinateFrameOptions {
     scale: number;
@@ -12,7 +12,7 @@ interface CoordinateFrameOptions {
 }
 
 class CoordinateFrame extends Group implements Annotation<{}, CoordinateFrameOptions> {
-    helper: AxesHelper;
+    helper: AxesObject;
 
     constructor(
         readonly viewer: Viewer,
@@ -20,7 +20,7 @@ class CoordinateFrame extends Group implements Annotation<{}, CoordinateFrameOpt
     ) {
         super();
         this.name = id;
-        this.helper = new AxesHelper();
+        this.helper = new AxesObject();
         this.renderOrder = Infinity;
 
         this.add(this.helper);

@@ -3,9 +3,7 @@
     "private": true,
     "workspaces": [
         "pkg/*",
-        "app/*",
-        "tools/*",
-        "ui/*"
+        "app/*"
     ],
     "devDependencies": {
         "@grafana/tsconfig": "^2.0.0",

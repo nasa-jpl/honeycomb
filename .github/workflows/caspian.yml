@@ -1,4 +1,4 @@
-name: App -- Grafana
+name: App - CASPIAN
 
 on:
   push:
@@ -27,4 +27,4 @@ jobs:
       run: cd app/caspian && yarn build:prod
 
     - name: Build Electron
-      run: cd app/grafana && yarn build:electron
+      run: cd app/caspian && yarn build:electron

@@ -1,4 +1,4 @@
-name: App -- Grafana
+name: App - Grafana
 
 on:
   push:

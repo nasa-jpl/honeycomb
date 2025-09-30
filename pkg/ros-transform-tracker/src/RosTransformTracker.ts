@@ -1,5 +1,5 @@
-import { RosTransformTrackerBase } from './RosTransformTrackerBase.js';
-import { compareTimeStamps } from './utils.js';
+import { RosTransformTrackerBase } from './RosTransformTrackerBase';
+import { compareTimeStamps } from './utils';
 
 /**
  * Transform tracker that retains a buffer of tf and tf_static ros messages over time so

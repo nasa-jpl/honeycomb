@@ -1,6 +1,6 @@
 import { Group, Matrix4, Vector3, Quaternion } from 'three';
 import { FrameTransformer } from '@gov.nasa.jpl.honeycomb/frame-transformer';
-import { compareTimeStamps } from './utils.js';
+import { compareTimeStamps } from './utils';
 
 const parentMat = new Matrix4();
 const childMat = new Matrix4();

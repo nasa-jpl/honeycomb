@@ -25,3 +25,6 @@ jobs:
 
     - name: Build
       run: cd app/caspian && yarn build:prod
+
+    # - name: Build Electron
+    #   run: cd app/caspian && yarn build:electron

@@ -5,6 +5,9 @@
         "pkg/*",
         "app/*"
     ],
+    "scripts": {
+        "test": "yarn workspaces run test --passWithNoTests"
+    },
     "devDependencies": {
         "@grafana/tsconfig": "^2.0.0",
         "@stylistic/eslint-plugin-ts": "^4.2.0",

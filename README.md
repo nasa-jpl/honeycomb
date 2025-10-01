@@ -8,6 +8,22 @@ There are two separate apps that showcase how to utilize Honeycomb:
 
 The current recommended approach is to use the Grafana Panel Plugin.
 
+## Demonstrations
+
+These YouTube videos showcase Honeycomb usage at JPL:
+
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=E3xWCqPBUFU
+" target="_blank"><img src="http://img.youtube.com/vi/E3xWCqPBUFU/0.jpg" 
+alt="NASA’s Self-Driving Perseverance Mars Rover Is Breaking Records" width="240" height="180" border="10" /></a>
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=DTNRc2N1vbg
+" target="_blank"><img src="http://img.youtube.com/vi/DTNRc2N1vbg/0.jpg" 
+alt="Perseverance AutoNav Avoids a Boulder" width="240" height="180" border="10" /></a>
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=zHXtZIYHRo8
+" target="_blank"><img src="http://img.youtube.com/vi/zHXtZIYHRo8/0.jpg" 
+alt="Computer Simulation of Mars Perseverance Rover's First Autonav Drive" width="240" height="180" border="10" /></a>
+
+See also https://www-robotics.jpl.nasa.gov/what-we-do/applications/user-interfaces/
+
 ## Grafana Panel Plugin for Honeycomb panes
 
 ![Screenshot](docs/screenshot.png)

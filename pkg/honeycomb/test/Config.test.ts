@@ -1,4 +1,4 @@
-import { merge, load, CONFIG_LINEAGE } from '../src/config';
+import { merge, load, CONFIG_LINEAGE } from '../../../app/caspian/src/config';
 
 describe('merge', () => {
     it('should merge keys.', () => {

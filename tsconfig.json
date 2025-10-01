@@ -22,7 +22,8 @@
         "typeRoots": [
             "node_modules/@types"
         ],
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
+        "types": ["node", "jest"]
     },
     "ts-node": {
         "compilerOptions": {
@@ -43,5 +44,7 @@
         "**/dist/*",
         "**/node_modules/*",
         "**/node_modules/**",
+        "./tests", 
+        "**/*.test.*"
     ]
 }

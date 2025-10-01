@@ -1,4 +1,4 @@
-import { RosTransformTracker } from '../src/RosTransformTracker.js';
+import { RosTransformTracker } from '../src/RosTransformTracker';
 import { Matrix4, Vector3, Quaternion } from 'three';
 
 describe('RosTransformTracker', () => {

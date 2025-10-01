@@ -3,7 +3,7 @@ import {
     copyOnTo,
     rollUpState,
     createNewInstanceOfType,
-} from '../src/utils/utils';
+} from '../src/utils';
 
 describe('rollUpState()', () => {
     it('should roll up state from frames.', () => {

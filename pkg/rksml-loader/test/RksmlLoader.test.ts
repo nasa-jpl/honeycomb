@@ -1,4 +1,4 @@
-const { RksmlLoader } = require('../src/RksmlLoader.js');
+const { RksmlLoader } = require('../src/RksmlLoader');
 
 describe('RksmlLoader', () => {
     it('should parse rksml properly', async () => {

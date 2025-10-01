@@ -3,13 +3,13 @@ import { IndexedDBCache } from '../src/IndexedDBCache';
 // import setGlobalVars from 'indexeddbshim/dist/indexeddbshim-node';
 
 // stub to afford the beforeunload callback registration
-global.window = {
-    addEventListener: () => {},
-};
-setGlobalVars(undefined, {
-    checkOrigin: false,
-    memoryDatabase: ':memory:',
-});
+// global.window = {
+//     addEventListener: () => {},
+// };
+// setGlobalVars(undefined, {
+//     checkOrigin: false,
+//     memoryDatabase: ':memory:',
+// });
 
 // IDBTransaction.commit API not supported in the shim so just stub it here on
 // the Object prototype (cannot modify internal shim prototypes).
@@ -91,7 +91,7 @@ function runSuite(CacheType) {
 
     it('should be able to serialize and deserialize large arrays.', async () => {
         const obj = {
-            arr: new Array(1e5).fill().map(() => Math.random()),
+            arr: new Array(1e5).fill(0).map(() => Math.random()),
         };
         const clone = JSON.parse(JSON.stringify(obj));
 
@@ -101,7 +101,7 @@ function runSuite(CacheType) {
 
     it('should be able to serialize and deserialize large strings.', async () => {
         const obj = {
-            str: new Array(1e5).fill().map(() => String.fromCharCode(Math.random() * 255)),
+            str: new Array(1e5).fill(0).map(() => String.fromCharCode(Math.random() * 255)),
         };
         const clone = JSON.parse(JSON.stringify(obj));
 

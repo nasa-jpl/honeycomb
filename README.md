@@ -61,6 +61,8 @@ This is a self-contained web app that utilizes Honeycomb's config files and buil
 
 ![Screenshot](docs/caspian-screenshot.png)
 
+https://github.com/user-attachments/assets/1d39fe77-f64a-4f9d-bb0d-54f1b119e524
+
 ### Quick Setup
 Tested with node v20.
 

@@ -70,10 +70,12 @@ $ yarn install
 $ yarn start
 ```
 
-Then visit http://localhost:9000/browser/#/assets/configs/csv/test.json
+Then visit one of these examples:
+- http://localhost:9000/browser/#/assets/configs/csv/test.json
+- http://localhost:9000/browser/#/assets/configs/json/2021-06-25-20-14-48_sol00122.json
 
 ### Changing the data
-Adjust assets/configs/csv/test.json as necessary.
+Adjust `assets/configs/csv/test.json` as necessary.
 
 ## Credit
 Original design and development of Honeycomb was done by Garrett Johnson and Amos Byon, along with contributions from Katherine Park, Rob Ray, Flynn Platt, Amanda Chung, and Ryan Kinnett. 

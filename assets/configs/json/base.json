@@ -1,0 +1,176 @@
+{
+    "title": "ENav 2020",
+    "charts": [
+        {
+            "animator": "rksml",
+            "fields": [
+                "ROVER_X",
+                "ROVER_Y",
+                "ROVER_Z"
+            ],
+            "duration": 100
+        },
+        {
+            "animator": "rksml",
+            "fields": [
+                "LEFT_DIFFERENTIAL",
+                "LEFT_BOGIE",
+                "RIGHT_DIFFERENTIAL",
+                "RIGHT_BOGIE"
+            ],
+            "duration": 100
+        }
+    ],
+    "robots": [
+        {
+            "id": "m2020",
+            "path": "../../models/m2020/m2020.urdf",
+            "options": {
+                "packages": "../../models/m2020/"
+            }
+        }
+    ],
+    "drivers": [
+        {
+            "type": "EnavArksmlDriver",
+            "options": {
+                "robot": "m2020.urdf",
+                "groundTruthRobot": "m2020_ground_truth",
+                "telemetry": "enav_arksml"
+            }
+        },
+        {
+            "type": "RksmlDriver",
+            "options": {
+                "robot": "m2020.urdf",
+                "telemetry": "rksml",
+                "paths": [
+                    "RF_DRIVE",
+                    "LF_DRIVE"
+                ],
+                "positionMap": {
+                    "x": "ROVER_X",
+                    "y": "ROVER_Y",
+                    "z": "ROVER_Z",
+                    "qx": "QUAT_X",
+                    "qy": "QUAT_Y",
+                    "qz": "QUAT_Z",
+                    "qw": "QUAT_C"
+                }
+            }
+        },
+        {
+            "type": "RobotKinematicsDriver",
+            "options": {
+                "robot": "m2020.urdf",
+                "joints": [
+                    "LF_STEER",
+                    "LR_STEER",
+                    "LEFT_BOGIE",
+                    "LEFT_DIFFERENTIAL",
+                    "",
+                    "RF_STEER",
+                    "RR_STEER",
+                    "RIGHT_BOGIE",
+                    "RIGHT_DIFFERENTIAL"
+                ]
+            }
+        }
+    ],
+    "options": {
+        "up": "-Z",
+        "lightDirection": [1, -1, 1],
+        "renderer": {
+            "antialias": false
+        },
+        "playbackSpeed": 20,
+        "editTimeWindow": true,
+        "showColorLegend": true,
+        "displayAbsoluteTime": true,
+        "baseTimeFormat": "SCLK",
+        "timelineDataVolumes": [
+            {
+                "telemetry": "rksml",
+                "color": "rgba(255, 255, 255, 0.5)"
+            },
+            {
+                "telemetry": "enav_arksml",
+                "color": "white"
+            }
+        ],
+        "significantAnimators": [
+            "enav_arksml"
+        ],
+        "settings": {
+            "View": [
+                {
+                    "label": "Rover",
+                    "tag": "robot",
+                    "default": true,
+                    "shortcut": "R"
+                },
+                {
+                    "label": "Display Kinematics",
+                    "tag": "kinematics-display",
+                    "default": true
+                },
+                {
+                    "label": "Drive Tracks",
+                    "tag": "drive-tracks",
+                    "default": true
+                }
+            ],
+            "ENav": [
+                {
+                    "label": "Cost Map",
+                    "tag": "costmap",
+                    "default": true,
+                    "shortcut": "C",
+                    "lockable": true
+                },
+                {
+                    "label": "Cost Map Grid",
+                    "tag": "costmap-grid",
+                    "default": false
+                },
+                {
+                    "label": "Cell Global Pos Error",
+                    "tag": "cell-global-pos-error",
+                    "default": false,
+                    "shortcut": "E"
+                },
+                {
+                    "label": "Is Dilated",
+                    "tag": "is-dilated",
+                    "default": false,
+                    "shortcut": "D"
+                },
+                {
+                    "label": "Heightmap",
+                    "tag": "heightmap",
+                    "default": true,
+                    "shortcut": "H",
+                    "lockable": true
+                },
+                {
+                    "label": "Heightmap Grid",
+                    "tag": "heightmap-grid",
+                    "default": false,
+                    "shortcut": "G"
+                }
+            ],
+            "Rendering": [
+                {
+                    "label": "Topographic Lines",
+                    "tag": "topo-lines",
+                    "default": true
+                },
+                {
+                    "label": "Steepness Highlight",
+                    "tag": "steepness-color",
+                    "default": true
+                }
+            ]
+        }
+    }
+}

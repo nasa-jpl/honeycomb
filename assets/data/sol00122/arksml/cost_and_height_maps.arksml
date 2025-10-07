@@ -1,0 +1,138 @@
+<?xml version="1.0" ?>
+<RPK_Annotations xmlns:xsi="http://www.w3.org./2001/XMLSchema-instance" xsi:schemaLocation="RPK_Annotations.xsd">
+  <Annotations>
+    <Name>ENAV Annotations</Name>
+    <Annotation Start="677773578.2455263" End="677773609.9508314">
+      <EnavHeightmap>
+        <EnavDpGrid>
+          <Position Axis="XY">-320.29998779296875 -175.79998779296875</Position>
+          <Resolution>0.09999999403953552</Resolution>
+          <Radius>14.999999046325684</Radius>
+          <NumCells>301</NumCells>
+        </EnavDpGrid>
+        <File Path="./heightmaps/heightmap_677773578.2455263.bin" />
+      </EnavHeightmap>
+    </Annotation>
+    <Annotation Start="677773609.9508314" End="677773647.2734566">
+      <EnavHeightmap>
+        <EnavDpGrid>
+          <Position Axis="XY">-320.29998779296875 -175.79998779296875</Position>
+          <Resolution>0.09999999403953552</Resolution>
+          <Radius>14.999999046325684</Radius>
+          <NumCells>301</NumCells>
+        </EnavDpGrid>
+        <File Path="./heightmaps/heightmap_677773609.9508314.bin" />
+      </EnavHeightmap>
+    </Annotation>
+    <Annotation Start="677773647.2734566" End="677774483.7436647">
+      <EnavHeightmap>
+        <EnavDpGrid>
+          <Position Axis="XY">-320.29998779296875 -175.79998779296875</Position>
+          <Resolution>0.09999999403953552</Resolution>
+          <Radius>14.999999046325684</Radius>
+          <NumCells>301</NumCells>
+        </EnavDpGrid>
+        <File Path="./heightmaps/heightmap_677773647.2734566.bin" />
+      </EnavHeightmap>
+    </Annotation>
+    <Annotation Start="677774483.7436647" End="677774515.3077078">
+      <EnavHeightmap>
+        <EnavDpGrid>
+          <Position Axis="XY">-299.10003662109375 -177.69998168945312</Position>
+          <Resolution>0.09999999403953552</Resolution>
+          <Radius>14.999999046325684</Radius>
+          <NumCells>301</NumCells>
+        </EnavDpGrid>
+        <File Path="./heightmaps/heightmap_677774483.7436647.bin" />
+      </EnavHeightmap>
+    </Annotation>
+    <Annotation Start="677774483.7436647" End="677774515.3077078">
+      <EnavCostmap>
+        <EnavDpGrid>
+          <Position Axis="XY">-335.0 -213.0</Position>
+          <Resolution>0.5</Resolution>
+          <Radius>50.0</Radius>
+          <NumCells>201</NumCells>
+        </EnavDpGrid>
+        <File Path="./costmaps/costmap_677774483.7436647.bin" />
+      </EnavCostmap>
+    </Annotation>
+    <Annotation Start="677774515.3077078" End="677774541.9333525">
+      <EnavHeightmap>
+        <EnavDpGrid>
+          <Position Axis="XY">-298.10003662109375 -177.5999755859375</Position>
+          <Resolution>0.09999999403953552</Resolution>
+          <Radius>14.999999046325684</Radius>
+          <NumCells>301</NumCells>
+        </EnavDpGrid>
+        <File Path="./heightmaps/heightmap_677774515.3077078.bin" />
+      </EnavHeightmap>
+    </Annotation>
+    <Annotation Start="677774515.3077078" End="677774541.9333525">
+      <EnavCostmap>
+        <EnavDpGrid>
+          <Position Axis="XY">-335.0 -213.0</Position>
+          <Resolution>0.5</Resolution>
+          <Radius>50.0</Radius>
+          <NumCells>201</NumCells>
+        </EnavDpGrid>
+        <File Path="./costmaps/costmap_677774515.3077078.bin" />
+      </EnavCostmap>
+    </Annotation>
+    <Annotation Start="677774541.9333525" End="677774601.3723211">
+      <EnavHeightmap>
+        <EnavDpGrid>
+          <Position Axis="XY">-297.10003662109375 -177.5999755859375</Position>
+          <Resolution>0.09999999403953552</Resolution>
+          <Radius>14.999999046325684</Radius>
+          <NumCells>301</NumCells>
+        </EnavDpGrid>
+        <File Path="./heightmaps/heightmap_677774541.9333525.bin" />
+      </EnavHeightmap>
+    </Annotation>
+    <Annotation Start="677774541.9333525" End="677775496.4100571">
+      <EnavCostmap>
+        <EnavDpGrid>
+          <Position Axis="XY">-335.0 -213.0</Position>
+          <Resolution>0.5</Resolution>
+          <Radius>50.0</Radius>
+          <NumCells>201</NumCells>
+        </EnavDpGrid>
+        <File Path="./costmaps/costmap_677774541.9333525.bin" />
+      </EnavCostmap>
+    </Annotation>
+    <Annotation Start="677774601.3723211" End="677775495.415307">
+      <EnavHeightmap>
+        <EnavDpGrid>
+          <Position Axis="XY">-296.10003662109375 -177.69998168945312</Position>
+          <Resolution>0.09999999403953552</Resolution>
+          <Radius>14.999999046325684</Radius>
+          <NumCells>301</NumCells>
+        </EnavDpGrid>
+        <File Path="./heightmaps/heightmap_677774601.3723211.bin" />
+      </EnavHeightmap>
+    </Annotation>
+    <Annotation Start="677775495.415307" End="677775496.4100571">
+      <EnavHeightmap>
+        <EnavDpGrid>
+          <Position Axis="XY">-296.10003662109375 -177.69998168945312</Position>
+          <Resolution>0.09999999403953552</Resolution>
+          <Radius>14.999999046325684</Radius>
+          <NumCells>301</NumCells>
+        </EnavDpGrid>
+        <File Path="./heightmaps/heightmap_677775495.415307.bin" />
+      </EnavHeightmap>
+    </Annotation>
+    <Annotation Start="677775496.4100571" End="677775496.4100571">
+      <EnavCostmap>
+        <EnavDpGrid>
+          <Position Axis="XY">-335.0 -213.0</Position>
+          <Resolution>0.5</Resolution>
+          <Radius>50.0</Radius>
+          <NumCells>201</NumCells>
+        </EnavDpGrid>
+        <File Path="./costmaps/costmap_677775496.4100571.bin" />
+      </EnavCostmap>
+    </Annotation>
+  </Annotations>
+</RPK_Annotations>

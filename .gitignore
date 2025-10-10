@@ -41,3 +41,7 @@ ci/
 
 .eslintcache
 .DS_Store
+
+# Ignore the symlinked assets from
+# https://github.com/nasa-jpl/honeycomb-caspian-assets
+assets

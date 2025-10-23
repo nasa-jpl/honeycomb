@@ -1,6 +1,6 @@
 {
   "name": "@gov.nasa.jpl.honeycomb/camera-loader",
-  "version": "1.1.15",
+  "version": "0.0.0",
   "dependencies": {
     "three": "^0.169.0"
   },

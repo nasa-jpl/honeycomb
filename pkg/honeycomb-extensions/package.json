@@ -1,7 +1,7 @@
 {
   "name": "@gov.nasa.jpl.honeycomb/extensions",
   "description": "File loaders, drivers, and other default extensions for Honeycomb.",
-  "version": "1.1.15",
+  "version": "0.0.0",
   "dependencies": {
     "3d-tiles-renderer": "^0.3.1",
     "@gov.nasa.jpl.honeycomb/cahvore-utilities": "^1.1.15",

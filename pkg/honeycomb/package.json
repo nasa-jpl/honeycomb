@@ -1,7 +1,7 @@
 {
   "name": "@gov.nasa.jpl.honeycomb/core",
   "description": "Framework for processing and displaying robotics telemetry.",
-  "version": "1.1.15",
+  "version": "0.0.0",
   "dependencies": {
     "@gov.nasa.jpl.honeycomb/event-dispatcher": "^1.1.15",
     "@gov.nasa.jpl.honeycomb/geometry-optimization-utils": "^1.1.15",

@@ -1,7 +1,7 @@
 {
     "name": "@gov.nasa.jpl.honeycomb/framerate-optimizer",
     "description": "Library for tracking and iteratively improving page framerate over time",
-    "version": "1.1.15",
+    "version": "0.0.0",
     "main": "src/Optimizer.ts",
     "module": "src/Optimizer.ts",
     "scripts": {

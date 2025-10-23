@@ -1,7 +1,7 @@
 {
   "name": "@gov.nasa.jpl.honeycomb/ros-transform-tracker",
   "description": "Helper class for tracking updates to ROS node transforms over time.",
-  "version": "0.0.28",
+  "version": "0.0.0",
   "dependencies": {
     "@gov.nasa.jpl.honeycomb/frame-transformer": "^1.1.15",
     "three": "^0.169.0"

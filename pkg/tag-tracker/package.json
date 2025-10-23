@@ -1,7 +1,7 @@
 {
   "name": "@gov.nasa.jpl.honeycomb/tag-tracker",
   "description": "Class for adding, tracking, and querying objects with associated tags.",
-  "version": "1.1.15",
+  "version": "0.0.0",
   "dependencies": {
     "@gov.nasa.jpl.honeycomb/event-dispatcher": "^1.1.15"
   },

@@ -1,7 +1,7 @@
 {
   "name": "@gov.nasa.jpl.honeycomb/object-cache",
   "description": "Copies and caches Javascript objects for quick read and writes from disk if available.",
-  "version": "1.1.15",
+  "version": "0.0.0",
   "dependencies": {
     "tmp": "^0.2.1"
   },

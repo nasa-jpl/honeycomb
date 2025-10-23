@@ -1,7 +1,7 @@
 {
   "name": "@gov.nasa.jpl.honeycomb/interaction-manager",
   "description": "Class to handle and resolve user click and drag interactions in three.js",
-  "version": "1.1.15",
+  "version": "0.0.0",
   "dependencies": {
     "@gov.nasa.jpl.honeycomb/event-dispatcher": "^1.1.15",
     "@gov.nasa.jpl.honeycomb/scheduling-utilities": "^1.1.15",

@@ -1,7 +1,7 @@
 {
   "name": "@gov.nasa.jpl.honeycomb/terrain-rendering",
   "description": "Base class for implementing terrain visualization as meshes, points, or voxels.",
-  "version": "1.1.15",
+  "version": "0.0.0",
   "dependencies": {
     "@gov.nasa.jpl.honeycomb/mixin-shaders": "^1.1.15",
     "@gov.nasa.jpl.honeycomb/three-extensions": "^1.1.15",

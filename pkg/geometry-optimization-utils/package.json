@@ -1,7 +1,7 @@
 {
   "name": "@gov.nasa.jpl.honeycomb/geometry-optimization-utils",
   "description": "Utilities for optimizing three.js geometry memory.",
-  "version": "1.1.15",
+  "version": "0.0.0",
   "devDependencies": {
     "three": "^0.169.0"
   },

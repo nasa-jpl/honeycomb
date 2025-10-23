@@ -1,7 +1,7 @@
 {
     "name": "@gov.nasa.jpl.honeycomb/ui",
     "description": "React components for loading & rendering Honeycomb scenes",
-    "version": "1.1.15",
+    "version": "0.0.0",
     "dependencies": {},
     "main": "src/index.ts",
     "module": "src/index.ts",

@@ -1,5 +1,5 @@
 {
-  "name": "@gov.nasa.jpl.honeycomb/app",
+  "name": "caspian-app",
   "description": "",
   "version": "0.0.28",
   "dependencies": {
@@ -12,9 +12,9 @@
     "lodash.merge": "^4.6.2",
     "mini-css-extract-plugin": "^2.9.2",
     "node-polyfill-webpack-plugin": "^4.1.0",
-    "@gov.nasa.jpl.honeycomb/core": "^1.1.15",
-    "@gov.nasa.jpl.honeycomb/extensions": "^1.1.15",
-    "@gov.nasa.jpl.honeycomb/scene-viewers": "^1.1.15",
+    "@gov.nasa.jpl.honeycomb/core": "^0.0.0",
+    "@gov.nasa.jpl.honeycomb/extensions": "^0.0.0",
+    "@gov.nasa.jpl.honeycomb/scene-viewers": "^0.0.0",
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
     "@types/react": "18.3.1",

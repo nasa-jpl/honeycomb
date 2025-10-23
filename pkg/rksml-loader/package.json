@@ -1,7 +1,7 @@
 {
   "name": "@gov.nasa.jpl.honeycomb/rksml-loader",
   "description": "Loader and parser for the RKSML telemetry format.",
-  "version": "0.0.29",
+  "version": "0.0.0",
   "main": "src/RksmlLoader.js",
   "module": "src/RksmlLoader.js",
   "scripts": {

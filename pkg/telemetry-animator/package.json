@@ -1,11 +1,11 @@
 {
   "name": "@gov.nasa.jpl.honeycomb/telemetry-animator",
   "description": "Classes for iterating, animating, and scrubbing over time series data.",
-  "version": "1.1.15",
+  "version": "0.0.0",
   "dependencies": {
-    "@gov.nasa.jpl.honeycomb/event-dispatcher": "^1.1.15",
-    "@gov.nasa.jpl.honeycomb/object-cache": "^1.1.15",
-    "@gov.nasa.jpl.honeycomb/scheduling-utilities": "^1.1.15"
+    "@gov.nasa.jpl.honeycomb/event-dispatcher": "^0.0.0",
+    "@gov.nasa.jpl.honeycomb/object-cache": "^0.0.0",
+    "@gov.nasa.jpl.honeycomb/scheduling-utilities": "^0.0.0"
   },
   "main": "./src/index.ts",
   "module": "./src/index.ts",

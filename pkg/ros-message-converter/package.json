@@ -1,7 +1,7 @@
 {
   "name": "@gov.nasa.jpl.honeycomb/ros-message-converter",
   "description": "Utility for converting cbor-raw ROSLibJS message contents to the content.",
-  "version": "0.0.28",
+  "version": "0.0.0",
   "dependencies": {
     "@foxglove/rosmsg": "^2.0.0",
     "@foxglove/rosmsg-serialization": "^1.1.2",

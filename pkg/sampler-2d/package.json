@@ -1,7 +1,7 @@
 {
   "name": "@gov.nasa.jpl.honeycomb/sampler-2d",
   "description": "Utility for sampling 2D float arrays in row major or column major order.",
-  "version": "1.1.15",
+  "version": "0.0.0",
   "main": "src/index.ts",
   "scripts": {
     "test": "jest"

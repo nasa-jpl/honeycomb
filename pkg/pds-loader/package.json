@@ -1,9 +1,9 @@
 {
   "name": "@gov.nasa.jpl.honeycomb/pds-loader",
   "description": "Loader and parser for the PDS file format.",
-  "version": "1.1.15",
+  "version": "0.0.0",
   "dependencies": {
-    "@gov.nasa.jpl.honeycomb/vicar-loader": "^1.1.15"
+    "@gov.nasa.jpl.honeycomb/vicar-loader": "^0.0.0"
   },
   "main": "src/index.ts",
   "module": "src/index.ts",

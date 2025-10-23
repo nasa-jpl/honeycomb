@@ -35,4 +35,4 @@ jobs:
           git config --global user.name "github-actions[bot]"
 
       - name: Lerna Publish
-        run: npx lerna publish from-git --yes
+        run: npx lerna publish from-git --force-publish --yes

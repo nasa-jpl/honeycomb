@@ -1,5 +1,5 @@
 {
-  "name": "@gov.nasa.jpl.honeycomb/app",
+  "name": "caspian-app",
   "description": "",
   "version": "0.0.28",
   "dependencies": {

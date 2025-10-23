@@ -1,38 +1,56 @@
 name: Publish Release
 
 on:
-  release:
-    types: [published]
+    release:
+        types: [published]
 
 jobs:
-  publish:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          # Important for Lerna to access full git history and tags
-          fetch-depth: 0
+    publish:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
+              with:
+                  # Important for Lerna to access full git history and tags
+                  fetch-depth: 0
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22.x'
-          registry-url: 'https://registry.npmjs.org/'
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "22.x"
+                  registry-url: "https://registry.npmjs.org/"
 
-      - name: Authenticate with npm
-        run: |
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+            - name: Install Dependencies
+              run: yarn install
 
-      - name: Install Dependencies
-        run: yarn install
+            - name: Configure Git User
+              run: |
+                  git config --global user.email "github-actions[bot]@users.noreply.github.com"
+                  git config --global user.name "github-actions[bot]"
 
-      - name: Configure Git User
-        run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
+            - name: Get release tag
+              id: tag
+              run: |
+                  TAG="${GITHUB_REF##*/}"
+                  if ! [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+                    echo "❌ Invalid tag format: $TAG (expected vMAJOR.MINOR.PATCH)"
+                    exit 1
+                  fi
 
-      - name: Lerna Publish
-        run: npx lerna publish from-git --force-publish --yes
+                  # Strip leading "v" if present
+                  VERSION="${TAG#v}"
+                  echo "tag=$TAG" >> $GITHUB_OUTPUT
+                  echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+            - name: Set version in all packages
+              run: |
+                  npx lerna version ${{ steps.tag.outputs.version }} \
+                    --no-git-tag-version \
+                    --no-push \
+                    --yes
+
+            - name: Publish packages to npm
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+              run: |
+                  npx lerna publish from-package --yes

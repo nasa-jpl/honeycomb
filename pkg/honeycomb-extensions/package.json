@@ -32,10 +32,13 @@
   "scripts": {
     "test": "echo \"Warn: no test specified\""
   },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "sideEffects": false,
   "type": "module",
   "devDependencies": {
     "@types/lodash.merge": "^4.6.7"
-  },
-  "gitHead": "d671cf0fcdba4a75b37ab8a9b948067f0d5e99ba"
+  }
 }

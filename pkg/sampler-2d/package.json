@@ -6,7 +6,10 @@
   "scripts": {
     "test": "jest"
   },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "sideEffects": false,
-  "type": "module",
-  "gitHead": "d671cf0fcdba4a75b37ab8a9b948067f0d5e99ba"
+  "type": "module"
 }

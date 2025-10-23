@@ -1,9 +1,9 @@
 import { optimizeGeometry } from '../src/geometryOptimizers';
-import { BoxBufferGeometry } from 'three';
+import { BoxGeometry } from 'three';
 
 describe('optimizeGeometry', () => {
     it('should not change a geometry if it is optimized twice.', () => {
-        const geom = new BoxBufferGeometry(1, 1, 1, 5, 5, 5);
+        const geom = new BoxGeometry(1, 1, 1, 5, 5, 5);
 
         const index1 = geom.index.array;
         const uv1 = geom.attributes.uv.array;
@@ -23,7 +23,7 @@ describe('optimizeGeometry', () => {
     });
 
     it('should optimize attributes to normalized buffers.', () => {
-        const geom = new BoxBufferGeometry(1, 1, 1, 5, 5, 5);
+        const geom = new BoxGeometry(1, 1, 1, 5, 5, 5);
         optimizeGeometry(geom);
 
         expect(geom.index.array instanceof Uint8Array).toBeTruthy();
@@ -37,7 +37,7 @@ describe('optimizeGeometry', () => {
     });
 
     it('should not optimize attributes that cannot be normalized.', () => {
-        const geom = new BoxBufferGeometry(1, 1, 1, 5, 5, 5);
+        const geom = new BoxGeometry(1, 1, 1, 5, 5, 5);
         const uvArray = geom.attributes.uv.array;
 
         uvArray[0] = -1.1;

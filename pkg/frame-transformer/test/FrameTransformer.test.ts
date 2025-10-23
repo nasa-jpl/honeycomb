@@ -1,7 +1,7 @@
 const THREE = require('three');
 
 global.THREE = THREE;
-const { FrameTransformer } = require('../src/FrameTransformer.js');
+const { FrameTransformer } = require('../src/FrameTransformer');
 
 function isCloseTo(a, b) {
     return Math.abs(a - b) < 0.005;

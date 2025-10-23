@@ -1,4 +1,4 @@
-const { ArksmlLoader } = require('../src/ArksmlLoader.js');
+import { ArksmlLoader } from '../src/ArksmlLoader';
 
 describe('ArksmlLoader', () => {
     it('should parse arksml properly into frames', async () => {

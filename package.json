@@ -5,13 +5,17 @@
         "pkg/*",
         "app/*"
     ],
+    "scripts": {
+        "test": "yarn workspaces run test --passWithNoTests"
+    },
     "devDependencies": {
         "@grafana/tsconfig": "^2.0.0",
         "@stylistic/eslint-plugin-ts": "^4.2.0",
         "@swc/core": "^1.11.7",
+        "@types/jest": "^30.0.0",
+        "@types/minimatch": "^3.0.0",
         "@typescript-eslint/eslint-plugin": "^8.44.1",
         "@typescript-eslint/parser": "^8.44.1",
-        "@types/minimatch": "^3.0.0",
         "copy-webpack-plugin": "^11.0.0",
         "eslint": "^9.36.0",
         "eslint-config-prettier": "^10.0.2",
@@ -34,6 +38,7 @@
         "style-loader": "3.3.3",
         "swc-loader": "^0.2.6",
         "terser-webpack-plugin": "^5.3.10",
+        "ts-jest": "^29.4.4",
         "ts-loader": "^9.5.1",
         "ts-node": "^10.9.2",
         "tsconfig-paths": "^4.2.0",

@@ -47,13 +47,13 @@ describe('CameraLoaderBase', () => {
         expect(CAM1.height).toBe(960);
         expect(CAM1.minRange).toBe(0.1);
         // expect(CAM1.serial_number).toBe(1);
-        expect(CAM1.C).toEqual([1.103530, -0.008942, -0.829123]);
-        expect(CAM1.A).toEqual([0.88, -0.12, 0.23]);
-        expect(CAM1.H).toEqual([2600.0, 1600.438136, 1270.5]);
-        expect(CAM1.V).toEqual([650.823, -325.197, 2832.18855]);
-        expect(CAM1.O).toEqual([0.885345, -0.171272, 0.423423]);
-        expect(CAM1.R).toEqual([0.000001, 0.00123, -0.005123]);
-        expect(CAM1.E).toEqual([-0.005544, 0.010203, 0.002341]);
+        expect(CAM1.C).toEqual({x: 1.103530, y: -0.008942, z: -0.829123});
+        expect(CAM1.A).toEqual({x: 0.88, y: -0.12, z: 0.23});
+        expect(CAM1.H).toEqual({x: 2600.0, y: 1600.438136, z: 1270.5});
+        expect(CAM1.V).toEqual({x: 650.823, y: -325.197, z: 2832.18855});
+        expect(CAM1.O).toEqual({x: 0.885345, y: -0.171272, z: 0.423423});
+        expect(CAM1.R).toEqual({x: 0.000001, y: 0.00123, z: -0.005123});
+        expect(CAM1.E).toEqual({x: -0.005544, y: 0.010203, z: 0.002341});
         expect(CAM1.pupilType).toBe(3);
         expect(CAM1.linearity).toBe(0.25);
 
@@ -66,10 +66,10 @@ describe('CameraLoaderBase', () => {
         expect(CAM2.height).toBe(480);
         expect(CAM2.minRange).toBe(0.1);
         // expect(CAM2.serial_number).toBe(2);
-        expect(CAM2.C).toEqual([0.932516, 0.931234, -1.643244]);
-        expect(CAM2.A).toEqual([0.954321, -0.005812, 0.00123]);
-        expect(CAM2.H).toEqual([2500.812423, 2834.39557, 14.234216]);
-        expect(CAM2.V).toEqual([1918.658228, -3.141572, 2985.009835]);
+        expect(CAM2.C).toEqual({x: 0.932516, y: 0.931234, z: -1.643244});
+        expect(CAM2.A).toEqual({x: 0.954321, y: -0.005812, z: 0.00123});
+        expect(CAM2.H).toEqual({x: 2500.812423, y: 2834.39557, z: 14.234216});
+        expect(CAM2.V).toEqual({x: 1918.658228, y: -3.141572, z: 2985.009835});
         // expect(CAM2.EXTRA).toEqual(5);
         expect(CAM2.pupilType).toBe(3);
     });

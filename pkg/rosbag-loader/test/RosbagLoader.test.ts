@@ -1,4 +1,4 @@
-import { RosbagLoader, RosbagReader } from '../src/RosbagLoader.js';
+import { RosbagLoader, RosbagReader } from '../src/RosbagLoader.ts';
 import path from 'path';
 import fs from 'fs';
 import { JSDOM } from 'jsdom';

@@ -50,6 +50,11 @@ jobs:
                     --force-publish \
                     --yes
 
+            - name: Commit version bump
+              run: |
+                  git add .
+                  git commit -m "chore: set version to ${{ steps.tag.outputs.version }} [skip ci]" || echo "No changes to commit"
+
             - name: Publish packages to npm
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -3,7 +3,7 @@
   "description": "Class for adding, tracking, and querying objects with associated tags.",
   "version": "0.0.0",
   "dependencies": {
-    "@gov.nasa.jpl.honeycomb/event-dispatcher": "^1.1.15"
+    "@gov.nasa.jpl.honeycomb/event-dispatcher": "^0.0.0"
   },
   "main": "src/TagTracker.ts",
   "module": "src/TagTracker.ts",

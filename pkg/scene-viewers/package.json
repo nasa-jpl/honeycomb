@@ -3,11 +3,11 @@
   "description": "Base classes for implementing a view in three.js.",
   "version": "0.0.0",
   "dependencies": {
-    "@gov.nasa.jpl.honeycomb/frame-transformer": "^1.1.15",
-    "@gov.nasa.jpl.honeycomb/scheduling-utilities": "^1.1.15",
-    "@gov.nasa.jpl.honeycomb/telemetry-primitives": "^1.1.15",
-    "@gov.nasa.jpl.honeycomb/three-extensions": "^1.1.15",
-    "@gov.nasa.jpl.honeycomb/view-cube": "^1.1.15",
+    "@gov.nasa.jpl.honeycomb/frame-transformer": "^0.0.0",
+    "@gov.nasa.jpl.honeycomb/scheduling-utilities": "^0.0.0",
+    "@gov.nasa.jpl.honeycomb/telemetry-primitives": "^0.0.0",
+    "@gov.nasa.jpl.honeycomb/three-extensions": "^0.0.0",
+    "@gov.nasa.jpl.honeycomb/view-cube": "^0.0.0",
     "framerate-optimizer": "0.2.0",
     "three": "^0.169.0"
   },

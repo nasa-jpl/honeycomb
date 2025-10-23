@@ -3,8 +3,8 @@
   "description": "Base class for implementing terrain visualization as meshes, points, or voxels.",
   "version": "0.0.0",
   "dependencies": {
-    "@gov.nasa.jpl.honeycomb/mixin-shaders": "^1.1.15",
-    "@gov.nasa.jpl.honeycomb/three-extensions": "^1.1.15",
+    "@gov.nasa.jpl.honeycomb/mixin-shaders": "^0.0.0",
+    "@gov.nasa.jpl.honeycomb/three-extensions": "^0.0.0",
     "three": "^0.169.0"
   },
   "main": "src/index.ts",

@@ -6,7 +6,6 @@ on:
 
 jobs:
   publish:
-    if: github.event.release.prerelease == false
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository

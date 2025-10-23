@@ -1,12 +1,12 @@
 name: Publish Release
 
 on:
-  push:
-    tags:
-      - 'v*.*.*'
+  release:
+    types: [published]
 
 jobs:
   publish:
+    if: github.event.release.prerelease == false
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -32,7 +32,7 @@ jobs:
 
       - name: Configure Git User
         run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com""
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
 
       - name: Lerna Publish

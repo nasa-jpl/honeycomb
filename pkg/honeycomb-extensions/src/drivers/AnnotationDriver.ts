@@ -41,7 +41,7 @@ export class AnnotationDriver extends Driver<FullState> {
             return;
         }
 
-        if (!this.viewer) {
+        if (!this.viewer || !fullState?.annotations) {
             return;
         }
 

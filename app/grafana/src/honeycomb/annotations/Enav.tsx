@@ -73,11 +73,11 @@ interface EnavDpCostmap {
 }
 
 interface EnavData {
-    // Aggregate whole-table bindings (reconstructed nested DPO objects)
+    // Aggregate whole-table bindings
     heightmap?: EnavDpHeightmap;
     costmap?: EnavDpCostmap;
 
-    // Individual leaf bindings (all optional so any subset can be wired)
+    // Individual leaf bindings
     heightmap_sclk_time?: number; // Spacecraft clock time
     heightmap_grid_x_min?: number; // Minimum MAP x coordinate of the grid cells
     heightmap_grid_y_min?: number; // Minimum MAP y coordinate of the grid cells
@@ -714,25 +714,14 @@ export class Enav extends Group implements Annotation<EnavData, EnavOptions> {
     update(data: EnavData) {
         let heightmapDirty = false;
 
-        // Aggregate whole-table binding, if a single frame was bound to `heightmap`
         if (data.heightmap) {
-            const h = data.heightmap;
-            if (h.sclk_time) this.incoming_heightmap.sclk_time = h.sclk_time;
-            if (h.grid) {
-                if (h.grid.x_min) this.incoming_heightmap.grid.x_min = h.grid.x_min;
-                if (h.grid.y_min) this.incoming_heightmap.grid.y_min = h.grid.y_min;
-                if (h.grid.res) this.incoming_heightmap.grid.res = h.grid.res;
-                if (h.grid.radius) this.incoming_heightmap.grid.radius = h.grid.radius;
-                if (h.grid.n_cells) this.incoming_heightmap.grid.n_cells = h.grid.n_cells;
-            }
-            if (h.cell_z) this.incoming_heightmap.cell_z = h.cell_z;
-            if (h.cell_global_pos_error) this.incoming_heightmap.cell_global_pos_error = h.cell_global_pos_error;
-            if (h.cell_is_dilated) this.incoming_heightmap.cell_is_dilated = h.cell_is_dilated;
-            if (h.global_pos_error) this.incoming_heightmap.global_pos_error = h.global_pos_error;
+            // Separate grid to prevent modifying the original grid object.
+            const { grid, ...rest } = data.heightmap;
+            Object.assign(this.incoming_heightmap, rest);
+            Object.assign(this.incoming_heightmap.grid, grid);
             heightmapDirty = true;
         }
 
-        // Individual leaf bindings, applied on top of any aggregate binding
         if (data.heightmap_sclk_time) { this.incoming_heightmap.sclk_time = data.heightmap_sclk_time; heightmapDirty = true; }
         if (data.heightmap_grid_x_min) { this.incoming_heightmap.grid.x_min = data.heightmap_grid_x_min; heightmapDirty = true; }
         if (data.heightmap_grid_y_min) { this.incoming_heightmap.grid.y_min = data.heightmap_grid_y_min; heightmapDirty = true; }
@@ -750,25 +739,14 @@ export class Enav extends Group implements Annotation<EnavData, EnavOptions> {
 
         let costmapDirty = false;
 
-        // Aggregate whole-table binding, if a single frame was bound to `costmap`
         if (data.costmap) {
-            const c = data.costmap;
-            if (c.sclk_time) this.incoming_costmap.sclk_time = c.sclk_time;
-            if (c.grid) {
-                if (c.grid.x_min) this.incoming_costmap.grid.x_min = c.grid.x_min;
-                if (c.grid.y_min) this.incoming_costmap.grid.y_min = c.grid.y_min;
-                if (c.grid.res) this.incoming_costmap.grid.res = c.grid.res;
-                if (c.grid.radius) this.incoming_costmap.grid.radius = c.grid.radius;
-                if (c.grid.n_cells) this.incoming_costmap.grid.n_cells = c.grid.n_cells;
-            }
-            if (c.cell_type) this.incoming_costmap.cell_type = c.cell_type;
-            if (c.cell_tilt) this.incoming_costmap.cell_tilt = c.cell_tilt;
-            if (c.cell_roughness) this.incoming_costmap.cell_roughness = c.cell_roughness;
-            if (c.cell_cost_type) this.incoming_costmap.cell_cost_type = c.cell_cost_type;
+            // Separate grid to prevent modifying the original grid object.
+            const { grid, ...rest } = data.costmap;
+            Object.assign(this.incoming_costmap, rest);
+            Object.assign(this.incoming_costmap.grid, grid);
             costmapDirty = true;
         }
 
-        // Individual leaf bindings, applied on top of any aggregate binding
         if (data.costmap_sclk_time) { this.incoming_costmap.sclk_time = data.costmap_sclk_time; costmapDirty = true; }
         if (data.costmap_grid_x_min) { this.incoming_costmap.grid.x_min = data.costmap_grid_x_min; costmapDirty = true; }
         if (data.costmap_grid_y_min) { this.incoming_costmap.grid.y_min = data.costmap_grid_y_min; costmapDirty = true; }
@@ -833,11 +811,11 @@ export const enavRegistration = new AnnotationRegistryItem({
         fields: [
             {
                 name: 'heightmap',
-                description: 'navlib.EnavHeightmap DPO table (whole table)'
+                description: 'navlib.EnavHeightmap DPO table'
             },
             {
                 name: 'costmap',
-                description: 'navlib.EnavCostmap DPO table (whole table)'
+                description: 'navlib.EnavCostmap DPO table'
             },
             {
                 name: 'heightmap_sclk_time',

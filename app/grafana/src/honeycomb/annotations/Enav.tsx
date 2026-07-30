@@ -73,8 +73,27 @@ interface EnavDpCostmap {
 }
 
 interface EnavData {
-    heightmap?: EnavDpHeightmap;
-    costmap?: EnavDpCostmap;
+    heightmap_sclk_time: number; // Spacecraft clock time
+    heightmap_grid_x_min: number; // Minimum MAP x coordinate of the grid cells
+    heightmap_grid_y_min: number; // Minimum MAP y coordinate of the grid cells
+    heightmap_grid_res: number; // Resolution of the grid cells
+    heightmap_grid_radius: number; // Radius of the square grid
+    heightmap_grid_n_cells: number; // Number of cells along x/y axis
+    heightmap_cell_z: Float32Array; // cell_z[i * n_cells + j] = cell[i][j].z
+    heightmap_cell_global_pos_error: Float32Array; // cell_global_pos_error[i * n_cells + j] = cell[i][j].global_pos_error
+    heightmap_cell_is_dilated: Uint8Array; // cell_is_dilated[i * n_cells + j] = cell[i][j].is_dilated
+    heightmap_global_pos_error: number;
+    
+    costmap_sclk_time: number; // Spacecraft clock time
+    costmap_grid_x_min: number; // Minimum MAP x coordinate of the grid cells
+    costmap_grid_y_min: number; // Minimum MAP y coordinate of the grid cells
+    costmap_grid_res: number; // Resolution of the grid cells
+    costmap_grid_radius: number; // Radius of the square grid
+    costmap_grid_n_cells: number; // Number of cells along x/y axis
+    costmap_cell_type: Int32Array; // cell_type[i * n_cells + j] = cell[i][j].type
+    costmap_cell_tilt: Float32Array; // cell_tilt[i * n_cells + j] = cell[i][j].tilt
+    costmap_cell_roughness: Float32Array; // cell_roughness[i * n_cells + j] = cell[i][j].roughness
+    costmap_cell_cost_type: Int32Array; // cell_cost_type[i * n_cells + j] = cell[i][j].cost_info.type
 }
 
 const { TextureStampMixin, GridStampMixin } = Mixins;
@@ -235,6 +254,9 @@ const widgetBuilder = (new PanelOptionsEditorBuilder<EnavOptions>())
     });
 
 export class Enav extends Group implements Annotation<EnavData, EnavOptions> {
+    incoming_heightmap: EnavDpHeightmap;
+    incoming_costmap: EnavDpCostmap;
+
     heightmap: SampledTerrain;
     extendedHeightmap: SampledTerrain;
 
@@ -255,6 +277,36 @@ export class Enav extends Group implements Annotation<EnavData, EnavOptions> {
 
     constructor() {
         super();
+
+        this.incoming_heightmap = {
+            sclk_time: 0,
+            grid: {
+                x_min: 0,
+                y_min: 0,
+                res: 0,
+                radius: 0,
+                n_cells: 0
+            },
+            cell_z: new Float32Array(),
+            cell_global_pos_error: new Float32Array(),
+            cell_is_dilated: new Uint8Array(),
+            global_pos_error: 0
+        }
+
+        this.incoming_costmap = {
+            sclk_time: 0,
+            grid: {
+                x_min: 0,
+                y_min: 0,
+                res: 0,
+                radius: 0,
+                n_cells: 0
+            },
+            cell_type: new Int32Array(),
+            cell_tilt: new Float32Array(),
+            cell_roughness: new Float32Array(),
+            cell_cost_type: new Int32Array()
+        }
 
         this.receiveShadow = true;
 
@@ -655,12 +707,52 @@ export class Enav extends Group implements Annotation<EnavData, EnavOptions> {
     }
 
     update(data: EnavData) {
-        if (data.heightmap) {
-            this.updateHeightmap(data.heightmap);
+        if (data.heightmap_sclk_time) this.incoming_heightmap.sclk_time = data.heightmap_sclk_time;
+        if (data.heightmap_grid_x_min) this.incoming_heightmap.grid.x_min = data.heightmap_grid_x_min;
+        if (data.heightmap_grid_y_min) this.incoming_heightmap.grid.y_min = data.heightmap_grid_y_min;
+        if (data.heightmap_grid_res) this.incoming_heightmap.grid.res = data.heightmap_grid_res;
+        if (data.heightmap_grid_radius) this.incoming_heightmap.grid.radius = data.heightmap_grid_radius;
+        if (data.heightmap_grid_n_cells) this.incoming_heightmap.grid.n_cells = data.heightmap_grid_n_cells;
+        if (data.heightmap_cell_z) this.incoming_heightmap.cell_z = data.heightmap_cell_z;
+        if (data.heightmap_cell_global_pos_error) this.incoming_heightmap.cell_global_pos_error = data.heightmap_cell_global_pos_error;
+        if (data.heightmap_cell_is_dilated) this.incoming_heightmap.cell_is_dilated = data.heightmap_cell_is_dilated;
+        if (data.heightmap_global_pos_error) this.incoming_heightmap.global_pos_error = data.heightmap_global_pos_error;
+
+        if (data.heightmap_sclk_time
+            || data.heightmap_grid_x_min
+            || data.heightmap_grid_y_min
+            || data.heightmap_grid_res
+            || data.heightmap_grid_radius
+            || data.heightmap_grid_n_cells
+            || data.heightmap_cell_z
+            || data.heightmap_cell_global_pos_error
+            || data.heightmap_cell_is_dilated
+            || data.heightmap_global_pos_error) {
+                this.updateHeightmap(this.incoming_heightmap);
         }
 
-        if (data.costmap) {
-            this.costmap.update(data.costmap);
+        if (data.costmap_sclk_time) this.incoming_costmap.sclk_time = data.costmap_sclk_time;
+        if (data.costmap_grid_x_min) this.incoming_costmap.grid.x_min = data.costmap_grid_x_min;
+        if (data.costmap_grid_y_min) this.incoming_costmap.grid.y_min = data.costmap_grid_y_min;
+        if (data.costmap_grid_res) this.incoming_costmap.grid.res = data.costmap_grid_res;
+        if (data.costmap_grid_radius) this.incoming_costmap.grid.radius = data.costmap_grid_radius;
+        if (data.costmap_grid_n_cells) this.incoming_costmap.grid.n_cells = data.costmap_grid_n_cells;
+        if (data.costmap_cell_type) this.incoming_costmap.cell_type = data.costmap_cell_type;
+        if (data.costmap_cell_tilt) this.incoming_costmap.cell_tilt = data.costmap_cell_tilt;
+        if (data.costmap_cell_roughness) this.incoming_costmap.cell_roughness = data.costmap_cell_roughness;
+        if (data.costmap_cell_cost_type) this.incoming_costmap.cell_cost_type = data.costmap_cell_cost_type;
+
+        if (data.costmap_sclk_time
+            || data.costmap_grid_x_min
+            || data.costmap_grid_y_min
+            || data.costmap_grid_res
+            || data.costmap_grid_radius
+            || data.costmap_grid_n_cells
+            || data.costmap_cell_type
+            || data.costmap_cell_tilt
+            || data.costmap_cell_roughness
+            || data.costmap_cell_cost_type) {
+                this.costmap.update(this.incoming_costmap);
         }
     }
 
@@ -711,13 +803,85 @@ export const enavRegistration = new AnnotationRegistryItem({
         dataModel: AnnotationSchemaDataModel.structured,
         fields: [
             {
-                name: 'heightmap',
-                description: 'navlib.EnavHeightmap DPO table'
+                name: 'heightmap_sclk_time',
+                description: 'Spacecraft clock time'
             },
             {
-                name: 'costmap',
-                description: 'navlib.EnavCostmap DPO table'
-            }
+                name: 'heightmap_grid_x_min',
+                description: 'Minimum MAP x coordinate of the grid cells'
+            },
+            {
+                name: 'heightmap_grid_y_min',
+                description: 'Minimum MAP y coordinate of the grid cells'
+            },
+            {
+                name: 'heightmap_grid_res',
+                description: 'Resolution of the grid cells'
+            },
+            {
+                name: 'heightmap_grid_radius',
+                description: 'Radius of the square grid'
+            },
+            {
+                name: 'heightmap_grid_n_cells',
+                description: 'Number of cells along x/y axis'
+            },
+            {
+                name: 'heightmap_cell_z',
+                description: 'cell_z[i * n_cells + j] = cell[i][j].z'
+            },
+            {
+                name: 'heightmap_cell_global_pos_error',
+                description: 'cell_global_pos_error[i * n_cells + j] = cell[i][j].global_pos_error'
+            },
+            {
+                name: 'heightmap_cell_is_dilated',
+                description: 'cell_is_dilated[i * n_cells + j] = cell[i][j].is_dilated'
+            },
+            {
+                name: 'heightmap_global_pos_error',
+                description: 'global_pos_error'
+            },
+            {
+                name: 'costmap_sclk_time',
+                description: 'Spacecraft clock time'
+            },
+            {
+                name: 'costmap_grid_x_min',
+                description: 'Minimum MAP x coordinate of the grid cells'
+            },
+            {
+                name: 'costmap_grid_y_min',
+                description: 'Minimum MAP y coordinate of the grid cells'
+            },
+            {
+                name: 'costmap_grid_res',
+                description: 'Resolution of the grid cells'
+            },
+            {
+                name: 'costmap_grid_radius',
+                description: 'Radius of the square grid'
+            },
+            {
+                name: 'costmap_grid_n_cells',
+                description: 'Number of cells along x/y axis'
+            },
+            {
+                name: 'costmap_cell_type',
+                description: 'cell_type[i * n_cells + j] = cell[i][j].type'
+            },
+            {
+                name: 'costmap_cell_tilt',
+                description: 'cell_tilt[i * n_cells + j] = cell[i][j].tilt'
+            },
+            {
+                name: 'costmap_cell_roughness',
+                description: 'cell_roughness[i * n_cells + j] = cell[i][j].roughness'
+            },
+            {
+                name: 'costmap_cell_cost_type',
+                description: 'cell_cost_type[i * n_cells + j] = cell[i][j].cost_info.type'
+            },
         ]
     }
 });

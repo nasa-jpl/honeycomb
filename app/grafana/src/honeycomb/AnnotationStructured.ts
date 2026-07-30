@@ -50,11 +50,30 @@ const arraySegmentRegex = /^([A-Za-z_][A-Za-z0-9_]*)\[([0-9]+)\]$/;
 /**
  * Given a table column, parse where in the nested structure it will appear.
  * @param field Grafana table column (field)
+ * @param ignoreFirstSegment Drop a single leading path segment
+ * @param stripPath Drop this exact leading dot-path prefix (e.g.
+ *   "navlib.EnavHeightmap.value"). Only stripped when the field name actually
+ *   starts with it, so fields that don't share the prefix are left untouched.
  * @returns Intermediate parsed path
  */
-function extractSegments<T>(field: Field<T>, ignoreFirstSegment = false): SegmentedPath<T> {
+function extractSegments<T>(
+    field: Field<T>,
+    ignoreFirstSegment = false,
+    stripPath?: string
+): SegmentedPath<T> {
+    let name = field.name;
+
+    // Strip a multi-segment prefix if the field name carries it
+    if (stripPath) {
+        if (name === stripPath) {
+            name = '';
+        } else if (name.startsWith(stripPath + '.')) {
+            name = name.slice(stripPath.length + 1);
+        }
+    }
+
     // Split `key.nested.array[0]` into `["key", "nested", "array[0]"]`
-    const subSegments = field.name.split('.');
+    const subSegments = name.split('.');
 
     if (ignoreFirstSegment) {
         subSegments.shift();
@@ -266,7 +285,8 @@ export class StructuredValue<T> {
     constructor(
         table: DataFrame,
         time: Field<number>,
-        ignoreFirstSegment = false
+        ignoreFirstSegment = false,
+        stripPath?: string
     ) {
         // Collect the special `type:` fields to mark the path
         // segments with their special contructors
@@ -295,7 +315,7 @@ export class StructuredValue<T> {
                 continue;
             }
 
-            const path = extractSegments(field, ignoreFirstSegment);
+            const path = extractSegments(field, ignoreFirstSegment, stripPath);
             if (typeFields[field.name]) {
                 path.type = typeFields[field.name];
             }
@@ -462,7 +482,8 @@ class AnnotationValueTable<T extends object> extends AnimatedChannelBase<T | nul
                 this.row = new StructuredValue(
                     table,
                     this.timeField,
-                    this.table?.ignoreFirstSegment
+                    this.table?.ignoreFirstSegment,
+                    this.table?.stripPath
                 );
             }
         }

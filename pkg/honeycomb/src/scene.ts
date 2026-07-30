@@ -143,6 +143,11 @@ export interface Table {
     table?: string | null;
 
     ignoreFirstSegment?: boolean;
+
+    // Strip this leading dot-path prefix from every field name before
+    // reconstructing the nested object (e.g. "navlib.EnavHeightmap.value").
+    // Generalizes ignoreFirstSegment for multi-level prefixes.
+    stripPath?: string;
 }
 
 export interface AnnotationOptions<TOptions> {

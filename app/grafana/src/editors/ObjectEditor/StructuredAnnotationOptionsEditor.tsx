@@ -7,7 +7,7 @@ import {
     PanelOptionsEditorProps
 } from "@grafana/data";
 
-import { Checkbox, CodeEditor, Field, InlineLabel, Select, Stack } from "@grafana/ui";
+import { Checkbox, CodeEditor, Field, Input, InlineLabel, Select, Stack } from "@grafana/ui";
 
 import { AnnotationSceneObject, AnnotationSchemaDataModel, Table, TableSchema } from "@gov.nasa.jpl.honeycomb/core";
 
@@ -90,7 +90,7 @@ const TableEditor: React.FC<TableEditorProps> = ({ data, onChange, value, field 
             timeField = getFirstTimeField(table, data);
             if (timeField) {
                 try {
-                    new StructuredValue(table, timeField);
+                    new StructuredValue(table, timeField, value?.ignoreFirstSegment, value?.stripPath);
                     setError(undefined);
                 } catch (e) {
                     setError(`Can't construct value: ${e}`);
@@ -160,6 +160,17 @@ const TableEditor: React.FC<TableEditorProps> = ({ data, onChange, value, field 
                     value={value?.ignoreFirstSegment}
                     onChange={(e) => onChange({ ...value, ignoreFirstSegment: e.currentTarget.checked })}
                 />
+                <Stack direction="row">
+                    <InlineLabel width="auto">Strip Path</InlineLabel>
+                    <Input
+                        placeholder="e.g. navlib.EnavHeightmap.value"
+                        value={value?.stripPath ?? ''}
+                        onChange={(e) => onChange({
+                            ...value,
+                            stripPath: e.currentTarget.value ? e.currentTarget.value : undefined
+                        })}
+                    />
+                </Stack>
             </Stack>
         </Field>
     );
@@ -198,7 +209,8 @@ export const StructuredAnnotationOptionsEditor: React.FC<
                     out[field.name] = new StructuredValue(
                         table,
                         timeField,
-                        tableValue?.ignoreFirstSegment
+                        tableValue?.ignoreFirstSegment,
+                        tableValue?.stripPath
                     );
                 }
             }

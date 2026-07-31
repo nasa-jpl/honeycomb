@@ -711,6 +711,36 @@ export class Enav extends Group implements Annotation<EnavData, EnavOptions> {
         );
     }
 
+    private decodeCells<T extends Uint8Array | Int32Array | Float32Array>(
+        value: T | string | undefined,
+        Ctor: { new(buf: ArrayBufferLike): T }
+    ): T | undefined {
+        if (value === undefined || value === null) {
+            return undefined;
+        }
+
+        if (typeof value !== 'string') {
+            // Already a typed array
+            return value;
+        }
+
+        return new Ctor(this.hexToArrayBuffer(value));
+    }
+
+    private hexToArrayBuffer(hex: string): ArrayBuffer {
+        if (hex.startsWith('\\x') || hex.startsWith('0x')) {
+            hex = hex.slice(2);
+        }
+
+        const len = hex.length >>> 1;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+            bytes[i] = parseInt(hex.slice(i * 2, i * 2 + 2), 16);
+        }
+
+        return bytes.buffer;
+    }
+
     update(data: EnavData) {
         let heightmapDirty = false;
 
@@ -734,7 +764,13 @@ export class Enav extends Group implements Annotation<EnavData, EnavOptions> {
         if (data.heightmap_global_pos_error) { this.incoming_heightmap.global_pos_error = data.heightmap_global_pos_error; heightmapDirty = true; }
 
         if (heightmapDirty) {
-            this.updateHeightmap(this.incoming_heightmap);
+            // Cell arrays arrive hex-encoded from the datasource; decode to typed arrays.
+            const h = this.incoming_heightmap;
+            h.cell_z = this.decodeCells(h.cell_z, Float32Array) ?? h.cell_z;
+            h.cell_global_pos_error = this.decodeCells(h.cell_global_pos_error, Float32Array) ?? h.cell_global_pos_error;
+            h.cell_is_dilated = this.decodeCells(h.cell_is_dilated, Uint8Array) ?? h.cell_is_dilated;
+
+            this.updateHeightmap(h);
         }
 
         let costmapDirty = false;
@@ -759,7 +795,14 @@ export class Enav extends Group implements Annotation<EnavData, EnavOptions> {
         if (data.costmap_cell_cost_type) { this.incoming_costmap.cell_cost_type = data.costmap_cell_cost_type; costmapDirty = true; }
 
         if (costmapDirty) {
-            this.costmap.update(this.incoming_costmap);
+            // Cell arrays arrive hex-encoded from the datasource; decode to typed arrays.
+            const c = this.incoming_costmap;
+            c.cell_type = this.decodeCells(c.cell_type, Int32Array) ?? c.cell_type;
+            c.cell_tilt = this.decodeCells(c.cell_tilt, Float32Array) ?? c.cell_tilt;
+            c.cell_roughness = this.decodeCells(c.cell_roughness, Float32Array) ?? c.cell_roughness;
+            c.cell_cost_type = this.decodeCells(c.cell_cost_type, Int32Array) ?? c.cell_cost_type;
+
+            this.costmap.update(c);
         }
     }
 

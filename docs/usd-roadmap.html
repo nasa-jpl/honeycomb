@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>USD × Honeycomb — Internship Roadmap</title>
+<style>
+  :root {
+    --bg: #0e1116;
+    --bg-soft: #151a22;
+    --bg-card: #1a212b;
+    --bg-card-hi: #202a36;
+    --border: #2a3542;
+    --text: #e6edf3;
+    --text-dim: #9aa7b4;
+    --text-faint: #6b7a89;
+    --accent: #f5b301;
+    --accent-2: #ffcf4a;
+    --accent-soft: rgba(245, 179, 1, 0.12);
+    --green: #3fb950;
+    --blue: #58a6ff;
+    --purple: #bc8cff;
+    --radius: 14px;
+    --shadow: 0 6px 24px rgba(0,0,0,0.35);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: radial-gradient(1200px 600px at 80% -10%, #1b2430 0%, var(--bg) 55%);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  a { color: var(--accent-2); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code {
+    font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+    background: #0b0e13;
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 6px;
+    font-size: 0.86em;
+    color: #ffd97a;
+  }
+  .layout { display: flex; max-width: 1200px; margin: 0 auto; }
+
+  /* Sidebar */
+  aside {
+    position: sticky; top: 0; align-self: flex-start;
+    height: 100vh; width: 240px; flex: 0 0 240px;
+    padding: 26px 18px; border-right: 1px solid var(--border);
+    overflow-y: auto;
+  }
+  aside .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  aside .hex { width: 26px; height: 26px; }
+  aside .brand h1 { font-size: 1rem; margin: 0; letter-spacing: 0.3px; }
+  aside .sub { color: var(--text-faint); font-size: 0.78rem; margin: 0 0 22px 0; }
+  nav a {
+    display: block; color: var(--text-dim); font-size: 0.9rem;
+    padding: 7px 10px; border-radius: 8px; margin-bottom: 2px;
+  }
+  nav a:hover { background: var(--bg-card); color: var(--text); text-decoration: none; }
+  nav .divider { height: 1px; background: var(--border); margin: 14px 4px; }
+  .mini-progress { margin-top: 18px; font-size: 0.75rem; color: var(--text-faint); }
+
+  /* Main */
+  main { flex: 1; padding: 40px 44px 120px; min-width: 0; }
+  header.hero { margin-bottom: 34px; }
+  .hero .tag {
+    display: inline-block; background: var(--accent-soft); color: var(--accent-2);
+    border: 1px solid rgba(245,179,1,0.3); padding: 4px 12px; border-radius: 999px;
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 14px;
+  }
+  .hero h1 { font-size: 2.1rem; margin: 0 0 10px; line-height: 1.2; }
+  .hero h1 span { color: var(--accent); }
+  .hero p.lead { color: var(--text-dim); font-size: 1.05rem; max-width: 760px; margin: 0; }
+
+  section { margin-bottom: 40px; scroll-margin-top: 20px; }
+  h2 {
+    font-size: 1.4rem; margin: 0 0 4px; display: flex; align-items: center; gap: 10px;
+  }
+  h2 .num {
+    font-size: 0.8rem; background: var(--bg-card-hi); border: 1px solid var(--border);
+    color: var(--accent-2); width: 26px; height: 26px; display: inline-flex;
+    align-items: center; justify-content: center; border-radius: 8px; flex: 0 0 auto;
+  }
+  h3 { font-size: 1.05rem; margin: 22px 0 8px; color: var(--text); }
+  p { color: var(--text-dim); }
+  .card {
+    background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-soft) 100%);
+    border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 22px 24px; box-shadow: var(--shadow);
+  }
+  .callout {
+    border-left: 3px solid var(--accent); background: var(--accent-soft);
+    padding: 12px 16px; border-radius: 8px; margin: 16px 0; color: var(--text);
+  }
+  .callout.blue { border-color: var(--blue); background: rgba(88,166,255,0.1); }
+  .callout.purple { border-color: var(--purple); background: rgba(188,140,255,0.1); }
+  .callout b { color: var(--text); }
+
+  /* Flow diagram */
+  .flow { display: flex; flex-wrap: wrap; align-items: stretch; gap: 10px; margin: 18px 0; }
+  .flow .node {
+    flex: 1; min-width: 150px; background: var(--bg-card-hi); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px; text-align: center;
+  }
+  .flow .node .t { font-weight: 600; font-size: 0.92rem; }
+  .flow .node .d { font-size: 0.76rem; color: var(--text-faint); margin-top: 4px; }
+  .flow .arrow { align-self: center; color: var(--accent); font-size: 1.2rem; }
+
+  /* Overall progress */
+  .progress-wrap { margin: 8px 0 6px; }
+  .bar {
+    height: 12px; background: #0b0e13; border: 1px solid var(--border);
+    border-radius: 999px; overflow: hidden;
+  }
+  .bar > span {
+    display: block; height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%);
+    transition: width 0.4s ease;
+  }
+  .bar.small { height: 7px; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--text-dim); margin-bottom: 6px; }
+  .progress-label b { color: var(--accent-2); }
+
+  /* Week cards */
+  .week {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); margin-bottom: 16px; overflow: hidden;
+  }
+  .week-head {
+    display: flex; align-items: center; gap: 14px; padding: 16px 20px; cursor: pointer;
+    user-select: none;
+  }
+  .week-head:hover { background: var(--bg-card-hi); }
+  .week-badge {
+    flex: 0 0 auto; width: 46px; height: 46px; border-radius: 10px;
+    background: var(--accent-soft); border: 1px solid rgba(245,179,1,0.3);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: var(--accent-2);
+  }
+  .week-badge .wk { font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase; }
+  .week-badge .no { font-size: 1.25rem; font-weight: 700; line-height: 1; }
+  .week-title { flex: 1; min-width: 0; }
+  .week-title h3 { margin: 0; font-size: 1.05rem; }
+  .week-title p { margin: 2px 0 0; font-size: 0.82rem; color: var(--text-faint); }
+  .week-meta { flex: 0 0 auto; text-align: right; font-size: 0.78rem; color: var(--text-dim); }
+  .week-meta .pct { color: var(--accent-2); font-weight: 700; font-size: 0.95rem; }
+  .chevron { transition: transform 0.25s ease; color: var(--text-faint); margin-left: 8px; }
+  .week.open .chevron { transform: rotate(90deg); }
+  .week-body {
+    display: none; padding: 4px 20px 18px; border-top: 1px solid var(--border);
+  }
+  .week.open .week-body { display: block; }
+  .goal-line {
+    font-size: 0.86rem; color: var(--text-dim); margin: 14px 0 12px;
+    padding: 10px 14px; background: var(--bg-soft); border-radius: 8px; border: 1px dashed var(--border);
+  }
+  .goal-line b { color: var(--accent-2); }
+  .learn { margin: 10px 0 4px; font-size: 0.82rem; color: var(--text-faint); }
+  .learn b { color: var(--text-dim); }
+
+  /* Tasks */
+  ul.tasks { list-style: none; padding: 0; margin: 6px 0; }
+  ul.tasks li {
+    display: flex; align-items: flex-start; gap: 12px; padding: 9px 10px;
+    border-radius: 8px;
+  }
+  ul.tasks li:hover { background: var(--bg-soft); }
+  ul.tasks li label { display: flex; align-items: flex-start; gap: 12px; cursor: pointer; flex: 1; }
+  ul.tasks input[type=checkbox] {
+    appearance: none; -webkit-appearance: none; flex: 0 0 auto;
+    width: 19px; height: 19px; margin-top: 2px; border: 2px solid var(--text-faint);
+    border-radius: 6px; cursor: pointer; position: relative; transition: all 0.15s;
+  }
+  ul.tasks input[type=checkbox]:hover { border-color: var(--accent); }
+  ul.tasks input[type=checkbox]:checked { background: var(--accent); border-color: var(--accent); }
+  ul.tasks input[type=checkbox]:checked::after {
+    content: "✓"; position: absolute; color: #10141a; font-size: 13px; font-weight: 900;
+    left: 2.5px; top: -2px;
+  }
+  ul.tasks .task-text { flex: 1; font-size: 0.92rem; color: var(--text); }
+  ul.tasks .task-text .why { display: block; font-size: 0.78rem; color: var(--text-faint); margin-top: 2px; }
+  ul.tasks li.done .task-text { color: var(--text-faint); text-decoration: line-through; }
+  ul.tasks li.done .task-text .why { text-decoration: none; }
+  .pill {
+    font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700;
+    padding: 2px 7px; border-radius: 5px; flex: 0 0 auto; margin-top: 3px;
+  }
+  .pill.code { background: rgba(63,185,80,0.15); color: var(--green); border: 1px solid rgba(63,185,80,0.3); }
+  .pill.learn { background: rgba(88,166,255,0.15); color: var(--blue); border: 1px solid rgba(88,166,255,0.3); }
+  .pill.stretch { background: rgba(188,140,255,0.15); color: var(--purple); border: 1px solid rgba(188,140,255,0.3); }
+
+  table.files { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 0.88rem; }
+  table.files th, table.files td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--border); }
+  table.files th { color: var(--text-faint); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; }
+  table.files td { color: var(--text-dim); vertical-align: top; }
+  table.files td:first-child { white-space: nowrap; }
+
+  .toolbar { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+  button.btn {
+    background: var(--bg-card-hi); color: var(--text-dim); border: 1px solid var(--border);
+    padding: 8px 14px; border-radius: 8px; font-size: 0.82rem; cursor: pointer; transition: all 0.15s;
+  }
+  button.btn:hover { background: var(--bg-card); color: var(--text); border-color: var(--text-faint); }
+  button.btn.danger:hover { border-color: #f85149; color: #f85149; }
+
+  .note-box { margin-top: 10px; }
+  .note-box textarea {
+    width: 100%; min-height: 90px; background: #0b0e13; border: 1px solid var(--border);
+    border-radius: 8px; color: var(--text); padding: 12px; font-family: inherit; font-size: 0.88rem;
+    resize: vertical;
+  }
+  footer { color: var(--text-faint); font-size: 0.82rem; text-align: center; padding: 30px 0 10px; border-top: 1px solid var(--border); }
+
+  @media (max-width: 860px) {
+    aside { display: none; }
+    main { padding: 24px 18px 80px; }
+    .hero h1 { font-size: 1.6rem; }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+  <!-- Sidebar -->
+  <aside>
+    <div class="brand">
+      <svg class="hex" viewBox="0 0 100 100" fill="none"><polygon points="50,3 93,26 93,74 50,97 7,74 7,26" stroke="#f5b301" stroke-width="6" fill="rgba(245,179,1,0.12)"/></svg>
+      <h1>USD × Honeycomb</h1>
+    </div>
+    <p class="sub">4-week intern roadmap</p>
+    <nav>
+      <a href="#goal">The End Goal</a>
+      <a href="#bigpicture">Big Picture</a>
+      <a href="#concepts">Concepts Primer</a>
+      <a href="#howitconnects">How It Connects</a>
+      <a href="#branching">Branching &amp; Git</a>
+      <a href="#devloop">Dev Loop &amp; Testing</a>
+      <div class="divider"></div>
+      <a href="#weeks">Weekly Plan</a>
+      <a href="#week-1">→ Week 1 · M0</a>
+      <a href="#week-2">→ Week 2 · M1</a>
+      <a href="#week-3">→ Week 3 · M2–M3</a>
+      <a href="#week-4">→ Week 4 · M4</a>
+      <div class="divider"></div>
+      <a href="#adapt">Staying Adaptable</a>
+      <a href="#resources">Resources</a>
+    </nav>
+    <div class="mini-progress">
+      <div class="progress-label" style="margin-bottom:4px;"><span>Overall</span><b id="mini-pct">0%</b></div>
+      <div class="bar small"><span id="mini-bar"></span></div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main>
+    <header class="hero">
+      <span class="tag">PERSONAL PROJECT GUIDE</span>
+      <h1>Adding <span>USD file support</span> to Honeycomb</h1>
+      <p class="lead">Hey! This is your living roadmap — now a focused <b>4-week</b> plan. The idea: load one USD file and have it build a whole scene (instead of wiring up a bunch of URDFs by hand), then animate parts of it with telemetry channels. You're <b>not</b> expected to finish everything — the <b>M0–M4 milestones are the real backbone</b>; weeks are just a suggested pace. Check things off, take notes, and reshape the plan as you learn.</p>
+      <div class="progress-wrap" style="margin-top:26px; max-width:520px;">
+        <div class="progress-label"><span>Total progress</span><b><span id="done-count">0</span> / <span id="total-count">0</span> tasks · <span id="overall-pct">0%</span></b></div>
+        <div class="bar"><span id="overall-bar"></span></div>
+      </div>
+    </header>
+
+    <!-- GOAL -->
+    <section id="goal">
+      <h2><span class="num">★</span> The End Goal (read this first)</h2>
+      <div class="card">
+        <p style="margin-top:0;">Right now, to build a scene in Honeycomb you list out every model in a JSON config — each URDF, mesh, terrain, etc. — with its position and parent. Your mission is to let someone instead drop in a single <b>USD file</b> that describes the <i>entire</i> scene (all the objects, their hierarchy, their transforms), and have Honeycomb load it all at once.</p>
+        <p>Then — the fun part — telemetry channels (live/recorded data) should be able to <b>animate</b> the pieces of that USD scene: move the rover, rotate an arm joint, etc.</p>
+        <div class="callout"><b>Why this matters:</b> USD (Universal Scene Description) is becoming the industry standard for describing 3D scenes — Pixar, NVIDIA Omniverse, Apple, and increasingly robotics all use it. Supporting it makes Honeycomb interoperable with a huge ecosystem and way easier to author scenes for.</div>
+      </div>
+    </section>
+
+    <!-- BIG PICTURE -->
+    <section id="bigpicture">
+      <h2><span class="num">1</span> Big Picture: what Honeycomb does with files today</h2>
+      <div class="card">
+        <p style="margin-top:0;">Honeycomb is a 3D robotics visualization tool built on <b>Three.js</b> (the standard WebGL library for the browser). There are three separate "file" jobs happening:</p>
+        <div class="flow">
+          <div class="node"><div class="t">Model files</div><div class="d">glTF, OBJ, URDF, STL… → one 3D object each</div></div>
+          <div class="arrow">→</div>
+          <div class="node"><div class="t">Scene config (JSON)</div><div class="d">the list of objects + where they go</div></div>
+          <div class="arrow">→</div>
+          <div class="node"><div class="t">Telemetry</div><div class="d">time-based data that moves objects</div></div>
+        </div>
+        <h3>Where the code lives</h3>
+        <table class="files">
+          <tr><th>File</th><th>What it does</th></tr>
+          <tr><td><code>pkg/honeycomb/src/Loaders.ts</code></td><td>The <b>loader registry</b>. Every file type registers a loader keyed by extension. A model loader takes a path and returns a Three.js <code>Object3D</code>. This is where a USD loader will plug in.</td></tr>
+          <tr><td><code>honeycomb-extensions/src/index.ts</code></td><td>Where all the concrete loaders (glTF, OBJ, URDF…) actually get registered. You'll add your USD one here.</td></tr>
+          <tr><td><code>honeycomb-extensions/src/models/</code></td><td>The tiny wrapper files for each loader. <code>gltfModelLoader.ts</code> is ~10 lines — a perfect template.</td></tr>
+          <tr><td><code>pkg/honeycomb/src/scene.ts</code></td><td>Defines the <b>Scene</b> data model — a flat list of objects with <code>parent</code>, <code>position</code>, <code>orientation</code>. This is what a USD file would eventually replace/generate.</td></tr>
+          <tr><td><code>honeycomb-extensions/src/drivers/KinematicsDriver.ts</code></td><td>The thing that takes telemetry and <b>moves objects by name</b>. Key insight below.</td></tr>
+        </table>
+        <div class="callout blue"><b>The single most important thing to understand:</b> telemetry doesn't attach to files — it attaches to objects <b>by name</b> in a map called <code>viewer.objects[name]</code>. So a channel named <code>"rover"</code> moves whatever object is registered as <code>"rover"</code>. Everything in this project revolves around getting USD prims (nodes) into that map with the right names.</div>
+      </div>
+    </section>
+
+    <!-- CONCEPTS -->
+    <section id="concepts">
+      <h2><span class="num">2</span> Concepts Primer (the new stuff, quickly)</h2>
+      <div class="card">
+        <h3 style="margin-top:0;">USD in plain English</h3>
+        <p><b>USD (Universal Scene Description)</b> is a format <i>and</i> a runtime for describing 3D scenes. Unlike glTF (which delivers one asset), USD is built to <b>assemble whole scenes</b> from many pieces without destroying the originals.</p>
+        <ul style="color:var(--text-dim); font-size:0.92rem;">
+          <li><b>Stage</b> — the fully composed scene you actually view.</li>
+          <li><b>Prim</b> — a node in the scene tree (an Xform/transform, a Mesh, a Camera, a Light). Each has a <b>path</b> like <code>/rover/arm/wrist</code>.</li>
+          <li><b>Attribute</b> — typed data on a prim (position, color…), and it can be <b>time-sampled</b> (change over time — sound familiar? that overlaps with telemetry).</li>
+          <li><b>Composition</b> — USD's superpower: <code>references</code>, <code>payloads</code>, and <code>variants</code> let many files layer into one scene.</li>
+          <li><b>File types</b> — <code>.usda</code> (human-readable text), <code>.usdc</code> (binary), <code>.usdz</code> (zipped bundle with textures — most web-friendly), <code>.usd</code> (either).</li>
+        </ul>
+        <div class="callout purple"><b>Reality check — and good news (updated Aug 2026):</b> This repo currently installs <code>three@0.169.0</code>, which ships only the old <code>USDZLoader</code> — it reads a <i>subset</i> of ASCII <code>.usda</code>/<code>.usdz</code> geometry and <b>explicitly throws</b> on binary <code>.usdc</code> ("crate") files. <b>But</b> as of <b>three r183+</b> there's a new, separate <code>USDLoader</code> that genuinely decodes binary <code>.usdc</code> — in <b>pure JavaScript, no WebAssembly required</b> (it hand-rolls the crate parser). So the old "you'll eventually need OpenUSD-in-WASM for <code>.usdc</code>" plan is <b>no longer necessary</b> for basic geometry. The one catch: getting <code>USDLoader</code> means upgrading <code>three</code> from 0.169 → ≥0.183 across the workspace (details in Week 2). Plan: prove the plumbing on the installed ASCII loader first, then upgrade and switch to <code>USDLoader</code>.</div>
+        <h3>Three.js in plain English</h3>
+        <p>Everything visible is an <code>Object3D</code> arranged in a tree. Meshes have geometry + material. Objects have <code>.position</code> and <code>.quaternion</code> (rotation). Moving something = changing those values. Honeycomb already does all the rendering — you mostly produce <code>Object3D</code>s and give them the right names.</p>
+      </div>
+    </section>
+
+    <!-- HOW IT CONNECTS -->
+    <section id="howitconnects">
+      <h2><span class="num">3</span> How every week connects to the goal</h2>
+      <div class="card">
+        <p style="margin-top:0;">Think of it as a pipeline you build left-to-right. Each week unlocks the next piece:</p>
+        <div class="flow">
+          <div class="node"><div class="t">Wk 1 · M0</div><div class="d">Understand + display a USD file at all</div></div>
+          <div class="arrow">→</div>
+          <div class="node"><div class="t">Wk 2 · M1</div><div class="d">Keep prim names so objects are addressable</div></div>
+          <div class="arrow">→</div>
+          <div class="node"><div class="t">Wk 3 · M2–M3</div><div class="d">Drive a prim (then a joint) from telemetry</div></div>
+          <div class="arrow">→</div>
+          <div class="node"><div class="t">Wk 4 · M4</div><div class="d">One USD → many objects; polish, doc, demo</div></div>
+        </div>
+        <div class="callout"><b>The through-line:</b> a USD file is useless to Honeycomb until its parts land in <code>viewer.objects[name]</code> and can be moved by <code>KinematicsDriver</code>. Week 1 gets one part <i>in</i>; weeks 2–3 make it <i>move</i>; week 4 scales it to a whole scene and makes it <i>shippable</i>. <b>Polish and docs aren't a separate week anymore — fold them into each milestone as you go</b> (write the design notes while the details are fresh).</div>
+
+        <h3>Two paths: Grafana vs Caspian (important nuance)</h3>
+        <p style="margin-top:0;">There are two front-ends, and they wire telemetry to objects a little differently — but <b>both end up at the same runtime</b> (<code>KinematicsDriver</code> → <code>viewer.objects</code>).</p>
+        <table class="files">
+          <tr><th>Path</th><th>How channels get matched to objects</th></tr>
+          <tr><td><b>Grafana</b> (recommended)</td><td>There's a real <b>editor UI</b>. Every object's <code>position</code>, <code>orientation</code>, and each <code>joint</code> is a <b>Channel</b> you bind to a data field via a dropdown (<code>editors/ObjectEditor/TransformEditor.tsx</code> → <code>editors/ChannelEditor.tsx</code>). At playback, <code>GrafanaKinematicsAnimator</code> builds one <code>AnimatedRobot</code> per object (keyed by <code>obj.id</code>) and emits state → same driver.</td></tr>
+          <tr><td><b>Caspian</b> (legacy)</td><td>Bindings come from the JSON config directly; objects are looked up by name in <code>viewer.objects[name]</code>. No editor UI.</td></tr>
+        </table>
+        <div class="callout blue"><b>Why this matters for USD (and it's great news):</b> the Grafana channel-matching UI is generated entirely from <code>options.scene</code> — the list of <code>SceneObject</code>s. So the moment your USD prims become <code>SceneObject</code>s (each with a stable <code>id</code>, <code>name</code>, <code>position</code>, <code>orientation</code>, <code>joints</code>), they <b>automatically show up in the editor</b> and become bindable to telemetry channels — <b>no new UI needed</b>. This makes "USD → SceneObjects" (milestone M4) the real unlock.</div>
+
+        <h3>Two loaders: <code>USDZLoader</code> (installed) vs <code>USDLoader</code> (upgrade)</h3>
+        <p style="margin-top:0;">There's a second either/or on top of Grafana-vs-Caspian: <i>which three.js loader you build against</i>. This was verified against the actual code (Aug 2026):</p>
+        <table class="files">
+          <tr><th>Loader</th><th>What it does &amp; when to use it</th></tr>
+          <tr><td><b><code>USDZLoader</code></b><br>(in repo now, three 0.169)</td><td>Parses <b>ASCII</b> <code>.usda</code> and ASCII-inside-<code>.usdz</code> only. It detects binary <code>.usdc</code> and <b>throws</b> ("Crate files… are not supported"). <b>Use it for Weeks 1–3</b> — zero dependency changes, so you can prove the whole pipeline fast.</td></tr>
+          <tr><td><b><code>USDLoader</code></b><br>(three r183+ / ≥0.183)</td><td>The new superset loader. Genuinely decodes <b>binary <code>.usdc</code></b> (crate format) in <b>pure JS — no WASM</b>. <code>USDZLoader</code> is now a deprecated subclass of it. <b>Switch to it once you upgrade <code>three</code></b> (see Week 4 / the upgrade note).</td></tr>
+        </table>
+        <div class="callout purple"><b>Recommended sequence:</b> don't block on the upgrade. Build your loader wrapper against the ASCII path first and hit M0–M2. Then do the <code>three</code> 0.169 → ≥0.183 bump as its <b>own separate branch/PR</b>, and finally swap in <code>USDLoader</code> to unlock <code>.usdc</code>. Keeping the dependency bump off the critical path means a rendering regression can't sink your USD milestones.</div>
+      </div>
+    </section>
+
+    <!-- BRANCHING -->
+    <section id="branching">
+      <h2><span class="num">✦</span> Branching &amp; Git workflow</h2>
+      <div class="card">
+        <p style="margin-top:0;">You're already on the <code>feat-usd-file-handling</code> branch — good. A little branch hygiene keeps the risky bits isolated and your PRs reviewable. The guiding idea: <b>one branch per independently-shippable/revertable chunk of work.</b></p>
+        <h3 style="margin-top:0;">Suggested branches</h3>
+        <table class="files">
+          <tr><th>Branch</th><th>Contains</th><th>Why separate</th></tr>
+          <tr><td><code>feat-usd-file-handling</code></td><td>The USD <b>loader</b> + registration (Weeks 1–3, ASCII path). Your current branch.</td><td>The core feature; no dependency changes, so it's safe to merge on its own.</td></tr>
+          <tr><td><code>chore-upgrade-three-0.183</code></td><td><b>Only</b> the <code>three</code> version bump across all 23 <code>package.json</code>s + lockfile + fixing any <code>examples/jsm</code> fallout.</td><td>Touches the whole 3D stack. Isolating it means if it breaks rendering, you revert one PR — not your USD work.</td></tr>
+          <tr><td><code>feat-usd-usdc-loader</code></td><td>Swapping your loader to <code>USDLoader</code> for binary <code>.usdc</code>. Branch this <i>off</i> the upgrade branch.</td><td>Depends on the upgrade; keeping it downstream keeps history clean.</td></tr>
+        </table>
+        <div class="callout blue"><b>Everyday commands</b> (adapt to your team's conventions):
+          <ul style="margin:8px 0 0; color:var(--text);">
+            <li>Start clean from main: <code>git checkout main &amp;&amp; git pull &amp;&amp; git checkout -b feat-usd-file-handling</code></li>
+            <li>Commit small &amp; often with clear messages: <code>git add -p</code> then <code>git commit -m "USD: add usdModelLoader wrapping USDZLoader"</code></li>
+            <li>Push &amp; open a <b>draft PR early</b> (Week 1) for feedback: <code>git push -u origin feat-usd-file-handling</code></li>
+            <li>Keep up to date to avoid painful merges: <code>git fetch origin &amp;&amp; git rebase origin/main</code></li>
+            <li>Start the upgrade branch off main (not off your feature): <code>git checkout main &amp;&amp; git checkout -b chore-upgrade-three-0.183</code></li>
+          </ul>
+        </div>
+        <div class="callout"><b>Before you touch dependencies,</b> confirm the <code>three</code> pin. It's declared as <code>^0.169.0</code> in <b>23 files</b> (all <code>pkg/*</code> 3D packages + both apps), and because three is <code>0.x</code>, the caret locks you to <code>0.169.x</code>. Upgrading = editing every specifier to <code>^0.183.0</code> and regenerating <code>yarn.lock</code>. <code>three-mesh-bvh@0.9.1</code> is <b>not</b> a blocker (its peer range is <code>&gt;=0.159.0</code>). Highest risk on upgrade: <code>three/examples/jsm</code> post-processing, lines, and controls imports (esp. <code>TransformControls</code>) — build both apps and smoke-test rendering after bumping.</div>
+      </div>
+    </section>
+
+    <!-- DEV LOOP -->
+    <section id="devloop">
+      <h2><span class="num">⟳</span> Dev loop: how do I test a change?</h2>
+      <div class="card">
+        <p style="margin-top:0;">Great instinct to ask — this trips people up. The key fact about this repo: <b>the <code>pkg/*</code> packages are consumed as raw TypeScript source, not pre-built <code>dist/</code> folders.</b> I checked — <code>pkg/honeycomb/package.json</code> has <code>"main": "src/index.ts"</code>, there's no build step, and it's a Yarn workspace so <code>node_modules/@gov.nasa.jpl.honeycomb/*</code> symlinks straight into <code>pkg/*</code>. <b>The app's own webpack compiles that source.</b></p>
+        <div class="callout blue"><b>What this means (the good news):</b> when you edit a core file like <code>usdModelLoader.ts</code> in <code>pkg/honeycomb-extensions/</code>, you do <b>NOT</b> separately build the package. The app's webpack (running in <code>--watch</code>) sees the changed source through the symlink and rebuilds automatically. There is no "rebuild the honeycomb package" step.</div>
+
+        <h3>Grafana (recommended) — the two-process loop</h3>
+        <p style="margin-top:0;">Grafana loads the plugin from <code>app/grafana/dist/</code>, and the <code>docker-compose.yaml</code> bind-mounts <code>./dist</code> into the container. So the loop is:</p>
+        <table class="files">
+          <tr><th>Terminal / action</th><th>Command</th><th>What it does</th></tr>
+          <tr><td>1. Build in watch mode</td><td><code>cd app/grafana &amp;&amp; yarn dev</code></td><td>Webpack watches <b>app AND <code>pkg/*</code> source</b>, rebuilds <code>dist/</code> on every save (incl. your core-file edits).</td></tr>
+          <tr><td>2. Run Grafana + InfluxDB</td><td><code>docker compose up</code> (or <code>yarn server</code>)</td><td>Serves the plugin from the mounted <code>dist/</code> at <a href="http://localhost:3001/" target="_blank">localhost:3001</a>.</td></tr>
+          <tr><td>3. See your change</td><td><b>Reload the browser tab</b></td><td>After webpack finishes a rebuild, a refresh loads the new bundle. No container restart needed.</td></tr>
+        </table>
+        <div class="callout"><b>When you DO need more than a browser refresh:</b>
+          <ul style="margin:8px 0 0; color:var(--text);">
+            <li><b>Restart <code>yarn dev</code></b> — after changing a <code>package.json</code> (new dep) or the webpack config. Watch mode doesn't pick those up.</li>
+            <li><b><code>docker compose up --build</code></b> — after changing anything under <code>.config/</code> (the dockerfile, provisioning) or if the plugin isn't showing up at all.</li>
+            <li><b><code>yarn install</code> at the repo root</b> — after pulling changes that touch dependencies, so the workspace symlinks are correct.</li>
+          </ul>
+        </div>
+
+        <h3>Caspian (legacy) — the one-process loop</h3>
+        <p style="margin-top:0;">Simpler, no Docker: <code>cd app/caspian &amp;&amp; yarn start</code> runs <code>webpack serve</code> (dev server with hot reload) at <a href="http://localhost:9000/" target="_blank">localhost:9000</a>. Edit a core file, webpack recompiles, the page reloads. Good for a fast "does my loader return an <code>Object3D</code>?" check before you deal with Grafana's telemetry-binding UI.</p>
+
+        <h3>Fastest inner loop of all: unit tests</h3>
+        <p style="margin-top:0;">You don't need a running app to test loader logic. Packages use Jest (<code>pkg/honeycomb/package.json</code> → <code>"test": "jest"</code>; there's a <code>pkg/honeycomb/test/</code> dir). Run <code>yarn jest</code> in the package (or <code>npx lerna run test</code> from root) for a sub-second loop while you get parsing/naming right — then verify visually in the app. This is also your Week 4 "add a couple of tests" deliverable.</p>
+
+        <div class="callout purple"><b>Recommended rhythm:</b> Jest for loader/mapper logic → Caspian for a quick visual "it renders" → Grafana for the real telemetry-binding demo (M2+). Keep <code>yarn dev</code> running the whole time; you'll mostly just be hitting browser-refresh.</div>
+
+        <h3>CI &amp; the "auto-build + PR-based release" you had on hermes</h3>
+        <p style="margin-top:0;">You're thinking of hermes's <code>grafana-datasource-plugin</code> automation. For reference, here's how it maps — <b>and what this repo already has vs. what it doesn't</b>:</p>
+        <table class="files">
+          <tr><th>hermes workflow</th><th>What it did</th><th>Equivalent here</th></tr>
+          <tr><td><code>grafana-release.yml</code></td><td>On a published GitHub <b>release</b>: builds the frontend + Go backend, stamps the version into <code>plugin.json</code>, packages + signs + validates the <code>.zip</code>, attaches it to the release.</td><td><b>Partial.</b> This repo's <code>.github/workflows/grafana.yml</code> builds + packages the plugin on every push/PR to <code>main</code>, and <code>publish.yml</code> does a Lerna version-and-publish on release — but there's <b>no signing/backend</b> (this is a panel plugin, no Go).</td></tr>
+          <tr><td><code>grafana-cp-update.yml</code></td><td>Monthly scheduled job that opens an <b>automated PR</b> to bump the Grafana create-plugin scaffolding (via <code>grafana/plugin-actions/create-plugin-update</code>, needs a <code>GH_PAT_TOKEN</code>).</td><td><b>Missing.</b> This is the "auto-PR every time" piece you remember. Not present in honeycomb.</td></tr>
+        </table>
+        <div class="callout"><b>Do you need to rebuild that automation? Almost certainly not for the internship.</b> The existing <code>grafana.yml</code> already proves your plugin builds in CI on every PR — that's the safety net that matters. A scheduled auto-update-PR or a signed-release pipeline is <b>infra polish</b>, not part of shipping USD support. If a mentor wants it later, porting hermes's <code>grafana-cp-update.yml</code> is a ~1-file lift — note it as a "possible follow-up" in your hand-off doc rather than spending milestone time on it.</div>
+      </div>
+    </section>
+
+    <!-- WEEKS -->
+    <section id="weeks">
+      <h2><span class="num">◷</span> Weekly Plan &amp; Checklist</h2>
+      <p style="margin-top:-4px;">Click a week to expand. Check off tasks as you go — progress saves automatically in your browser. <span style="color:var(--green);">■</span> code · <span style="color:var(--blue);">■</span> learn/research · <span style="color:var(--purple);">■</span> stretch (only if time).</p>
+
+      <!-- WEEK 1 -->
+      <div class="week" id="week-1">
+        <div class="week-head">
+          <div class="week-badge"><span class="wk">Week</span><span class="no">1</span></div>
+          <div class="week-title">
+            <h3>Orient, then display a USD file (M0) 🎉</h3>
+            <p>Learn the model-loading path, then get a real <code>.usda</code>/<code>.usdz</code> to render.</p>
+          </div>
+          <div class="week-meta"><span class="pct" data-week="1">0%</span><div class="bar small" style="width:70px;margin-top:6px;"><span data-week-bar="1"></span></div></div>
+          <span class="chevron">▸</span>
+        </div>
+        <div class="week-body">
+          <div class="goal-line"><b>Why this week:</b> you can't add a file format until you understand how existing ones flow through the app — and getting <i>any</i> USD content on screen end-to-end validates the whole plumbing with near-zero architectural risk. Reading in the morning, a visible win by week's end. <b>Do this all on the installed <code>USDZLoader</code></b> (ASCII only) — no dependency changes yet.</div>
+          <ul class="tasks" data-week="1">
+            <li><span class="pill code">code</span><label><input type="checkbox"><span class="task-text">Get an app running locally — <b>the Grafana plugin is recommended</b> (per root <code>README.md</code>); Caspian is fine too.<span class="why">You need a working environment to see anything. Grafana's editor pays off in Week 3.</span></span></label></li>
+            <li><span class="pill learn">learn</span><label><input type="checkbox"><span class="task-text">Read <code>Loaders.ts</code> (the <code>ModelLoader</code> interface + <code>registerModelLoader</code>), then trace how <code>gltfModelLoader.ts</code> registers in <code>index.ts</code>.<span class="why">That 14-line gltf wrapper is the exact seam — and the cleanest template — for your USD loader.</span></span></label></li>
+            <li><span class="pill learn">learn</span><label><input type="checkbox"><span class="task-text">Skim <code>scene.ts</code> (<code>SceneObject</code>, <code>ModelObjectData</code>) + a 20-min "What is USD?" intro and the OpenUSD glossary (Stage / Prim / Attribute).<span class="why">Learn the target data model + the USD vocabulary before writing code.</span></span></label></li>
+            <li><span class="pill learn">learn</span><label><input type="checkbox"><span class="task-text">Open <code>node_modules/three/examples/jsm/loaders/USDZLoader.js</code> and note what it accepts/returns — and that it <b>throws on binary <code>.usdc</code></b>.<span class="why">Know its limits before relying on it: ASCII <code>.usda</code>/<code>.usdz</code> only. Binary crate comes later, after the <code>three</code> upgrade.</span></span></label></li>
+            <li><span class="pill code">code</span><label><input type="checkbox"><span class="task-text">Grab a dead-simple <code>.usdz</code>/<code>.usda</code> sample (a cube), then create <code>models/usdModelLoader.ts</code> wrapping <code>USDZLoader</code>, mirroring <code>gltfModelLoader.ts</code>.<span class="why">Start with trivial test data; the loader returns one <code>Object3D</code>.</span></span></label></li>
+            <li><span class="pill code">code</span><label><input type="checkbox"><span class="task-text">Register it in <code>index.ts</code> for <code>ext: ['usdz','usda']</code>, load the sample as a model object in a scene config, and see it render.<span class="why">This is <b>M0</b> — the first visible win.</span></span></label></li>
+            <li><span class="pill learn">learn</span><label><input type="checkbox"><span class="task-text">Log the returned object tree: do prims keep their names? Jot findings in the Notes box.<span class="why">Sets up Week 2 — names are everything.</span></span></label></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- WEEK 2 -->
+      <div class="week" id="week-2">
+        <div class="week-head">
+          <div class="week-badge"><span class="wk">Week</span><span class="no">2</span></div>
+          <div class="week-title">
+            <h3>Make prims addressable by name (M1)</h3>
+            <p>Ensure every USD prim becomes a named, findable object.</p>
+          </div>
+          <div class="week-meta"><span class="pct" data-week="2">0%</span><div class="bar small" style="width:70px;margin-top:6px;"><span data-week-bar="2"></span></div></div>
+          <span class="chevron">▸</span>
+        </div>
+        <div class="week-body">
+          <div class="goal-line"><b>Why this week:</b> telemetry finds objects via <code>viewer.objects[name]</code>. If USD prims don't have stable names Honeycomb can reach, nothing can be animated. This is the bridge from "it renders" to "it moves" — the whole animation half depends on it.</div>
+          <ul class="tasks" data-week="2">
+            <li><span class="pill learn">learn</span><label><input type="checkbox"><span class="task-text">Read <code>viewer.ts</code> around <code>addObject</code> / <code>moveObject</code> / <code>this.objects</code>, then <code>KinematicsDriver.ts</code> where it looks up <code>viewer.objects[frameName]</code> and calls <code>applyStateVector</code>.<span class="why">Understand exactly how objects register by name and how the driver reaches them — that's your target.</span></span></label></li>
+            <li><span class="pill code">code</span><label><input type="checkbox"><span class="task-text">In your loader, preserve each USD prim's path/name as the Three object's <code>.name</code>.<span class="why"><b>M1</b> — names are the handles telemetry will grab.</span></span></label></li>
+            <li><span class="pill code">code</span><label><input type="checkbox"><span class="task-text">Verify with <code>root.getObjectByName('/some/prim')</code> that you can find a nested prim.<span class="why">Proves objects are individually addressable.</span></span></label></li>
+            <li><span class="pill learn">learn</span><label><input type="checkbox"><span class="task-text">Decide a naming convention (full prim path vs last segment) and write down the tradeoffs.<span class="why">Full paths avoid collisions; short names are friendlier. Document the choice for future-you.</span></span></label></li>
+            <li><span class="pill stretch">stretch</span><label><input type="checkbox"><span class="task-text">Handle USD up-axis (Y vs Z) &amp; units (<code>metersPerUnit</code>) vs Honeycomb's <code>up</code> setting.<span class="why">Robotics data is often Z-up; getting this wrong makes scenes sideways. Note it even if you defer the fix.</span></span></label></li>
+            <li><span class="pill stretch">stretch</span><label><input type="checkbox"><span class="task-text">Try the <code>USDZExporter</code> to export the current scene to <code>.usdz</code>.<span class="why">Free round-trip capability + great demo material.</span></span></label></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- WEEK 3 -->
+      <div class="week" id="week-3">
+        <div class="week-head">
+          <div class="week-badge"><span class="wk">Week</span><span class="no">3</span></div>
+          <div class="week-title">
+            <h3>Animate a prim, then a joint (M2 → M3) 🎉</h3>
+            <p>The heart of the project: telemetry moves a USD-loaded object.</p>
+          </div>
+          <div class="week-meta"><span class="pct" data-week="3">0%</span><div class="bar small" style="width:70px;margin-top:6px;"><span data-week-bar="3"></span></div></div>
+          <span class="chevron">▸</span>
+        </div>
+        <div class="week-body">
+          <div class="goal-line"><b>Why this week:</b> this proves the full pipeline — USD file → named object → moved by data. Once one prim moves, the rest is scaling up. <b>Do this on the Grafana path:</b> its editor lets you bind a data field to an object's channel via a dropdown, so you get a visible win fast. M2 is a plain pose; M3 extends it to joint-like articulation.</div>
+          <ul class="tasks" data-week="3">
+            <li><span class="pill learn">learn</span><label><input type="checkbox"><span class="task-text">Read <code>honeycomb/KinematicsAnimator.ts</code> — see <code>GrafanaKinematicsAnimator</code> build one <code>AnimatedRobot</code> per scene object, keyed by <code>obj.id</code>, then feed <code>KinematicsDriver</code>. (Caspian binds from JSON config instead; both end at the same driver.)<span class="why">This is exactly where "channel matched to object" happens — knowing your path tells you how a channel finds an object.</span></span></label></li>
+            <li><span class="pill code">code</span><label><input type="checkbox"><span class="task-text"><b>M2:</b> get your USD-loaded object to appear as a scene object with a stable <code>id</code>/<code>name</code>, then bind a data field to its position/orientation in the Grafana editor and watch it move.<span class="why">The make-or-break demo — using the existing UI, no new components.</span></span></label></li>
+            <li><span class="pill code">code</span><label><input type="checkbox"><span class="task-text">Record a short screen capture / GIF of the USD prim moving from telemetry.<span class="why">Proof + something great to show your mentor. Capture it the moment it works.</span></span></label></li>
+            <li><span class="pill learn">learn</span><label><input type="checkbox"><span class="task-text">Understand a plain Xform vs a URDF <b>joint</b> (<code>isRobot</code> / <code>setJointValue</code>).<span class="why">USD has no URDF joints natively — you choose how to model articulation.</span></span></label></li>
+            <li><span class="pill code">code</span><label><input type="checkbox"><span class="task-text"><b>M3:</b> animate an articulated sub-assembly by driving nested Xform transforms directly.<span class="why">Simplest path to joint-like motion — reuses the pose path you just built.</span></span></label></li>
+            <li><span class="pill code">code</span><label><input type="checkbox"><span class="task-text">(Caspian only) If you test there, let the driver resolve <b>nested</b> names (fall back to <code>getObjectByName</code>).<span class="why">Caspian looks up top-level names; nested USD prims get missed. Not needed on Grafana if each prim is its own scene object.</span></span></label></li>
+            <li><span class="pill learn">learn</span><label><input type="checkbox"><span class="task-text">Note friction as you go: id/name mismatches, transform order, coordinate frames.<span class="why">These notes seed Week 4 and the hand-off doc — write them while fresh.</span></span></label></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- WEEK 4 -->
+      <div class="week" id="week-4">
+        <div class="week-head">
+          <div class="week-badge"><span class="wk">Week</span><span class="no">4</span></div>
+          <div class="week-title">
+            <h3>One USD → many objects; polish &amp; hand off (M4)</h3>
+            <p>The real unlock: a whole scene from one file — then make it shippable.</p>
+          </div>
+          <div class="week-meta"><span class="pct" data-week="4">0%</span><div class="bar small" style="width:70px;margin-top:6px;"><span data-week-bar="4"></span></div></div>
+          <span class="chevron">▸</span>
+        </div>
+        <div class="week-body">
+          <div class="goal-line"><b>Why this week:</b> this is where "load one USD instead of many URDFs" comes true — and an internship win isn't just code, it's code others can build on. M4 is the most open-ended milestone; it's fine if the polish tasks spill past week 4. <b>Ship what works.</b></div>
+          <ul class="tasks" data-week="4">
+            <li><span class="pill code">code</span><label><input type="checkbox"><span class="task-text"><b>M4:</b> write a "prim → SceneObject" mapper — walk the USD tree and emit Honeycomb objects with a <b>stable id</b> (the prim path) + parent / position / orientation / joints.<span class="why">One USD file expands into the whole object list. Stable ids are what let channels bind reliably.</span></span></label></li>
+            <li><span class="pill code">code</span><label><input type="checkbox"><span class="task-text">Confirm the mapped objects appear in the <b>Grafana editor's object list</b> and are bindable to channels there.<span class="why">The real payoff: USD prims become channel-matchable with <b>zero new UI</b>.</span></span></label></li>
+            <li><span class="pill code">code</span><label><input type="checkbox"><span class="task-text">Add a couple of tests for the USD loader (mirror existing loader tests) and clean up (remove debug logs, tidy naming, comment only where needed).<span class="why">Guards your work; makes it reviewable and mergeable.</span></span></label></li>
+            <li><span class="pill learn">learn</span><label><input type="checkbox"><span class="task-text">Write a short design doc: what works, known limits, and the path to "full" USD (incl. the <code>three</code>→≥0.183 + <code>USDLoader</code> plan for binary <code>.usdc</code>).<span class="why">Turns a partial feature into a clear roadmap for whoever's next.</span></span></label></li>
+            <li><span class="pill code">code</span><label><input type="checkbox"><span class="task-text">Turn your draft PR into a review-ready one; prep a 5-min demo (the Week 3 GIF + a one-USD-loads-a-scene example).<span class="why">Real code-review experience + showing impact clearly.</span></span></label></li>
+            <li><span class="pill stretch">stretch</span><label><input type="checkbox"><span class="task-text"><b>Post-milestone:</b> on a separate <code>chore-upgrade-three-0.183</code> branch, bump <code>three</code> to ≥0.183, fix any <code>examples/jsm</code> fallout, then swap your loader to <code>USDLoader</code> to unlock binary <code>.usdc</code>.<span class="why">The payoff of the whole three.js finding — pure-JS <code>.usdc</code>, no WASM. Kept off the critical path so it can't break your milestones.</span></span></label></li>
+            <li><span class="pill stretch">stretch</span><label><input type="checkbox"><span class="task-text">Research NVIDIA's <b>UsdPhysics</b> articulation schema + robotics USD (Isaac Sim).<span class="why">Where real joints/limits/axes live if the project continues past the internship.</span></span></label></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ADAPT -->
+    <section id="adapt">
+      <h2><span class="num">4</span> Staying adaptable (important!)</h2>
+      <div class="card">
+        <p style="margin-top:0;">This plan <b>will</b> change as you learn — that's expected and good. A few principles to keep it flexible:</p>
+        <ul style="color:var(--text-dim); font-size:0.92rem;">
+          <li><b>Milestones &gt; weeks.</b> The M0–M4 milestones are the real backbone. This is a compressed 4-week pace, so if a week slips, slide the milestone — don't panic. Getting M0→M2 solid beats a rushed, shaky M4.</li>
+          <li><b>Depth-first when stuck.</b> If the limited ASCII loader blocks you, don't rabbit-hole — note it, drop to a simpler test asset, keep the pipeline moving. (The binary <code>.usdc</code> answer is the <code>three</code> upgrade, and that's deliberately parked at the end.)</li>
+          <li><b>Write findings down immediately</b> (Notes box below). Future-you and your mentor will thank you.</li>
+          <li><b>Re-scope weekly.</b> Every Friday, glance at this page: what moved, what's blocked, what's next. Edit tasks freely — it's your file.</li>
+          <li><b>Ask early.</b> A 10-min question to a maintainer beats 2 days stuck. Especially on coordinate frames and the driver binding.</li>
+        </ul>
+        <div class="note-box">
+          <label style="font-size:0.82rem; color:var(--text-faint);">📝 Your running notes (saved in your browser):</label>
+          <textarea id="notes" placeholder="Findings, blockers, decisions, links, 'aha' moments..."></textarea>
+        </div>
+        <div class="toolbar">
+          <button class="btn" onclick="expandAll(true)">Expand all weeks</button>
+          <button class="btn" onclick="expandAll(false)">Collapse all</button>
+          <button class="btn" onclick="exportProgress()">Export progress (JSON)</button>
+          <button class="btn danger" onclick="resetProgress()">Reset everything</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESOURCES -->
+    <section id="resources">
+      <h2><span class="num">5</span> Resources to look into</h2>
+      <div class="card">
+        <h3 style="margin-top:0;">USD</h3>
+        <ul style="color:var(--text-dim); font-size:0.92rem;">
+          <li><a href="https://openusd.org/release/index.html" target="_blank">OpenUSD official docs</a> — start with the intro + glossary.</li>
+          <li><a href="https://openusd.org/release/tut_usd_tutorials.html" target="_blank">OpenUSD tutorials</a> — hands-on prim/stage basics.</li>
+          <li>Search: "USD for beginners" video intros (visual explanations help a lot).</li>
+          <li>NVIDIA Omniverse "What is USD?" articles — good robotics-flavored context.</li>
+          <li>Look up <b>UsdPhysics</b> + <b>Isaac Sim robotics USD</b> when you hit articulation (Week 3 / stretch).</li>
+        </ul>
+        <h3>Three.js</h3>
+        <ul style="color:var(--text-dim); font-size:0.92rem;">
+          <li><a href="https://threejs.org/docs/" target="_blank">Three.js docs</a> — focus on <code>Object3D</code>, <code>Group</code>, <code>Mesh</code>, quaternions.</li>
+          <li>The <code>USDZLoader.js</code> / <code>USDZExporter.js</code> source in your <code>node_modules</code> (three 0.169) — what you build against for Weeks 1–3.</li>
+          <li>The new <a href="https://github.com/mrdoob/three.js/blob/dev/examples/jsm/loaders/USDLoader.js" target="_blank"><code>USDLoader.js</code></a> (three r183+) + <a href="https://github.com/mrdoob/three.js/pull/32704" target="_blank">PR #32704</a> that added binary <code>.usdc</code> — the upgrade target for real crate support (pure JS, no WASM).</li>
+          <li>Three.js <a href="https://github.com/mrdoob/three.js/releases" target="_blank">release notes</a> (r170 → r183+) — skim before the upgrade for <code>examples/jsm</code> breaking changes (post-processing, lines, controls).</li>
+        </ul>
+        <h3>In this repo (your primary reading)</h3>
+        <ul style="color:var(--text-dim); font-size:0.92rem;">
+          <li><code>pkg/honeycomb/src/Loaders.ts</code> — the loader registry.</li>
+          <li><code>pkg/honeycomb-extensions/src/models/gltfModelLoader.ts</code> — your template.</li>
+          <li><code>pkg/honeycomb-extensions/src/index.ts</code> — where loaders register.</li>
+          <li><code>pkg/honeycomb/src/scene.ts</code> — the scene data model.</li>
+          <li><code>pkg/honeycomb-extensions/src/drivers/KinematicsDriver.ts</code> — how telemetry moves objects (shared runtime).</li>
+          <li><code>pkg/honeycomb/src/viewer.ts</code> — <code>viewer.objects</code> registration.</li>
+          <li><code>app/grafana/src/editors/ObjectEditor/TransformEditor.tsx</code> — the per-object channel-matching UI.</li>
+          <li><code>app/grafana/src/editors/ChannelEditor.tsx</code> — the dropdown that binds a data field to a channel.</li>
+          <li><code>app/grafana/src/honeycomb/KinematicsAnimator.ts</code> — Grafana's per-object animator (channel → object).</li>
+          <li><code>node_modules/three/examples/jsm/loaders/USDZLoader.js</code> — the installed loader you wrap (ASCII-only; throws on <code>.usdc</code>).</li>
+          <li>All 23 <code>package.json</code> files pinning <code>three@^0.169.0</code> — the list you'd edit for the upgrade (<code>grep -rn '"three"' --include=package.json pkg app</code>).</li>
+        </ul>
+      </div>
+    </section>
+
+    <footer>
+      Built for your internship • progress saves locally in this browser • edit this file freely as you learn 🐝
+    </footer>
+  </main>
+</div>
+
+<script>
+  const STORAGE_KEY = 'usd-honeycomb-roadmap-v1';
+
+  // Give every checkbox a stable id based on its position
+  function initIds() {
+    document.querySelectorAll('ul.tasks').forEach(ul => {
+      const wk = ul.getAttribute('data-week');
+      ul.querySelectorAll('input[type=checkbox]').forEach((cb, i) => {
+        cb.dataset.id = 'w' + wk + '-t' + i;
+      });
+    });
+  }
+
+  function loadState() {
+    let state = {};
+    try { state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch(e) {}
+    document.querySelectorAll('input[type=checkbox]').forEach(cb => {
+      if (state.tasks && state.tasks[cb.dataset.id]) cb.checked = true;
+    });
+    if (state.notes) document.getElementById('notes').value = state.notes;
+    // restore open weeks (default: week 1 open)
+    if (state.openWeeks) {
+      document.querySelectorAll('.week').forEach(w => {
+        if (state.openWeeks.includes(w.id)) w.classList.add('open');
+      });
+    } else {
+      document.getElementById('week-1').classList.add('open');
+    }
+  }
+
+  function saveState() {
+    const tasks = {};
+    document.querySelectorAll('input[type=checkbox]').forEach(cb => {
+      if (cb.checked) tasks[cb.dataset.id] = true;
+    });
+    const openWeeks = [...document.querySelectorAll('.week.open')].map(w => w.id);
+    const notes = document.getElementById('notes').value;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ tasks, notes, openWeeks }));
+  }
+
+  function updateProgress() {
+    const all = [...document.querySelectorAll('ul.tasks input[type=checkbox]')];
+    const done = all.filter(cb => cb.checked).length;
+    const total = all.length;
+    const pct = total ? Math.round(done / total * 100) : 0;
+
+    document.getElementById('done-count').textContent = done;
+    document.getElementById('total-count').textContent = total;
+    document.getElementById('overall-pct').textContent = pct + '%';
+    document.getElementById('overall-bar').style.width = pct + '%';
+    document.getElementById('mini-pct').textContent = pct + '%';
+    document.getElementById('mini-bar').style.width = pct + '%';
+
+    // per week
+    document.querySelectorAll('ul.tasks').forEach(ul => {
+      const wk = ul.getAttribute('data-week');
+      const cbs = [...ul.querySelectorAll('input[type=checkbox]')];
+      const d = cbs.filter(c => c.checked).length;
+      const p = cbs.length ? Math.round(d / cbs.length * 100) : 0;
+      const pctEl = document.querySelector('.pct[data-week="' + wk + '"]');
+      const barEl = document.querySelector('[data-week-bar="' + wk + '"]');
+      if (pctEl) pctEl.textContent = p + '%';
+      if (barEl) barEl.style.width = p + '%';
+    });
+
+    // strike-through styling
+    document.querySelectorAll('ul.tasks li').forEach(li => {
+      const cb = li.querySelector('input[type=checkbox]');
+      li.classList.toggle('done', cb && cb.checked);
+    });
+  }
+
+  // Toggle week open/close (but not when clicking a checkbox)
+  document.querySelectorAll('.week-head').forEach(head => {
+    head.addEventListener('click', () => {
+      head.closest('.week').classList.toggle('open');
+      saveState();
+    });
+  });
+
+  document.addEventListener('change', e => {
+    if (e.target.matches('input[type=checkbox]')) {
+      updateProgress();
+      saveState();
+    }
+  });
+  document.getElementById('notes').addEventListener('input', saveState);
+
+  function expandAll(open) {
+    document.querySelectorAll('.week').forEach(w => w.classList.toggle('open', open));
+    saveState();
+  }
+  function resetProgress() {
+    if (!confirm('Reset all checkboxes and notes? This can\'t be undone.')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    location.reload();
+  }
+  function exportProgress() {
+    const data = localStorage.getItem(STORAGE_KEY) || '{}';
+    const blob = new Blob([data], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'usd-roadmap-progress.json';
+    a.click();
+  }
+
+  initIds();
+  loadState();
+  updateProgress();
+</script>
+</body>
+</html>
